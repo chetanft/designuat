@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "Design System Components",
+      "extractedAt": "2025-06-06T11:56:20.432Z"
+    },
+    "web": {
+      "url": "https://www.freighttiger.com/v10/journey/listing",
+      "extractedAt": "2025-06-06T11:56:32.149Z",
+      "elementsCount": 1
+    },
+    "comparedAt": "2025-06-06T11:56:32.158Z",
+    "summary": {
+      "totalComponents": 1,
+      "totalDeviations": 8,
+      "severity": {
+        "high": 7,
+        "medium": 1,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "1:2",
+      "componentName": "Button Component",
+      "componentType": "FRAME",
+      "selector": "div.spinner",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#3366ff",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "279 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 279 color units"
+        },
+        {
+          "property": "paddingTop",
+          "figmaValue": "12px",
+          "webValue": "0px",
+          "difference": "12px",
+          "severity": "high",
+          "message": "paddingTop differs by 12px"
+        },
+        {
+          "property": "paddingRight",
+          "figmaValue": "16px",
+          "webValue": "0px",
+          "difference": "16px",
+          "severity": "high",
+          "message": "paddingRight differs by 16px"
+        },
+        {
+          "property": "paddingBottom",
+          "figmaValue": "12px",
+          "webValue": "0px",
+          "difference": "12px",
+          "severity": "high",
+          "message": "paddingBottom differs by 12px"
+        },
+        {
+          "property": "paddingLeft",
+          "figmaValue": "16px",
+          "webValue": "0px",
+          "difference": "16px",
+          "severity": "high",
+          "message": "paddingLeft differs by 16px"
+        },
+        {
+          "property": "borderRadius",
+          "figmaValue": "8px",
+          "webValue": "50px",
+          "difference": "42px",
+          "severity": "high",
+          "message": "Border radius differs by 42px"
+        },
+        {
+          "property": "width",
+          "figmaValue": "120px",
+          "webValue": "136px",
+          "difference": "16px",
+          "severity": "medium",
+          "message": "Width differs by 16px"
+        },
+        {
+          "property": "height",
+          "figmaValue": "40px",
+          "webValue": "136px",
+          "difference": "96px",
+          "severity": "high",
+          "message": "Height differs by 96px"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.5378151260504201
+    }
+  ],
+  "summary": {
+    "totalComponents": 1,
+    "totalDeviations": 8,
+    "severity": {
+      "high": 7,
+      "medium": 1,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

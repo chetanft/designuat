@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "Design System Components",
+      "extractedAt": "2025-06-06T12:09:23.262Z"
+    },
+    "web": {
+      "url": "https://www.freighttiger.com/v10/journey/listing",
+      "extractedAt": "2025-06-06T12:09:39.987Z",
+      "elementsCount": 1
+    },
+    "comparedAt": "2025-06-06T12:09:39.994Z",
+    "summary": {
+      "totalComponents": 1,
+      "totalDeviations": 7,
+      "severity": {
+        "high": 7,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 1
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "2:22260",
+      "componentName": "Button Component",
+      "componentType": "FRAME",
+      "selector": "div.spinner",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#3366ff",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "279 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 279 color units"
+        },
+        {
+          "property": "paddingTop",
+          "figmaValue": "12px",
+          "webValue": "0px",
+          "difference": "12px",
+          "severity": "high",
+          "message": "paddingTop differs by 12px"
+        },
+        {
+          "property": "paddingRight",
+          "figmaValue": "16px",
+          "webValue": "0px",
+          "difference": "16px",
+          "severity": "high",
+          "message": "paddingRight differs by 16px"
+        },
+        {
+          "property": "paddingBottom",
+          "figmaValue": "12px",
+          "webValue": "0px",
+          "difference": "12px",
+          "severity": "high",
+          "message": "paddingBottom differs by 12px"
+        },
+        {
+          "property": "paddingLeft",
+          "figmaValue": "16px",
+          "webValue": "0px",
+          "difference": "16px",
+          "severity": "high",
+          "message": "paddingLeft differs by 16px"
+        },
+        {
+          "property": "borderRadius",
+          "figmaValue": "8px",
+          "webValue": "50px",
+          "difference": "42px",
+          "severity": "high",
+          "message": "Border radius differs by 42px"
+        },
+        {
+          "property": "height",
+          "figmaValue": "40px",
+          "webValue": "117px",
+          "difference": "77px",
+          "severity": "high",
+          "message": "Height differs by 77px"
+        }
+      ],
+      "matches": [
+        {
+          "property": "width",
+          "value": "120px",
+          "message": "Width matches within tolerance"
+        }
+      ],
+      "matchScore": 0.5679029304029304
+    }
+  ],
+  "summary": {
+    "totalComponents": 1,
+    "totalDeviations": 7,
+    "severity": {
+      "high": 7,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 1
+  }
+}

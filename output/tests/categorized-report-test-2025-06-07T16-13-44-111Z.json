@@ -1,0 +1,2131 @@
+{
+  "metadata": {
+    "generatedAt": "2025-06-07T16:13:44.110Z",
+    "totalFigmaComponents": 0,
+    "totalWebComponents": 12,
+    "categoriesAnalyzed": 10
+  },
+  "summary": {
+    "designSystemHealth": {
+      "overall": 60,
+      "scores": {
+        "colors": 100,
+        "typography": 100,
+        "spacing": 100,
+        "shadows": 0,
+        "borderRadius": 0
+      },
+      "level": "good"
+    },
+    "componentDistribution": {
+      "figma": {
+        "atoms": 0,
+        "molecules": 0,
+        "organisms": 0
+      },
+      "web": {
+        "atoms": 3,
+        "molecules": 2,
+        "organisms": 0
+      }
+    },
+    "designTokens": {
+      "colors": 2,
+      "typography": 3,
+      "spacing": 1,
+      "shadows": 0,
+      "borderRadius": 0
+    },
+    "coverage": {
+      "implementationCoverage": 0,
+      "designCoverage": 0,
+      "totalComponents": 12
+    },
+    "recommendations": []
+  },
+  "designTokens": {
+    "colors": {
+      "total": 2,
+      "mostUsed": [
+        {
+          "value": "rgb(67, 67, 67)",
+          "usage": 4,
+          "sources": [
+            {
+              "source": "web",
+              "component": "html > body",
+              "type": "text"
+            },
+            {
+              "source": "web",
+              "component": "nav.topnav",
+              "type": "text"
+            },
+            {
+              "source": "web",
+              "component": "#single-spa-application:@ft-mf/parent",
+              "type": "text"
+            },
+            {
+              "source": "web",
+              "component": "div#single-spa-application:@ft-mf/parent > h1",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "usage": 1,
+          "sources": [
+            {
+              "source": "web",
+              "component": "html",
+              "type": "text"
+            }
+          ]
+        }
+      ],
+      "consistency": {
+        "score": 75,
+        "issues": [],
+        "suggestions": []
+      },
+      "recommendations": [
+        "Establish primary, secondary, and accent color scales",
+        "Reduce color token count if excessive"
+      ]
+    },
+    "typography": {
+      "total": 3,
+      "fontFamilies": [
+        "Inter, sans-serif",
+        "\"Times New Roman\""
+      ],
+      "fontSizes": [
+        "16px",
+        "24px"
+      ],
+      "scale": {
+        "ratio": 1.2,
+        "consistency": "good"
+      },
+      "recommendations": [
+        "Establish consistent type scale"
+      ]
+    },
+    "spacing": {
+      "total": 1,
+      "mostUsed": [
+        {
+          "value": "19.92px",
+          "usage": 2,
+          "sources": [
+            {
+              "source": "web",
+              "component": "div#single-spa-application:@ft-mf/parent > h1",
+              "property": "marginTop"
+            },
+            {
+              "source": "web",
+              "component": "div#single-spa-application:@ft-mf/parent > h1",
+              "property": "marginBottom"
+            }
+          ]
+        }
+      ],
+      "scale": {
+        "base": 8,
+        "ratio": 1.5
+      },
+      "inconsistencies": [],
+      "recommendations": [
+        "Use 8px base grid system"
+      ]
+    },
+    "shadows": {
+      "total": 0,
+      "mostUsed": [],
+      "elevationLevels": []
+    },
+    "borderRadius": {
+      "total": 0,
+      "mostUsed": [],
+      "scale": {
+        "base": 4,
+        "variants": [
+          4,
+          8,
+          12,
+          16
+        ]
+      }
+    }
+  },
+  "atomicDesign": {
+    "atoms": {
+      "overview": {
+        "totalSubcategories": 7,
+        "totalFigmaComponents": 0,
+        "totalWebComponents": 3
+      },
+      "subcategories": {
+        "typography": {
+          "figmaCount": 0,
+          "webCount": 3,
+          "coverage": "implementation-only",
+          "gap": 3,
+          "examples": {
+            "figma": [],
+            "web": [
+              {
+                "selector": "nav.topnav",
+                "tagName": "nav",
+                "type": "semantic-section",
+                "complexity": "complex"
+              },
+              {
+                "selector": "#single-spa-application:@ft-mf/parent",
+                "tagName": "div",
+                "type": "generic",
+                "complexity": "complex"
+              },
+              {
+                "selector": "div#single-spa-application:@ft-mf/parent > h1",
+                "tagName": "h1",
+                "type": "heading",
+                "complexity": "complex"
+              }
+            ]
+          }
+        },
+        "buttons": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "inputs": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "icons": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "dividers": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "badges": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "loaders": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        }
+      },
+      "recommendations": []
+    },
+    "molecules": {
+      "overview": {
+        "totalSubcategories": 9,
+        "totalFigmaComponents": 0,
+        "totalWebComponents": 2
+      },
+      "subcategories": {
+        "formGroups": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "navigation": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "cards": {
+          "figmaCount": 0,
+          "webCount": 2,
+          "coverage": "implementation-only",
+          "gap": 2,
+          "examples": {
+            "figma": [],
+            "web": [
+              {
+                "selector": "html",
+                "tagName": "html",
+                "type": "generic",
+                "complexity": "complex"
+              },
+              {
+                "selector": "html > body",
+                "tagName": "body",
+                "type": "generic",
+                "complexity": "complex"
+              }
+            ]
+          }
+        },
+        "searchBoxes": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "pagination": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "dropdowns": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "modals": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "tabs": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "accordions": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        }
+      },
+      "recommendations": []
+    },
+    "organisms": {
+      "overview": {
+        "totalSubcategories": 8,
+        "totalFigmaComponents": 0,
+        "totalWebComponents": 0
+      },
+      "subcategories": {
+        "headers": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "footers": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "sidebars": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "forms": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "tables": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "galleries": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "dashboards": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        },
+        "articles": {
+          "figmaCount": 0,
+          "webCount": 0,
+          "coverage": "implementation-only",
+          "gap": 0,
+          "examples": {
+            "figma": [],
+            "web": []
+          }
+        }
+      },
+      "recommendations": []
+    }
+  },
+  "technicalAnalysis": {
+    "layout": {
+      "name": "Layout Systems",
+      "subcategories": {
+        "containers": {
+          "figma": [],
+          "web": [
+            {
+              "id": "web-0",
+              "selector": "html",
+              "tagName": "html",
+              "type": "generic",
+              "text": "Freight Tiger \n  \n  \n  \n  \n  \n\n\n\n  \n\n  \n\n\n  \n  \n\n\n  \n\n\n  \n    \n      {\n        \"imports\": {\n          \"react\": \"https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js\",\n          \"reac",
+              "attributes": {
+                "id": null,
+                "className": null,
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 0,
+                "width": 1200,
+                "height": 69,
+                "right": 1200,
+                "bottom": 69
+              },
+              "styles": {
+                "fontFamily": "\"Times New Roman\"",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(0, 0, 0)",
+                "textTransform": "none",
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(0, 0, 0)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(0, 0, 0)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "69.3281px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 0,
+                "width": 1200,
+                "height": 69,
+                "right": 1200,
+                "bottom": 69
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "\"Times New Roman\"",
+                  "fontSize": "16px",
+                  "fontWeight": "400",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(0, 0, 0)",
+                  "textTransform": "none",
+                  "color": "rgb(0, 0, 0)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "69.3281px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "0px",
+                  "marginTop": "0px",
+                  "marginRight": "0px",
+                  "marginBottom": "0px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(0, 0, 0)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(0, 0, 0)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(0, 0, 0) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(0, 0, 0)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 34.6641px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 2,
+              "depth": 0,
+              "parentSelector": null,
+              "category": "layout.containers",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": false,
+                "hasColors": true
+              }
+            },
+            {
+              "id": "web-634",
+              "selector": "html > body",
+              "tagName": "body",
+              "type": "generic",
+              "text": "Failed to load topnav\n  \n    System.import('@ft-mf/root');\n    System.import('@ft-mf/login');\n    System.import('@ft-mf/component-lib');\n    System.import('@ft-mf/api-wrapper');\n    System.import('@ft",
+              "attributes": {
+                "id": null,
+                "className": null,
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "styles": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "29.5px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "Inter, sans-serif",
+                  "fontSize": "16px",
+                  "fontWeight": "400",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(67, 67, 67)",
+                  "textTransform": "none",
+                  "color": "rgb(67, 67, 67)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "29.5px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "0px",
+                  "marginTop": "0px",
+                  "marginRight": "0px",
+                  "marginBottom": "0px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(67, 67, 67)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(67, 67, 67)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(67, 67, 67) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(67, 67, 67)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 14.75px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 2,
+              "depth": 0,
+              "parentSelector": "html",
+              "category": "layout.containers",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": false,
+                "hasColors": true
+              }
+            },
+            {
+              "id": "web-635",
+              "selector": "nav.topnav",
+              "tagName": "nav",
+              "type": "semantic-section",
+              "text": "Failed to load topnav",
+              "attributes": {
+                "id": null,
+                "className": "topnav",
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "styles": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "29.5px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "Inter, sans-serif",
+                  "fontSize": "16px",
+                  "fontWeight": "400",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(67, 67, 67)",
+                  "textTransform": "none",
+                  "color": "rgb(67, 67, 67)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "29.5px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "0px",
+                  "marginTop": "0px",
+                  "marginRight": "0px",
+                  "marginBottom": "0px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(67, 67, 67)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(67, 67, 67)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(67, 67, 67) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(67, 67, 67)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 14.75px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 1,
+              "depth": 0,
+              "parentSelector": "html > body",
+              "category": "layout.containers",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": false,
+                "hasColors": true
+              }
+            },
+            {
+              "id": "web-636",
+              "selector": "#single-spa-application:@ft-mf/parent",
+              "tagName": "div",
+              "type": "generic",
+              "text": "Failed to load topnav",
+              "attributes": {
+                "id": "single-spa-application:@ft-mf/parent",
+                "className": null,
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "styles": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "29.5px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "Inter, sans-serif",
+                  "fontSize": "16px",
+                  "fontWeight": "400",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(67, 67, 67)",
+                  "textTransform": "none",
+                  "color": "rgb(67, 67, 67)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "29.5px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "0px",
+                  "marginTop": "0px",
+                  "marginRight": "0px",
+                  "marginBottom": "0px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(67, 67, 67)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(67, 67, 67)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(67, 67, 67) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(67, 67, 67)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 14.75px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 1,
+              "depth": 0,
+              "parentSelector": "nav.topnav",
+              "category": "layout.containers",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": false,
+                "hasColors": true
+              }
+            },
+            {
+              "id": "web-637",
+              "selector": "div#single-spa-application:@ft-mf/parent > h1",
+              "tagName": "h1",
+              "type": "heading",
+              "text": "Failed to load topnav",
+              "attributes": {
+                "id": null,
+                "className": null,
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "styles": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "24px",
+                "fontWeight": "700",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "19.92px 0px",
+                "marginTop": "19.92px",
+                "marginRight": "0px",
+                "marginBottom": "19.92px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "29.5px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "Inter, sans-serif",
+                  "fontSize": "24px",
+                  "fontWeight": "700",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(67, 67, 67)",
+                  "textTransform": "none",
+                  "color": "rgb(67, 67, 67)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "29.5px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "19.92px 0px",
+                  "marginTop": "19.92px",
+                  "marginRight": "0px",
+                  "marginBottom": "19.92px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(67, 67, 67)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(67, 67, 67)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(67, 67, 67) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(67, 67, 67)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 14.75px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 0,
+              "depth": 0,
+              "parentSelector": "#single-spa-application:@ft-mf/parent",
+              "category": "layout.containers",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": true,
+                "hasColors": true
+              }
+            }
+          ]
+        },
+        "grids": {
+          "figma": [],
+          "web": []
+        },
+        "flexbox": {
+          "figma": [],
+          "web": []
+        },
+        "positioning": {
+          "figma": [],
+          "web": []
+        },
+        "responsive": {
+          "figma": [],
+          "web": []
+        }
+      },
+      "maturity": "developing",
+      "recommendations": []
+    },
+    "spacing": {
+      "name": "Spacing Systems",
+      "subcategories": {
+        "margins": {
+          "figma": [],
+          "web": [
+            {
+              "id": "web-637",
+              "selector": "div#single-spa-application:@ft-mf/parent > h1",
+              "tagName": "h1",
+              "type": "heading",
+              "text": "Failed to load topnav",
+              "attributes": {
+                "id": null,
+                "className": null,
+                "role": null,
+                "ariaLabel": null,
+                "title": null,
+                "alt": null,
+                "href": null,
+                "src": null
+              },
+              "boundingRect": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "styles": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "24px",
+                "fontWeight": "700",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "margin": "19.92px 0px",
+                "marginTop": "19.92px",
+                "marginRight": "0px",
+                "marginBottom": "19.92px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "display": "block",
+                "position": "static",
+                "width": "1200px",
+                "height": "29.5px",
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "transform": "none"
+              },
+              "position": {
+                "x": 0,
+                "y": 20,
+                "width": 1200,
+                "height": 30,
+                "right": 1200,
+                "bottom": 49
+              },
+              "detailedStyles": {
+                "typography": {
+                  "fontFamily": "Inter, sans-serif",
+                  "fontSize": "24px",
+                  "fontWeight": "700",
+                  "fontStyle": "normal",
+                  "lineHeight": "normal",
+                  "letterSpacing": "normal",
+                  "textAlign": "start",
+                  "textDecoration": "none solid rgb(67, 67, 67)",
+                  "textTransform": "none",
+                  "color": "rgb(67, 67, 67)",
+                  "whiteSpace": "normal",
+                  "wordSpacing": "0px"
+                },
+                "layout": {
+                  "display": "block",
+                  "position": "static",
+                  "top": "auto",
+                  "right": "auto",
+                  "bottom": "auto",
+                  "left": "auto",
+                  "zIndex": "auto",
+                  "float": "none",
+                  "clear": "none",
+                  "overflow": "visible",
+                  "overflowX": "visible",
+                  "overflowY": "visible",
+                  "visibility": "visible"
+                },
+                "dimensions": {
+                  "width": "1200px",
+                  "height": "29.5px",
+                  "minWidth": "0px",
+                  "maxWidth": "none",
+                  "minHeight": "0px",
+                  "maxHeight": "none",
+                  "boxSizing": "border-box"
+                },
+                "spacing": {
+                  "margin": "19.92px 0px",
+                  "marginTop": "19.92px",
+                  "marginRight": "0px",
+                  "marginBottom": "19.92px",
+                  "marginLeft": "0px",
+                  "padding": "0px",
+                  "paddingTop": "0px",
+                  "paddingRight": "0px",
+                  "paddingBottom": "0px",
+                  "paddingLeft": "0px"
+                },
+                "background": {
+                  "backgroundColor": "rgba(0, 0, 0, 0)",
+                  "backgroundImage": "none",
+                  "backgroundSize": "auto",
+                  "backgroundPosition": "0% 0%",
+                  "backgroundRepeat": "repeat",
+                  "backgroundAttachment": "scroll",
+                  "backgroundClip": "border-box",
+                  "backgroundOrigin": "padding-box"
+                },
+                "border": {
+                  "border": "0px none rgb(67, 67, 67)",
+                  "borderWidth": "0px",
+                  "borderStyle": "none",
+                  "borderColor": "rgb(67, 67, 67)",
+                  "borderRadius": "0px",
+                  "borderTopLeftRadius": "0px",
+                  "borderTopRightRadius": "0px",
+                  "borderBottomLeftRadius": "0px",
+                  "borderBottomRightRadius": "0px",
+                  "outline": "rgb(67, 67, 67) none 0px",
+                  "outlineWidth": "0px",
+                  "outlineStyle": "none",
+                  "outlineColor": "rgb(67, 67, 67)"
+                },
+                "effects": {
+                  "opacity": "1",
+                  "boxShadow": "none",
+                  "textShadow": "none",
+                  "filter": "none",
+                  "transform": "none",
+                  "transformOrigin": "600px 14.75px",
+                  "transition": "all 0s ease 0s",
+                  "animation": "none 0s ease 0s 1 normal none running"
+                },
+                "flexbox": {
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "justifyContent": "normal",
+                  "alignItems": "normal",
+                  "alignContent": "normal",
+                  "flex": "0 1 auto",
+                  "flexGrow": "0",
+                  "flexShrink": "1",
+                  "flexBasis": "auto",
+                  "alignSelf": "auto",
+                  "gap": "normal",
+                  "rowGap": "normal",
+                  "columnGap": "normal"
+                },
+                "grid": {
+                  "gridTemplateColumns": "none",
+                  "gridTemplateRows": "none",
+                  "gridTemplateAreas": "none",
+                  "gridArea": "auto",
+                  "gridColumn": "auto",
+                  "gridRow": "auto",
+                  "gridGap": "normal normal",
+                  "gridRowGap": "normal",
+                  "gridColumnGap": "normal",
+                  "justifyItems": "normal",
+                  "alignItems": "normal",
+                  "placeSelf": "auto",
+                  "justifySelf": "auto"
+                },
+                "interaction": {
+                  "cursor": "auto",
+                  "pointerEvents": "auto",
+                  "userSelect": "auto",
+                  "resize": "none"
+                }
+              },
+              "childCount": 0,
+              "depth": 0,
+              "parentSelector": "#single-spa-application:@ft-mf/parent",
+              "category": "spacing.margins",
+              "classification": {
+                "complexity": "complex",
+                "hasInteraction": false,
+                "hasLayout": false,
+                "hasSpacing": true,
+                "hasColors": true
+              }
+            }
+          ]
+        },
+        "padding": {
+          "figma": [],
+          "web": []
+        },
+        "gaps": {
+          "figma": [],
+          "web": []
+        }
+      },
+      "maturity": "developing",
+      "recommendations": []
+    },
+    "visual": {
+      "name": "Visual Effects",
+      "subcategories": {
+        "borders": {
+          "figma": [],
+          "web": []
+        },
+        "shadows": {
+          "figma": [],
+          "web": []
+        },
+        "gradients": {
+          "figma": [],
+          "web": []
+        },
+        "transitions": {
+          "figma": [],
+          "web": []
+        },
+        "transforms": {
+          "figma": [],
+          "web": []
+        }
+      },
+      "maturity": "developing",
+      "recommendations": []
+    },
+    "interactive": {
+      "name": "Interactions",
+      "subcategories": {
+        "clickable": {
+          "figma": [],
+          "web": []
+        },
+        "hoverable": {
+          "figma": [],
+          "web": []
+        },
+        "focusable": {
+          "figma": [],
+          "web": []
+        },
+        "draggable": {
+          "figma": [],
+          "web": []
+        }
+      },
+      "maturity": "developing",
+      "recommendations": []
+    },
+    "responsive": {
+      "score": 60,
+      "recommendations": []
+    }
+  },
+  "insights": {
+    "designSystemGaps": [],
+    "implementationGaps": [],
+    "consistencyIssues": [],
+    "quickWins": [],
+    "strategicRecommendations": [],
+    "actionPlan": []
+  },
+  "inventories": {
+    "figma": {},
+    "web": {
+      "atoms.typography": {
+        "count": 3,
+        "components": [
+          {
+            "id": "web-635",
+            "name": "nav.topnav",
+            "type": "semantic-section",
+            "complexity": "complex",
+            "category": "atoms.typography",
+            "properties": {
+              "tagName": "nav",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-636",
+            "name": "#single-spa-application:@ft-mf/parent",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "atoms.typography",
+            "properties": {
+              "tagName": "div",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-637",
+            "name": "div#single-spa-application:@ft-mf/parent > h1",
+            "type": "heading",
+            "complexity": "complex",
+            "category": "atoms.typography",
+            "properties": {
+              "tagName": "h1",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          }
+        ]
+      },
+      "molecules.cards": {
+        "count": 2,
+        "components": [
+          {
+            "id": "web-0",
+            "name": "html",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "molecules.cards",
+            "properties": {
+              "tagName": "html",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-634",
+            "name": "html > body",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "molecules.cards",
+            "properties": {
+              "tagName": "body",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          }
+        ]
+      },
+      "layout.containers": {
+        "count": 5,
+        "components": [
+          {
+            "id": "web-0",
+            "name": "html",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "layout.containers",
+            "properties": {
+              "tagName": "html",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-634",
+            "name": "html > body",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "layout.containers",
+            "properties": {
+              "tagName": "body",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-635",
+            "name": "nav.topnav",
+            "type": "semantic-section",
+            "complexity": "complex",
+            "category": "layout.containers",
+            "properties": {
+              "tagName": "nav",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-636",
+            "name": "#single-spa-application:@ft-mf/parent",
+            "type": "generic",
+            "complexity": "complex",
+            "category": "layout.containers",
+            "properties": {
+              "tagName": "div",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          },
+          {
+            "id": "web-637",
+            "name": "div#single-spa-application:@ft-mf/parent > h1",
+            "type": "heading",
+            "complexity": "complex",
+            "category": "layout.containers",
+            "properties": {
+              "tagName": "h1",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          }
+        ]
+      },
+      "spacing.margins": {
+        "count": 1,
+        "components": [
+          {
+            "id": "web-637",
+            "name": "div#single-spa-application:@ft-mf/parent > h1",
+            "type": "heading",
+            "complexity": "complex",
+            "category": "spacing.margins",
+            "properties": {
+              "tagName": "h1",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          }
+        ]
+      },
+      "semantic.navigation": {
+        "count": 1,
+        "components": [
+          {
+            "id": "web-635",
+            "name": "nav.topnav",
+            "type": "semantic-section",
+            "complexity": "complex",
+            "category": "semantic.navigation",
+            "properties": {
+              "tagName": "nav",
+              "hasColors": true,
+              "hasSpacing": true,
+              "hasLayout": true,
+              "interactive": false
+            }
+          }
+        ]
+      }
+    },
+    "crossReference": {}
+  },
+  "navigation": {
+    "primary": [
+      {
+        "id": "summary",
+        "label": "Executive Summary",
+        "icon": "📊",
+        "description": "High-level metrics and health assessment"
+      },
+      {
+        "id": "design-tokens",
+        "label": "Design Tokens",
+        "icon": "🎨",
+        "description": "Colors, typography, spacing, and other design primitives",
+        "subcategories": [
+          {
+            "id": "colors",
+            "label": "Colors",
+            "count": 2
+          },
+          {
+            "id": "typography",
+            "label": "Typography",
+            "count": 3
+          },
+          {
+            "id": "spacing",
+            "label": "Spacing",
+            "count": 1
+          },
+          {
+            "id": "shadows",
+            "label": "Shadows",
+            "count": 0
+          },
+          {
+            "id": "border-radius",
+            "label": "Border Radius",
+            "count": 0
+          }
+        ]
+      },
+      {
+        "id": "atomic-design",
+        "label": "Atomic Design",
+        "icon": "⚛️",
+        "description": "Components organized by atomic design methodology",
+        "subcategories": [
+          {
+            "id": "atoms",
+            "label": "Atoms",
+            "count": 3
+          },
+          {
+            "id": "molecules",
+            "label": "Molecules",
+            "count": 2
+          },
+          {
+            "id": "organisms",
+            "label": "Organisms",
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "secondary": [
+      {
+        "id": "technical",
+        "label": "Technical Analysis",
+        "icon": "⚙️",
+        "subcategories": [
+          {
+            "id": "layout",
+            "label": "Layout Systems"
+          },
+          {
+            "id": "spacing",
+            "label": "Spacing Patterns"
+          },
+          {
+            "id": "visual",
+            "label": "Visual Effects"
+          },
+          {
+            "id": "interactions",
+            "label": "Interactions"
+          }
+        ]
+      },
+      {
+        "id": "insights",
+        "label": "Insights & Gaps",
+        "icon": "💡",
+        "subcategories": [
+          {
+            "id": "design-gaps",
+            "label": "Design System Gaps"
+          },
+          {
+            "id": "implementation-gaps",
+            "label": "Implementation Gaps"
+          },
+          {
+            "id": "quick-wins",
+            "label": "Quick Wins"
+          },
+          {
+            "id": "action-plan",
+            "label": "Action Plan"
+          }
+        ]
+      }
+    ],
+    "utility": [
+      {
+        "id": "inventories",
+        "label": "Component Inventories",
+        "icon": "📋",
+        "description": "Detailed component lists and cross-references"
+      },
+      {
+        "id": "export",
+        "label": "Export Data",
+        "icon": "💾",
+        "description": "Download categorized data in various formats"
+      }
+    ]
+  }
+}

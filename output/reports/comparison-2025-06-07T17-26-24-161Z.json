@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "xfMsPmqaYwrjxl4fog2o7X",
+      "fileName": "FT Icons",
+      "extractedAt": "2025-06-07T17:26:19.313Z"
+    },
+    "web": {
+      "url": "https://example.com",
+      "extractedAt": "2025-06-07T17:26:24.157Z",
+      "elementsCount": 7
+    },
+    "comparedAt": "2025-06-07T17:26:24.158Z",
+    "summary": {
+      "totalComponents": 0,
+      "totalDeviations": 0,
+      "totalUnfetched": 0,
+      "severity": {
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [],
+  "summary": {
+    "totalComponents": 0,
+    "totalDeviations": 0,
+    "totalUnfetched": 0,
+    "severity": {
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

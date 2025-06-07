@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "xfMsPmqaYwrjxl4fog2o7X",
+      "fileName": "FT Icons",
+      "extractedAt": "2025-06-07T17:21:29.297Z"
+    },
+    "web": {
+      "url": "https://example.com",
+      "extractedAt": "2025-06-07T17:21:32.565Z",
+      "elementsCount": 7
+    },
+    "comparedAt": "2025-06-07T17:21:32.569Z",
+    "summary": {
+      "totalComponents": 2,
+      "totalDeviations": 2,
+      "totalUnfetched": 0,
+      "severity": {
+        "high": 2,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "0:1",
+      "componentName": "Icons",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "26:79",
+      "componentName": "Thumbnail",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    }
+  ],
+  "summary": {
+    "totalComponents": 2,
+    "totalDeviations": 2,
+    "totalUnfetched": 0,
+    "severity": {
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "My Journeys",
+      "extractedAt": "2025-06-07T04:03:09.015Z"
+    },
+    "web": {
+      "url": "https://www.freighttiger.com/v10/journey/listing",
+      "extractedAt": "2025-06-07T04:03:33.853Z",
+      "elementsCount": 5
+    },
+    "comparedAt": "2025-06-07T04:03:33.928Z",
+    "summary": {
+      "totalComponents": 1,
+      "totalDeviations": 3,
+      "totalUnfetched": 4,
+      "severity": {
+        "high": 3,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "2:22260",
+      "componentName": "In Transit",
+      "componentType": "FRAME",
+      "selector": "#single-spa-application:@ft-mf/parent",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "color",
+          "figmaValue": "#ffffff",
+          "webValue": "rgb(67, 67, 67)",
+          "difference": "326 units",
+          "severity": "high",
+          "message": "color differs by 326 color units"
+        },
+        {
+          "property": "width",
+          "figmaValue": "1728px",
+          "webValue": "1200px",
+          "difference": "528px",
+          "severity": "high",
+          "message": "Width differs by 528px"
+        },
+        {
+          "property": "height",
+          "figmaValue": "1117px",
+          "webValue": "30px",
+          "difference": "1087px",
+          "severity": "high",
+          "message": "Height differs by 1087px"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.45667271496781336,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "backgroundColor",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "message": "Background color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalComponents": 1,
+    "totalDeviations": 3,
+    "totalUnfetched": 4,
+    "severity": {
+      "high": 3,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

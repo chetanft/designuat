@@ -1,0 +1,291 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "My Journeys",
+      "extractedAt": "2025-06-07T17:33:20.023Z"
+    },
+    "web": {
+      "url": "https://httpbin.org/html",
+      "extractedAt": "2025-06-07T17:33:24.865Z",
+      "elementsCount": 5
+    },
+    "comparedAt": "2025-06-07T17:33:24.875Z",
+    "summary": {
+      "totalComponents": 14,
+      "totalDeviations": 14,
+      "totalUnfetched": 0,
+      "severity": {
+        "high": 14,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "502:13842",
+      "componentName": "Phase 2",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "0:1",
+      "componentName": "Add Journey",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "2:14552",
+      "componentName": "Consignor - Outbound - Source",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "19:12239",
+      "componentName": "Consignor - Inbound - Source",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "29:47482",
+      "componentName": "Consignor - Outbound - Pickup",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "29:47483",
+      "componentName": "Consignor - Inbound - Drop",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "29:47484",
+      "componentName": "Consignee",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "29:47485",
+      "componentName": "Transporter - Outbound - Source",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "61:34141",
+      "componentName": "Transporter - Inbound - Source",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "61:49388",
+      "componentName": "Share Journey Page",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "376:25350",
+      "componentName": "Maps",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "381:25962",
+      "componentName": "V10.3",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "153:13655",
+      "componentName": "PLAYGROUND",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    },
+    {
+      "componentId": "73:20894",
+      "componentName": "Thumbnail",
+      "componentType": "CANVAS",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    }
+  ],
+  "summary": {
+    "totalComponents": 14,
+    "totalDeviations": 14,
+    "totalUnfetched": 0,
+    "severity": {
+      "high": 14,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

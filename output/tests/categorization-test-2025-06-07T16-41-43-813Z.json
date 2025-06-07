@@ -1,0 +1,3145 @@
+{
+  "schema": {
+    "designTokens": {
+      "colors": {
+        "id": "colors",
+        "label": "Colors",
+        "description": "Color palette and usage analysis",
+        "icon": "🎨",
+        "priority": 1,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "value": "rgb(67, 67, 67)",
+            "usage": 4,
+            "sources": [
+              {
+                "source": "web",
+                "component": "html > body",
+                "type": "text"
+              },
+              {
+                "source": "web",
+                "component": "nav.topnav",
+                "type": "text"
+              },
+              {
+                "source": "web",
+                "component": "#single-spa-application:@ft-mf/parent",
+                "type": "text"
+              },
+              {
+                "source": "web",
+                "component": "div#single-spa-application:@ft-mf/parent > h1",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "value": "rgb(0, 0, 0)",
+            "usage": 1,
+            "sources": [
+              {
+                "source": "web",
+                "component": "html",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "analysis": {
+          "total": 2,
+          "mostUsed": [
+            {
+              "value": "rgb(67, 67, 67)",
+              "usage": 4,
+              "sources": [
+                {
+                  "source": "web",
+                  "component": "html > body",
+                  "type": "text"
+                },
+                {
+                  "source": "web",
+                  "component": "nav.topnav",
+                  "type": "text"
+                },
+                {
+                  "source": "web",
+                  "component": "#single-spa-application:@ft-mf/parent",
+                  "type": "text"
+                },
+                {
+                  "source": "web",
+                  "component": "div#single-spa-application:@ft-mf/parent > h1",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "value": "rgb(0, 0, 0)",
+              "usage": 1,
+              "sources": [
+                {
+                  "source": "web",
+                  "component": "html",
+                  "type": "text"
+                }
+              ]
+            }
+          ],
+          "consistency": null,
+          "recommendations": []
+        }
+      },
+      "typography": {
+        "id": "typography",
+        "label": "Typography",
+        "description": "Font families, sizes, and text styles",
+        "icon": "📝",
+        "priority": 2,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "value": "Inter, sans-serif-16px-400",
+            "usage": 3,
+            "sources": [
+              {
+                "source": "web",
+                "component": "html > body",
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400"
+              },
+              {
+                "source": "web",
+                "component": "nav.topnav",
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400"
+              },
+              {
+                "source": "web",
+                "component": "#single-spa-application:@ft-mf/parent",
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400"
+              }
+            ]
+          },
+          {
+            "value": "\"Times New Roman\"-16px-400",
+            "usage": 1,
+            "sources": [
+              {
+                "source": "web",
+                "component": "html",
+                "fontFamily": "\"Times New Roman\"",
+                "fontSize": "16px",
+                "fontWeight": "400"
+              }
+            ]
+          },
+          {
+            "value": "Inter, sans-serif-24px-700",
+            "usage": 1,
+            "sources": [
+              {
+                "source": "web",
+                "component": "div#single-spa-application:@ft-mf/parent > h1",
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "24px",
+                "fontWeight": "700"
+              }
+            ]
+          }
+        ],
+        "analysis": {
+          "total": 3,
+          "fontFamilies": [
+            "Inter, sans-serif",
+            "\"Times New Roman\""
+          ],
+          "fontSizes": [
+            "16px",
+            "24px"
+          ],
+          "scale": null,
+          "recommendations": []
+        }
+      },
+      "spacing": {
+        "id": "spacing",
+        "label": "Spacing",
+        "description": "Margin, padding, and gap patterns",
+        "icon": "📏",
+        "priority": 3,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "value": "19.92px",
+            "usage": 2,
+            "sources": [
+              {
+                "source": "web",
+                "component": "div#single-spa-application:@ft-mf/parent > h1",
+                "property": "marginTop"
+              },
+              {
+                "source": "web",
+                "component": "div#single-spa-application:@ft-mf/parent > h1",
+                "property": "marginBottom"
+              }
+            ]
+          }
+        ],
+        "analysis": {
+          "total": 1,
+          "mostUsed": [
+            {
+              "value": "19.92px",
+              "usage": 2,
+              "sources": [
+                {
+                  "source": "web",
+                  "component": "div#single-spa-application:@ft-mf/parent > h1",
+                  "property": "marginTop"
+                },
+                {
+                  "source": "web",
+                  "component": "div#single-spa-application:@ft-mf/parent > h1",
+                  "property": "marginBottom"
+                }
+              ]
+            }
+          ],
+          "scale": null,
+          "inconsistencies": [],
+          "recommendations": []
+        }
+      },
+      "shadows": {
+        "id": "shadows",
+        "label": "Shadows & Elevation",
+        "description": "Box shadows and elevation system",
+        "icon": "🌫️",
+        "priority": 4,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "analysis": {
+          "total": 0,
+          "elevationLevels": [],
+          "mostUsed": []
+        }
+      },
+      "borderRadius": {
+        "id": "borderRadius",
+        "label": "Border Radius",
+        "description": "Corner radius and border styles",
+        "icon": "⭕",
+        "priority": 5,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "analysis": {
+          "total": 0,
+          "scale": null,
+          "mostUsed": []
+        }
+      }
+    },
+    "atoms": {
+      "typography": {
+        "id": "atoms-typography",
+        "label": "Typography",
+        "description": "Text elements, headings, labels",
+        "icon": "📄",
+        "priority": 1,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "id": "web-634",
+            "selector": "nav.topnav",
+            "tagName": "nav",
+            "type": "semantic-section",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": null,
+              "className": "topnav",
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 1,
+            "depth": 0,
+            "parentSelector": "html > body",
+            "classification": {
+              "complexity": "complex",
+              "hasInteraction": false,
+              "hasLayout": false,
+              "hasSpacing": false,
+              "hasColors": true
+            }
+          },
+          {
+            "id": "web-635",
+            "selector": "#single-spa-application:@ft-mf/parent",
+            "tagName": "div",
+            "type": "generic",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": "single-spa-application:@ft-mf/parent",
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 1,
+            "depth": 0,
+            "parentSelector": "nav.topnav",
+            "classification": {
+              "complexity": "complex",
+              "hasInteraction": false,
+              "hasLayout": false,
+              "hasSpacing": false,
+              "hasColors": true
+            }
+          },
+          {
+            "id": "web-636",
+            "selector": "div#single-spa-application:@ft-mf/parent > h1",
+            "tagName": "h1",
+            "type": "heading",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "24px",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "19.92px 0px",
+              "marginTop": "19.92px",
+              "marginRight": "0px",
+              "marginBottom": "19.92px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "24px",
+                "fontWeight": "700",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "19.92px 0px",
+                "marginTop": "19.92px",
+                "marginRight": "0px",
+                "marginBottom": "19.92px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 0,
+            "depth": 0,
+            "parentSelector": "#single-spa-application:@ft-mf/parent",
+            "classification": {
+              "complexity": "complex",
+              "hasInteraction": false,
+              "hasLayout": false,
+              "hasSpacing": true,
+              "hasColors": true
+            }
+          }
+        ],
+        "examples": [
+          "Heading 1",
+          "Body Text",
+          "Caption",
+          "Label"
+        ]
+      },
+      "buttons": {
+        "id": "atoms-buttons",
+        "label": "Buttons",
+        "description": "All button variants and states",
+        "icon": "🔘",
+        "priority": 2,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Primary Button",
+          "Secondary Button",
+          "Icon Button"
+        ]
+      },
+      "inputs": {
+        "id": "atoms-inputs",
+        "label": "Form Inputs",
+        "description": "Form controls and input fields",
+        "icon": "📝",
+        "priority": 3,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Text Input",
+          "Select",
+          "Checkbox",
+          "Radio Button"
+        ]
+      },
+      "icons": {
+        "id": "atoms-icons",
+        "label": "Icons & Graphics",
+        "description": "SVG icons, images, graphics",
+        "icon": "🎯",
+        "priority": 4,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Menu Icon",
+          "Search Icon",
+          "Arrow Icon"
+        ]
+      },
+      "dividers": {
+        "id": "atoms-dividers",
+        "label": "Dividers",
+        "description": "Lines, separators, spacers",
+        "icon": "➖",
+        "priority": 5,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Horizontal Line",
+          "Vertical Divider"
+        ]
+      },
+      "badges": {
+        "id": "atoms-badges",
+        "label": "Badges & Tags",
+        "description": "Status indicators, labels, tags",
+        "icon": "🏷️",
+        "priority": 6,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Status Badge",
+          "Category Tag",
+          "Count Badge"
+        ]
+      },
+      "loaders": {
+        "id": "atoms-loaders",
+        "label": "Loading States",
+        "description": "Spinners, progress indicators",
+        "icon": "⏳",
+        "priority": 7,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Spinner",
+          "Progress Bar",
+          "Skeleton"
+        ]
+      }
+    },
+    "molecules": {
+      "formGroups": {
+        "id": "molecules-formGroups",
+        "label": "Form Groups",
+        "description": "Input + label + validation combinations",
+        "icon": "📋",
+        "priority": 1,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Text Field Group",
+          "Select Group",
+          "Checkbox Group"
+        ]
+      },
+      "navigation": {
+        "id": "molecules-navigation",
+        "label": "Navigation",
+        "description": "Menu items, breadcrumbs, tabs",
+        "icon": "🧭",
+        "priority": 2,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Nav Item",
+          "Breadcrumb",
+          "Tab Item"
+        ]
+      },
+      "cards": {
+        "id": "molecules-cards",
+        "label": "Cards",
+        "description": "Content containers and panels",
+        "icon": "🃏",
+        "priority": 3,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "id": "web-0",
+            "selector": "html",
+            "tagName": "html",
+            "type": "generic",
+            "text": "Freight Tiger \n  \n  \n  \n  \n  \n\n\n\n  \n\n  \n\n\n  \n  \n\n\n  \n\n\n  \n    \n      {\n        \"imports\": {\n          \"react\": \"https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js\",\n          \"reac",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 0,
+              "width": 1200,
+              "height": 69,
+              "right": 1200,
+              "bottom": 69
+            },
+            "styles": {
+              "fontFamily": "\"Times New Roman\"",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(0, 0, 0)",
+              "textTransform": "none",
+              "color": "rgb(0, 0, 0)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(0, 0, 0)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(0, 0, 0)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "69.3281px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "width": 1200,
+              "height": 69,
+              "right": 1200,
+              "bottom": 69
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "\"Times New Roman\"",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(0, 0, 0)",
+                "textTransform": "none",
+                "color": "rgb(0, 0, 0)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "69.3281px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(0, 0, 0)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(0, 0, 0)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(0, 0, 0) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(0, 0, 0)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 34.6641px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 2,
+            "depth": 0,
+            "parentSelector": null,
+            "classification": {
+              "complexity": "complex",
+              "hasInteraction": false,
+              "hasLayout": false,
+              "hasSpacing": false,
+              "hasColors": true
+            }
+          },
+          {
+            "id": "web-633",
+            "selector": "html > body",
+            "tagName": "body",
+            "type": "generic",
+            "text": "Failed to load topnav\n  \n    System.import('@ft-mf/root');\n    System.import('@ft-mf/login');\n    System.import('@ft-mf/component-lib');\n    System.import('@ft-mf/api-wrapper');\n    System.import('@ft",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 2,
+            "depth": 0,
+            "parentSelector": "html",
+            "classification": {
+              "complexity": "complex",
+              "hasInteraction": false,
+              "hasLayout": false,
+              "hasSpacing": false,
+              "hasColors": true
+            }
+          }
+        ],
+        "examples": [
+          "Product Card",
+          "Info Panel",
+          "Summary Card"
+        ]
+      },
+      "searchBoxes": {
+        "id": "molecules-searchBoxes",
+        "label": "Search Boxes",
+        "description": "Search input with button/filters",
+        "icon": "🔍",
+        "priority": 4,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Search Bar",
+          "Filter Search",
+          "Auto-complete"
+        ]
+      },
+      "pagination": {
+        "id": "molecules-pagination",
+        "label": "Pagination",
+        "description": "Page navigation controls",
+        "icon": "📄",
+        "priority": 5,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Page Numbers",
+          "Next/Prev",
+          "Load More"
+        ]
+      },
+      "dropdowns": {
+        "id": "molecules-dropdowns",
+        "label": "Dropdowns",
+        "description": "Select menus, dropdown lists",
+        "icon": "📋",
+        "priority": 6,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Dropdown Menu",
+          "Select List",
+          "Multi-select"
+        ]
+      },
+      "modals": {
+        "id": "molecules-modals",
+        "label": "Modals & Dialogs",
+        "description": "Dialog boxes, popovers, tooltips",
+        "icon": "💬",
+        "priority": 7,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Modal Dialog",
+          "Tooltip",
+          "Popover"
+        ]
+      },
+      "tabs": {
+        "id": "molecules-tabs",
+        "label": "Tabs",
+        "description": "Tab navigation and panels",
+        "icon": "📑",
+        "priority": 8,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Tab Set",
+          "Tab Panel",
+          "Vertical Tabs"
+        ]
+      },
+      "accordions": {
+        "id": "molecules-accordions",
+        "label": "Accordions",
+        "description": "Collapsible content sections",
+        "icon": "📂",
+        "priority": 9,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Expandable Panel",
+          "FAQ Item",
+          "Collapsible"
+        ]
+      }
+    },
+    "organisms": {
+      "headers": {
+        "id": "organisms-headers",
+        "label": "Headers",
+        "description": "Site headers, navigation bars",
+        "icon": "🏠",
+        "priority": 1,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Main Header",
+          "Sub Navigation",
+          "Top Bar"
+        ]
+      },
+      "footers": {
+        "id": "organisms-footers",
+        "label": "Footers",
+        "description": "Site footers, bottom sections",
+        "icon": "🔻",
+        "priority": 2,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Main Footer",
+          "Copyright Bar",
+          "Link Footer"
+        ]
+      },
+      "sidebars": {
+        "id": "organisms-sidebars",
+        "label": "Sidebars",
+        "description": "Side navigation, filter panels",
+        "icon": "📘",
+        "priority": 3,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Side Navigation",
+          "Filter Panel",
+          "Sidebar Menu"
+        ]
+      },
+      "forms": {
+        "id": "organisms-forms",
+        "label": "Forms",
+        "description": "Complete form sections",
+        "icon": "📝",
+        "priority": 4,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Contact Form",
+          "Registration Form",
+          "Search Form"
+        ]
+      },
+      "tables": {
+        "id": "organisms-tables",
+        "label": "Tables & Lists",
+        "description": "Data tables, list views",
+        "icon": "📊",
+        "priority": 5,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Data Table",
+          "List View",
+          "Grid Layout"
+        ]
+      },
+      "galleries": {
+        "id": "organisms-galleries",
+        "label": "Galleries",
+        "description": "Image galleries, carousels",
+        "icon": "🖼️",
+        "priority": 6,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Image Gallery",
+          "Carousel",
+          "Media Grid"
+        ]
+      },
+      "dashboards": {
+        "id": "organisms-dashboards",
+        "label": "Dashboard Sections",
+        "description": "Dashboard widgets, analytics panels",
+        "icon": "📈",
+        "priority": 7,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Stats Widget",
+          "Chart Panel",
+          "Dashboard Card"
+        ]
+      },
+      "articles": {
+        "id": "organisms-articles",
+        "label": "Content Sections",
+        "description": "Article content, text blocks",
+        "icon": "📰",
+        "priority": 8,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Article Section",
+          "Content Block",
+          "Text Area"
+        ]
+      }
+    },
+    "layout": {
+      "containers": {
+        "id": "layout-containers",
+        "label": "Containers",
+        "description": "Wrapper elements, sections",
+        "icon": "📦",
+        "priority": 1,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [
+          {
+            "id": "web-0",
+            "selector": "html",
+            "tagName": "html",
+            "type": "generic",
+            "text": "Freight Tiger \n  \n  \n  \n  \n  \n\n\n\n  \n\n  \n\n\n  \n  \n\n\n  \n\n\n  \n    \n      {\n        \"imports\": {\n          \"react\": \"https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js\",\n          \"reac",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 0,
+              "width": 1200,
+              "height": 69,
+              "right": 1200,
+              "bottom": 69
+            },
+            "styles": {
+              "fontFamily": "\"Times New Roman\"",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(0, 0, 0)",
+              "textTransform": "none",
+              "color": "rgb(0, 0, 0)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(0, 0, 0)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(0, 0, 0)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "69.3281px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "width": 1200,
+              "height": 69,
+              "right": 1200,
+              "bottom": 69
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "\"Times New Roman\"",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(0, 0, 0)",
+                "textTransform": "none",
+                "color": "rgb(0, 0, 0)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "69.3281px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(0, 0, 0)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(0, 0, 0)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(0, 0, 0) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(0, 0, 0)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 34.6641px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 2,
+            "depth": 0,
+            "parentSelector": null
+          },
+          {
+            "id": "web-633",
+            "selector": "html > body",
+            "tagName": "body",
+            "type": "generic",
+            "text": "Failed to load topnav\n  \n    System.import('@ft-mf/root');\n    System.import('@ft-mf/login');\n    System.import('@ft-mf/component-lib');\n    System.import('@ft-mf/api-wrapper');\n    System.import('@ft",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 2,
+            "depth": 0,
+            "parentSelector": "html"
+          },
+          {
+            "id": "web-634",
+            "selector": "nav.topnav",
+            "tagName": "nav",
+            "type": "semantic-section",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": null,
+              "className": "topnav",
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 1,
+            "depth": 0,
+            "parentSelector": "html > body"
+          },
+          {
+            "id": "web-635",
+            "selector": "#single-spa-application:@ft-mf/parent",
+            "tagName": "div",
+            "type": "generic",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": "single-spa-application:@ft-mf/parent",
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "0px",
+              "marginTop": "0px",
+              "marginRight": "0px",
+              "marginBottom": "0px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 1,
+            "depth": 0,
+            "parentSelector": "nav.topnav"
+          },
+          {
+            "id": "web-636",
+            "selector": "div#single-spa-application:@ft-mf/parent > h1",
+            "tagName": "h1",
+            "type": "heading",
+            "text": "Failed to load topnav",
+            "attributes": {
+              "id": null,
+              "className": null,
+              "role": null,
+              "ariaLabel": null,
+              "title": null,
+              "alt": null,
+              "href": null,
+              "src": null
+            },
+            "boundingRect": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "styles": {
+              "fontFamily": "Inter, sans-serif",
+              "fontSize": "24px",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "lineHeight": "normal",
+              "letterSpacing": "normal",
+              "textAlign": "start",
+              "textDecoration": "none solid rgb(67, 67, 67)",
+              "textTransform": "none",
+              "color": "rgb(67, 67, 67)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "margin": "19.92px 0px",
+              "marginTop": "19.92px",
+              "marginRight": "0px",
+              "marginBottom": "19.92px",
+              "marginLeft": "0px",
+              "padding": "0px",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "border": "0px none rgb(67, 67, 67)",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "rgb(67, 67, 67)",
+              "borderRadius": "0px",
+              "display": "block",
+              "position": "static",
+              "width": "1200px",
+              "height": "29.5px",
+              "opacity": "1",
+              "boxShadow": "none",
+              "textShadow": "none",
+              "transform": "none"
+            },
+            "position": {
+              "x": 0,
+              "y": 20,
+              "width": 1200,
+              "height": 30,
+              "right": 1200,
+              "bottom": 49
+            },
+            "detailedStyles": {
+              "typography": {
+                "fontFamily": "Inter, sans-serif",
+                "fontSize": "24px",
+                "fontWeight": "700",
+                "fontStyle": "normal",
+                "lineHeight": "normal",
+                "letterSpacing": "normal",
+                "textAlign": "start",
+                "textDecoration": "none solid rgb(67, 67, 67)",
+                "textTransform": "none",
+                "color": "rgb(67, 67, 67)",
+                "whiteSpace": "normal",
+                "wordSpacing": "0px"
+              },
+              "layout": {
+                "display": "block",
+                "position": "static",
+                "top": "auto",
+                "right": "auto",
+                "bottom": "auto",
+                "left": "auto",
+                "zIndex": "auto",
+                "float": "none",
+                "clear": "none",
+                "overflow": "visible",
+                "overflowX": "visible",
+                "overflowY": "visible",
+                "visibility": "visible"
+              },
+              "dimensions": {
+                "width": "1200px",
+                "height": "29.5px",
+                "minWidth": "0px",
+                "maxWidth": "none",
+                "minHeight": "0px",
+                "maxHeight": "none",
+                "boxSizing": "content-box"
+              },
+              "spacing": {
+                "margin": "19.92px 0px",
+                "marginTop": "19.92px",
+                "marginRight": "0px",
+                "marginBottom": "19.92px",
+                "marginLeft": "0px",
+                "padding": "0px",
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px"
+              },
+              "background": {
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "backgroundImage": "none",
+                "backgroundSize": "auto",
+                "backgroundPosition": "0% 0%",
+                "backgroundRepeat": "repeat",
+                "backgroundAttachment": "scroll",
+                "backgroundClip": "border-box",
+                "backgroundOrigin": "padding-box"
+              },
+              "border": {
+                "border": "0px none rgb(67, 67, 67)",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "rgb(67, 67, 67)",
+                "borderRadius": "0px",
+                "borderTopLeftRadius": "0px",
+                "borderTopRightRadius": "0px",
+                "borderBottomLeftRadius": "0px",
+                "borderBottomRightRadius": "0px",
+                "outline": "rgb(67, 67, 67) none 0px",
+                "outlineWidth": "0px",
+                "outlineStyle": "none",
+                "outlineColor": "rgb(67, 67, 67)"
+              },
+              "effects": {
+                "opacity": "1",
+                "boxShadow": "none",
+                "textShadow": "none",
+                "filter": "none",
+                "transform": "none",
+                "transformOrigin": "600px 14.75px",
+                "transition": "all 0s ease 0s",
+                "animation": "none 0s ease 0s 1 normal none running"
+              },
+              "flexbox": {
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "normal",
+                "alignItems": "normal",
+                "alignContent": "normal",
+                "flex": "0 1 auto",
+                "flexGrow": "0",
+                "flexShrink": "1",
+                "flexBasis": "auto",
+                "alignSelf": "auto",
+                "gap": "normal",
+                "rowGap": "normal",
+                "columnGap": "normal"
+              },
+              "grid": {
+                "gridTemplateColumns": "none",
+                "gridTemplateRows": "none",
+                "gridTemplateAreas": "none",
+                "gridArea": "auto",
+                "gridColumn": "auto",
+                "gridRow": "auto",
+                "gridGap": "normal normal",
+                "gridRowGap": "normal",
+                "gridColumnGap": "normal",
+                "justifyItems": "normal",
+                "alignItems": "normal",
+                "placeSelf": "auto",
+                "justifySelf": "auto"
+              },
+              "interaction": {
+                "cursor": "auto",
+                "pointerEvents": "auto",
+                "userSelect": "auto",
+                "resize": "none"
+              }
+            },
+            "childCount": 0,
+            "depth": 0,
+            "parentSelector": "#single-spa-application:@ft-mf/parent"
+          }
+        ],
+        "examples": [
+          "Page Container",
+          "Section Wrapper",
+          "Content Box"
+        ]
+      },
+      "grids": {
+        "id": "layout-grids",
+        "label": "Grid Systems",
+        "description": "CSS Grid layouts",
+        "icon": "⊞",
+        "priority": 2,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "CSS Grid",
+          "Grid Container",
+          "Grid Item"
+        ]
+      },
+      "flexbox": {
+        "id": "layout-flexbox",
+        "label": "Flexbox",
+        "description": "Flexible box layouts",
+        "icon": "↔️",
+        "priority": 3,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Flex Container",
+          "Flex Item",
+          "Flex Row"
+        ]
+      },
+      "positioning": {
+        "id": "layout-positioning",
+        "label": "Positioning",
+        "description": "Absolute, fixed, sticky elements",
+        "icon": "📍",
+        "priority": 4,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Fixed Header",
+          "Sticky Nav",
+          "Absolute Position"
+        ]
+      },
+      "responsive": {
+        "id": "layout-responsive",
+        "label": "Responsive",
+        "description": "Media query components",
+        "icon": "📱",
+        "priority": 5,
+        "alwaysShow": true,
+        "figmaColumn": [],
+        "webColumn": [],
+        "examples": [
+          "Mobile View",
+          "Tablet Layout",
+          "Desktop Version"
+        ]
+      }
+    }
+  },
+  "designTokens": {
+    "colors": [
+      {
+        "value": "rgb(67, 67, 67)",
+        "usage": 4,
+        "sources": [
+          {
+            "source": "web",
+            "component": "html > body",
+            "type": "text"
+          },
+          {
+            "source": "web",
+            "component": "nav.topnav",
+            "type": "text"
+          },
+          {
+            "source": "web",
+            "component": "#single-spa-application:@ft-mf/parent",
+            "type": "text"
+          },
+          {
+            "source": "web",
+            "component": "div#single-spa-application:@ft-mf/parent > h1",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "value": "rgb(0, 0, 0)",
+        "usage": 1,
+        "sources": [
+          {
+            "source": "web",
+            "component": "html",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "value": "Inter, sans-serif-16px-400",
+        "usage": 3,
+        "sources": [
+          {
+            "source": "web",
+            "component": "html > body",
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          {
+            "source": "web",
+            "component": "nav.topnav",
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          {
+            "source": "web",
+            "component": "#single-spa-application:@ft-mf/parent",
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          }
+        ]
+      },
+      {
+        "value": "\"Times New Roman\"-16px-400",
+        "usage": 1,
+        "sources": [
+          {
+            "source": "web",
+            "component": "html",
+            "fontFamily": "\"Times New Roman\"",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          }
+        ]
+      },
+      {
+        "value": "Inter, sans-serif-24px-700",
+        "usage": 1,
+        "sources": [
+          {
+            "source": "web",
+            "component": "div#single-spa-application:@ft-mf/parent > h1",
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "24px",
+            "fontWeight": "700"
+          }
+        ]
+      }
+    ],
+    "spacing": [
+      {
+        "value": "19.92px",
+        "usage": 2,
+        "sources": [
+          {
+            "source": "web",
+            "component": "div#single-spa-application:@ft-mf/parent > h1",
+            "property": "marginTop"
+          },
+          {
+            "source": "web",
+            "component": "div#single-spa-application:@ft-mf/parent > h1",
+            "property": "marginBottom"
+          }
+        ]
+      }
+    ],
+    "shadows": [],
+    "borderRadius": []
+  },
+  "summary": {
+    "figma": {
+      "totalComponents": 0,
+      "atoms": 0,
+      "molecules": 0,
+      "organisms": 0
+    },
+    "web": {
+      "totalComponents": 16,
+      "atoms": 3,
+      "molecules": 2,
+      "organisms": 0
+    }
+  },
+  "navigation": {
+    "primary": [
+      {
+        "id": "summary",
+        "label": "Executive Summary",
+        "icon": "📊",
+        "description": "High-level metrics and health assessment",
+        "alwaysShow": true
+      },
+      {
+        "id": "design-tokens",
+        "label": "Design Tokens",
+        "icon": "🎨",
+        "description": "Colors, typography, spacing, and other design primitives",
+        "alwaysShow": true,
+        "subcategories": [
+          {
+            "id": "colors",
+            "label": "Colors",
+            "icon": "🎨",
+            "alwaysShow": true
+          },
+          {
+            "id": "typography",
+            "label": "Typography",
+            "icon": "📝",
+            "alwaysShow": true
+          },
+          {
+            "id": "spacing",
+            "label": "Spacing",
+            "icon": "📏",
+            "alwaysShow": true
+          },
+          {
+            "id": "shadows",
+            "label": "Shadows & Elevation",
+            "icon": "🌫️",
+            "alwaysShow": true
+          },
+          {
+            "id": "borderRadius",
+            "label": "Border Radius",
+            "icon": "⭕",
+            "alwaysShow": true
+          }
+        ]
+      },
+      {
+        "id": "atomic-design",
+        "label": "Atomic Design",
+        "icon": "⚛️",
+        "description": "Components organized by atomic design methodology",
+        "alwaysShow": true,
+        "subcategories": [
+          {
+            "id": "atoms",
+            "label": "Atoms",
+            "icon": "⚛️",
+            "alwaysShow": true,
+            "subcategories": [
+              {
+                "id": "atoms-typography",
+                "label": "Typography",
+                "icon": "📄",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-buttons",
+                "label": "Buttons",
+                "icon": "🔘",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-inputs",
+                "label": "Form Inputs",
+                "icon": "📝",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-icons",
+                "label": "Icons & Graphics",
+                "icon": "🎯",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-dividers",
+                "label": "Dividers",
+                "icon": "➖",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-badges",
+                "label": "Badges & Tags",
+                "icon": "🏷️",
+                "alwaysShow": true
+              },
+              {
+                "id": "atoms-loaders",
+                "label": "Loading States",
+                "icon": "⏳",
+                "alwaysShow": true
+              }
+            ]
+          },
+          {
+            "id": "molecules",
+            "label": "Molecules",
+            "icon": "🧬",
+            "alwaysShow": true,
+            "subcategories": [
+              {
+                "id": "molecules-formGroups",
+                "label": "Form Groups",
+                "icon": "📋",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-navigation",
+                "label": "Navigation",
+                "icon": "🧭",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-cards",
+                "label": "Cards",
+                "icon": "🃏",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-searchBoxes",
+                "label": "Search Boxes",
+                "icon": "🔍",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-pagination",
+                "label": "Pagination",
+                "icon": "📄",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-dropdowns",
+                "label": "Dropdowns",
+                "icon": "📋",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-modals",
+                "label": "Modals & Dialogs",
+                "icon": "💬",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-tabs",
+                "label": "Tabs",
+                "icon": "📑",
+                "alwaysShow": true
+              },
+              {
+                "id": "molecules-accordions",
+                "label": "Accordions",
+                "icon": "📂",
+                "alwaysShow": true
+              }
+            ]
+          },
+          {
+            "id": "organisms",
+            "label": "Organisms",
+            "icon": "🦠",
+            "alwaysShow": true,
+            "subcategories": [
+              {
+                "id": "organisms-headers",
+                "label": "Headers",
+                "icon": "🏠",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-footers",
+                "label": "Footers",
+                "icon": "🔻",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-sidebars",
+                "label": "Sidebars",
+                "icon": "📘",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-forms",
+                "label": "Forms",
+                "icon": "📝",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-tables",
+                "label": "Tables & Lists",
+                "icon": "📊",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-galleries",
+                "label": "Galleries",
+                "icon": "🖼️",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-dashboards",
+                "label": "Dashboard Sections",
+                "icon": "📈",
+                "alwaysShow": true
+              },
+              {
+                "id": "organisms-articles",
+                "label": "Content Sections",
+                "icon": "📰",
+                "alwaysShow": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "secondary": [
+      {
+        "id": "layout",
+        "label": "Layout Systems",
+        "icon": "📐",
+        "alwaysShow": true,
+        "subcategories": [
+          {
+            "id": "layout-containers",
+            "label": "Containers",
+            "icon": "📦",
+            "alwaysShow": true
+          },
+          {
+            "id": "layout-grids",
+            "label": "Grid Systems",
+            "icon": "⊞",
+            "alwaysShow": true
+          },
+          {
+            "id": "layout-flexbox",
+            "label": "Flexbox",
+            "icon": "↔️",
+            "alwaysShow": true
+          },
+          {
+            "id": "layout-positioning",
+            "label": "Positioning",
+            "icon": "📍",
+            "alwaysShow": true
+          },
+          {
+            "id": "layout-responsive",
+            "label": "Responsive",
+            "icon": "📱",
+            "alwaysShow": true
+          }
+        ]
+      },
+      {
+        "id": "insights",
+        "label": "Insights & Gaps",
+        "icon": "💡",
+        "alwaysShow": true,
+        "subcategories": [
+          {
+            "id": "design-gaps",
+            "label": "Design System Gaps",
+            "alwaysShow": true
+          },
+          {
+            "id": "implementation-gaps",
+            "label": "Implementation Gaps",
+            "alwaysShow": true
+          },
+          {
+            "id": "quick-wins",
+            "label": "Quick Wins",
+            "alwaysShow": true
+          },
+          {
+            "id": "action-plan",
+            "label": "Action Plan",
+            "alwaysShow": true
+          }
+        ]
+      }
+    ],
+    "utility": [
+      {
+        "id": "inventories",
+        "label": "Component Inventories",
+        "icon": "📋",
+        "description": "Detailed component lists and cross-references",
+        "alwaysShow": true
+      },
+      {
+        "id": "export",
+        "label": "Export Data",
+        "icon": "💾",
+        "description": "Download categorized data in various formats",
+        "alwaysShow": true
+      }
+    ]
+  },
+  "categorizedAt": "2025-06-07T16:41:43.812Z",
+  "metadata": {
+    "approach": "fixed-schema",
+    "totalCategories": 34,
+    "emptyCategories": 28
+  }
+}

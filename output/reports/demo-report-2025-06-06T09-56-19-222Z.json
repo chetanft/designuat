@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "figma": {
+      "url": "https://www.figma.com/design/fb5Yc1aKJv9YWsMLnNlWeK/My-Journeys?node-id=2-22260&t=ZcXjcdLe03T6PdXM-4",
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "nodeId": "2:22260",
+      "fileName": "My-Journeys",
+      "urlType": "design"
+    },
+    "webUrl": "https://www.freighttiger.com/v10/journey/listing",
+    "comparedAt": "2025-06-06T09:56:19.222Z",
+    "authentication": {
+      "type": "credentials",
+      "enabled": true,
+      "loginUrl": "https://www.freighttiger.com/login"
+    },
+    "totalDeviations": 3,
+    "severity": {
+      "high": 0,
+      "medium": 2,
+      "low": 1
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "1:2",
+      "componentName": "Primary Button",
+      "componentType": "FRAME",
+      "selector": ".btn-primary",
+      "deviations": [
+        {
+          "property": "fontSize",
+          "figmaValue": "16px",
+          "webValue": "14px",
+          "difference": "2px",
+          "severity": "medium",
+          "message": "Font size differs by 2px"
+        },
+        {
+          "property": "paddingTop",
+          "figmaValue": "12px",
+          "webValue": "10px",
+          "difference": "2px",
+          "severity": "low",
+          "message": "Padding differs by 2px"
+        }
+      ],
+      "matches": [
+        {
+          "property": "backgroundColor",
+          "value": "#3366ff",
+          "message": "Background color matches"
+        }
+      ]
+    }
+  ]
+}

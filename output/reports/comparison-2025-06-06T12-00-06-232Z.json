@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "Design System Components",
+      "extractedAt": "2025-06-06T11:59:53.430Z"
+    },
+    "web": {
+      "url": "https://httpbin.org/html",
+      "extractedAt": "2025-06-06T12:00:03.905Z",
+      "elementsCount": 5
+    },
+    "comparedAt": "2025-06-06T12:00:03.913Z",
+    "summary": {
+      "totalComponents": 1,
+      "totalDeviations": 1,
+      "severity": {
+        "high": 1,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "1:2",
+      "componentName": "Button Component",
+      "componentType": "FRAME",
+      "selector": null,
+      "status": "no_match",
+      "deviations": [
+        {
+          "property": "existence",
+          "figmaValue": "exists",
+          "webValue": "not found",
+          "difference": "missing",
+          "severity": "high",
+          "message": "Component not found in web implementation"
+        }
+      ],
+      "matches": []
+    }
+  ],
+  "summary": {
+    "totalComponents": 1,
+    "totalDeviations": 1,
+    "severity": {
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}

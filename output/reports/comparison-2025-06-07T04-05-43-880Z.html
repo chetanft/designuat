@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma vs Web Comparison Report</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
+        .section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        /* Table Styles */
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+        .comparison-table th { background: #f8f9fa; padding: 15px 12px; text-align: left; border: 1px solid #ddd; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        .comparison-table td { padding: 12px; border: 1px solid #ddd; vertical-align: top; }
+        .comparison-table tbody tr:nth-child(even) { background: #f9f9f9; }
+        .comparison-table tbody tr:hover { background: #f1f3f4; }
+        
+        /* Status indicators */
+        .status-match { background: #d4edda; color: #155724; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; }
+        .status-mismatch { background: #f8d7da; color: #721c24; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; }
+        .status-missing { background: #fff3cd; color: #856404; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; }
+        .status-unfetched { background: #e2f3ff; color: #0066cc; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; }
+        
+        /* Property categories */
+        .prop-color { background: #e3f2fd; border-left: 4px solid #2196f3; }
+        .prop-typography { background: #f3e5f5; border-left: 4px solid #9c27b0; }
+        .prop-spacing { background: #e8f5e8; border-left: 4px solid #4caf50; }
+        .prop-layout { background: #fff3e0; border-left: 4px solid #ff9800; }
+        .prop-border { background: #fce4ec; border-left: 4px solid #e91e63; }
+        
+        /* Color swatches */
+        .color-swatch { display: inline-block; width: 20px; height: 20px; border-radius: 3px; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px; }
+        .color-value { font-family: 'Courier New', monospace; font-size: 12px; }
+        
+        /* Typography samples */
+        .typography-sample { border: 1px solid #ddd; padding: 6px 10px; border-radius: 4px; display: inline-block; background: white; margin: 2px 0; }
+        
+        /* Component sections */
+        .component-section { margin: 30px 0; }
+        .component-title { background: #343a40; color: white; padding: 15px; margin: 0; font-size: 18px; border-radius: 8px 8px 0 0; }
+        
+        /* Summary cards */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; }
+        .summary-card { background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff; }
+        .summary-card h3 { margin: 0 0 10px 0; color: #007bff; }
+        .summary-card .number { font-size: 2em; font-weight: bold; margin: 10px 0; display: block; }
+        .summary-card .label { color: #666; font-size: 14px; }
+        
+        /* Property type labels */
+        .prop-label { font-weight: bold; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+        .prop-label.color { color: #2196f3; }
+        .prop-label.typography { color: #9c27b0; }
+        .prop-label.spacing { color: #4caf50; }
+        .prop-label.layout { color: #ff9800; }
+        .prop-label.border { color: #e91e63; }
+        
+        /* Reason text */
+        .reason-text { font-style: italic; color: #666; font-size: 13px; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Design Comparison Report</h1>
+            <p>Detailed Element-by-Element Analysis</p>
+            <p>Generated: 6/7/2025, 9:35:43 AM</p>
+        </div>
+        
+        
+    <div class="section">
+      <h2>Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>Total Components</h3>
+          <span class="number">1</span>
+          <span class="label">Elements analyzed</span>
+        </div>
+        <div class="summary-card">
+          <h3>Match Rate</h3>
+          <span class="number">0%</span>
+          <span class="label">Design consistency</span>
+        </div>
+        <div class="summary-card">
+          <h3>Total Issues</h3>
+          <span class="number">3</span>
+          <span class="label">Deviations found</span>
+        </div>
+        <div class="summary-card">
+          <h3>Unfetched Data</h3>
+          <span class="number">4</span>
+          <span class="label">Properties not available</span>
+        </div>
+        <div class="summary-card">
+          <h3>Critical Issues</h3>
+          <span class="number">3</span>
+          <span class="label">High priority fixes</span>
+        </div>
+        <div class="summary-card">
+          <h3>Color Issues</h3>
+          <span class="number">1</span>
+          <span class="label">Color mismatches</span>
+        </div>
+      </div>
+    </div>
+        
+    <div class="section">
+      <h2>Detailed Comparison Table</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Component/Element</th>
+            <th>Property</th>
+            <th>Figma Design</th>
+            <th>Web Implementation</th>
+            <th>Status</th>
+            <th>Details/Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+      <tr class="severity-high">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label color">color</span><br>
+          <strong>color</strong>
+        </td>
+        <td><div><span class="color-swatch" style="background-color: #ffffff;"></span><span class="color-value">#ffffff</span></div></td>
+        <td><div><span class="color-swatch" style="background-color: rgb(67, 67, 67);"></span><span class="color-value">rgb(67, 67, 67)</span></div></td>
+        <td><span class="status-mismatch">MISMATCH</span></td>
+        <td>
+          <div>color differs by 326 color units</div>
+          <div class="reason-text">Color difference detected</div>
+        </td>
+      </tr>
+      <tr class="severity-high">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label layout">layout</span><br>
+          <strong>width</strong>
+        </td>
+        <td><code>1728px</code></td>
+        <td><code>1200px</code></td>
+        <td><span class="status-mismatch">MISMATCH</span></td>
+        <td>
+          <div>Width differs by 528px</div>
+          
+        </td>
+      </tr>
+      <tr class="severity-high">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label layout">layout</span><br>
+          <strong>height</strong>
+        </td>
+        <td><code>1117px</code></td>
+        <td><code>30px</code></td>
+        <td><span class="status-mismatch">MISMATCH</span></td>
+        <td>
+          <div>Height differs by 1087px</div>
+          
+        </td>
+      </tr>
+      <tr class="">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label layout">layout</span><br>
+          <strong>typography</strong>
+        </td>
+        <td>Not available</td>
+        <td>Not available</td>
+        <td><span class="status-unfetched">UNFETCHED</span></td>
+        <td>
+          <div>Typography data not available in Figma design</div>
+          
+        </td>
+      </tr>
+      <tr class="">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label color">color</span><br>
+          <strong>backgroundColor</strong>
+        </td>
+        <td>not specified</td>
+        <td>rgba(0, 0, 0, 0)</td>
+        <td><span class="status-unfetched">UNFETCHED</span></td>
+        <td>
+          <div>Background color not specified in Figma design</div>
+          
+        </td>
+      </tr>
+      <tr class="">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label layout">layout</span><br>
+          <strong>spacing</strong>
+        </td>
+        <td>Not available</td>
+        <td>Not available</td>
+        <td><span class="status-unfetched">UNFETCHED</span></td>
+        <td>
+          <div>Spacing data not available in Figma design</div>
+          
+        </td>
+      </tr>
+      <tr class="">
+        <td><strong>In Transit</strong></td>
+        <td>
+          <span class="prop-label border">border</span><br>
+          <strong>borderRadius</strong>
+        </td>
+        <td>not specified</td>
+        <td>0px</td>
+        <td><span class="status-unfetched">UNFETCHED</span></td>
+        <td>
+          <div>Border radius not specified in Figma design</div>
+          
+        </td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+        
+    <div class="section">
+      <h2>Color Analysis</h2>
+      
+        <h3>Color Mismatches (1)</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Component</th><th>Property</th><th>Figma Color</th><th>Web Color</th><th>Issue</th></tr>
+          </thead>
+          <tbody>
+            
+              <tr class="prop-color">
+                <td>In Transit</td>
+                <td>color</td>
+                <td><div><span class="color-swatch" style="background-color: #ffffff;"></span><span class="color-value">#ffffff</span></div></td>
+                <td><div><span class="color-swatch" style="background-color: rgb(67, 67, 67);"></span><span class="color-value">rgb(67, 67, 67)</span></div></td>
+                <td>color differs by 326 color units</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+      
+      
+    </div>
+        
+    </div>
+</body>
+</html>

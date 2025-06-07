@@ -1,0 +1,739 @@
+{
+  "metadata": {
+    "figma": {
+      "fileId": "fb5Yc1aKJv9YWsMLnNlWeK",
+      "fileName": "My Journeys",
+      "extractedAt": "2025-06-07T03:32:37.648Z"
+    },
+    "web": {
+      "url": "https://www.freighttiger.com/v10/journey/listing",
+      "extractedAt": "2025-06-07T03:33:04.726Z",
+      "elementsCount": 5
+    },
+    "comparedAt": "2025-06-07T03:33:04.802Z",
+    "summary": {
+      "totalComponents": 14,
+      "totalDeviations": 14,
+      "totalUnfetched": 70,
+      "severity": {
+        "high": 14,
+        "medium": 0,
+        "low": 0
+      },
+      "matches": 0
+    }
+  },
+  "comparisons": [
+    {
+      "componentId": "502:13842",
+      "componentName": "Phase 2",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.35402470274678444,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "0:1",
+      "componentName": "Add Journey",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4152491925427028,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "2:14552",
+      "componentName": "Consignor - Outbound - Source",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4166566520782412,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "19:12239",
+      "componentName": "Consignor - Inbound - Source",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4050451109100498,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "29:47482",
+      "componentName": "Consignor - Outbound - Pickup",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4166566520782412,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "29:47483",
+      "componentName": "Consignor - Inbound - Drop",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.3956259586337546,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "29:47484",
+      "componentName": "Consignee",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.35402470274678444,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "29:47485",
+      "componentName": "Transporter - Outbound - Source",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.42380745455718605,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "61:34141",
+      "componentName": "Transporter - Inbound - Source",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4132083762161722,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "61:49388",
+      "componentName": "Share Journey Page",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.4152491925427028,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "376:25350",
+      "componentName": "Maps",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.35402470274678444,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "381:25962",
+      "componentName": "V10.3",
+      "componentType": "CANVAS",
+      "selector": "body",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.3217798047876008,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "153:13655",
+      "componentName": "PLAYGROUND",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.3948410292773967,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    },
+    {
+      "componentId": "73:20894",
+      "componentName": "Thumbnail",
+      "componentType": "CANVAS",
+      "selector": "nav.topnav",
+      "status": "has_deviations",
+      "deviations": [
+        {
+          "property": "backgroundColor",
+          "figmaValue": "#1e1e1e",
+          "webValue": "rgba(0, 0, 0, 0)",
+          "difference": "52 units",
+          "severity": "high",
+          "message": "backgroundColor differs by 52 color units"
+        }
+      ],
+      "matches": [],
+      "matchScore": 0.35402470274678444,
+      "unfetched": [
+        {
+          "property": "typography",
+          "status": "unfetched",
+          "message": "Typography data not available in Figma design"
+        },
+        {
+          "property": "color",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "rgb(67, 67, 67)",
+          "message": "Text color not specified in Figma design"
+        },
+        {
+          "property": "spacing",
+          "status": "unfetched",
+          "message": "Spacing data not available in Figma design"
+        },
+        {
+          "property": "borderRadius",
+          "status": "unfetched",
+          "figmaValue": "not specified",
+          "webValue": "0px",
+          "message": "Border radius not specified in Figma design"
+        },
+        {
+          "property": "dimensions",
+          "status": "unfetched",
+          "message": "Dimension data not available in Figma design"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalComponents": 14,
+    "totalDeviations": 14,
+    "totalUnfetched": 70,
+    "severity": {
+      "high": 14,
+      "medium": 0,
+      "low": 0
+    },
+    "matches": 0
+  }
+}
