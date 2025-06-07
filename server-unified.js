@@ -135,16 +135,17 @@ async function initializeComponents() {
 initializeComponents();
 
 // Frontend routing with legacy/modern support
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   const useLegacy = req.query.legacy === 'true';
   const useModern = req.query.modern === 'true';
   
   if (useModern && !useLegacy) {
     // Check if modern build exists
     const modernPath = path.join(__dirname, 'public/modern/index.html');
-    if (require('fs').existsSync(modernPath)) {
+    try {
+      await fs.access(modernPath);
       res.sendFile(modernPath);
-    } else {
+    } catch (error) {
       // Fallback to legacy if modern not built yet
       res.sendFile(path.join(__dirname, 'public-legacy/index.html'));
     }
