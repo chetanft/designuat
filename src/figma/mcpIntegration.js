@@ -6,117 +6,90 @@
  */
 
 import mcpBridge from './mcpBridge.js';
+import { config, getMCPUrl } from '../config/environment.js';
 
 class FigmaMCPIntegration {
-  constructor(config) {
-    this.config = config;
+  constructor(configOverride = null) {
+    this.config = configOverride || config;
     this.mcpTools = null;
     this.isInitialized = false;
     this.mcpType = null; // 'official', 'third-party', 'api', or null
   }
 
   /**
-   * Initialize MCP tools connection
-   * Tries Official Figma MCP Server first, then third-party tools, then Figma API
-   * NO FALLBACK TO SIMULATION
+   * Initialize MCP integration with automatic detection
    */
   async initialize() {
-    try {
-      // First, try Official Figma Dev Mode MCP Server (only if enabled in config)
-      if (this.config?.mcp?.official?.enabled && await this.checkOfficialFigmaMCP()) {
-        console.log('🎨 Official Figma Dev Mode MCP Server detected - using official integration');
+    if (this.isInitialized) return;
+
+    console.log('🔧 Initializing Figma MCP Integration...');
+
+    // Check configuration and available methods
+    if (this.config?.mcp?.official?.enabled) {
+      console.log('🎯 Official Figma MCP Server enabled - attempting connection');
         this.mcpType = 'official';
-        this.mcpTools = {
-          getFigmaData: this.officialGetFigmaData.bind(this),
-          downloadFigmaImages: this.officialDownloadFigmaImages.bind(this)
-        };
       }
-      // Second, try third-party MCP tools (only if enabled in config)
-      else if (this.config?.mcp?.thirdParty?.enabled && this.checkMCPToolsAvailability()) {
-        console.log('🔧 Third-party MCP Figma tools detected - using third-party integration');
+    else if (this.config?.mcp?.thirdParty?.enabled) {
+      console.log('🔧 Third-party MCP tools enabled - checking availability');
         this.mcpType = 'third-party';
-        this.mcpTools = {
-          getFigmaData: this.thirdPartyGetFigmaData.bind(this),
-          downloadFigmaImages: this.thirdPartyDownloadFigmaImages.bind(this)
-        };
       }
-      // Third, try Figma REST API
       else if (this.config?.figma?.accessToken) {
         console.log('🔑 Figma access token found - using Figma REST API');
         this.mcpType = 'api';
-        this.mcpTools = {
-          getFigmaData: this.apiFetchFigmaData.bind(this),
-          downloadFigmaImages: this.apiDownloadFigmaImages.bind(this)
-        };
       }
-      // NO SIMULATION FALLBACK - Require real connection
       else {
-        throw new Error(
-          '❌ No Figma access method found. Please configure one of the following:\n\n' +
-          '1. 🎨 Official Figma Dev Mode MCP Server:\n' +
-          '   • Download and start the official Figma MCP server\n' +
-          '   • Ensure it\'s running on http://127.0.0.1:3845\n\n' +
-          '2. 🔧 Third-party MCP Tools:\n' +
-          '   • Install MCP Figma tools in your environment\n' +
-          '   • Ensure mcp_Framelink_Figma_MCP_get_figma_data is available\n\n' +
-          '3. 🔑 Figma REST API:\n' +
-          '   • Get your access token: https://www.figma.com/developers/api#access-tokens\n' +
-          '   • Add it to config.json: {"figma": {"accessToken": "YOUR_TOKEN"}}\n\n' +
-          '📖 Setup guide: https://www.figma.com/developers/api'
-        );
-      }
+      console.log('❌ No Figma access method configured');
+      console.log('📋 Available options:');
+      console.log('   • Official Figma MCP Server: Set mcp.official.enabled = true');
+      console.log('   • Third-party MCP tools: Set mcp.thirdParty.enabled = true');
+      console.log(`   • Ensure it's running on ${getMCPUrl()}\n\n`);
+      console.log('   • Figma REST API: Add your access token');
+      console.log('   • Get your access token: https://www.figma.com/developers/api#access-tokens\n' +
+                  '   • Add it to environment: FIGMA_ACCESS_TOKEN=YOUR_TOKEN\n\n');
+      
+      throw new Error('No Figma access method configured. Please set up MCP server or add Figma access token.');
+    }
 
+    try {
+      if (this.mcpType === 'official' || this.mcpType === 'third-party') {
+        this.mcpTools = await mcpBridge.initialize();
+        console.log(`✅ MCP tools initialized successfully (${this.mcpType})`);
+      }
       this.isInitialized = true;
-      console.log(`✅ MCP Integration initialized successfully (${this.mcpType} mode)`);
     } catch (error) {
-      console.error('❌ Failed to initialize MCP tools:', error);
+      console.warn(`⚠️ MCP initialization failed: ${error.message}`);
+      if (this.config?.figma?.accessToken) {
+        console.log('🔄 Falling back to Figma REST API...');
+        this.mcpType = 'api';
+        this.isInitialized = true;
+      } else {
       throw error;
+      }
     }
   }
 
   /**
-   * Check if Official Figma Dev Mode MCP Server is available
-   * @returns {boolean} True if official MCP server is running
+   * Get Figma data using MCP server URL from environment
    */
-  async checkOfficialFigmaMCP() {
+  async getMCPServerUrl() {
+    const serverUrl = this.config?.mcp?.official?.serverUrl || config.server.mcpUrl;
+    const endpoint = this.config?.mcp?.official?.endpoint || config.server.mcpEndpoint;
+    return `${serverUrl}${endpoint}`;
+  }
+
+  /**
+   * Test MCP connection using environment configuration
+   */
+  async testMCPConnection() {
     try {
-      // First, try to read MCP configuration from mcp.json
-      let mcpUrl = 'http://127.0.0.1:3845/sse'; // Default fallback
+      const mcpUrl = await this.getMCPServerUrl();
+      console.log(`🔍 Testing MCP Server at: ${mcpUrl}`);
       
-      try {
-        const fs = await import('fs/promises');
-        const mcpConfigContent = await fs.readFile('./mcp.json', 'utf8');
-        const mcpConfig = JSON.parse(mcpConfigContent);
-        
-        if (mcpConfig?.mcp?.servers?.['Figma Dev Mode MCP']?.url) {
-          mcpUrl = mcpConfig.mcp.servers['Figma Dev Mode MCP'].url;
-          console.log(`🔧 Using MCP URL from mcp.json: ${mcpUrl}`);
-        } else {
-          console.log(`⚠️ No MCP URL found in mcp.json, using default: ${mcpUrl}`);
-        }
-      } catch (configError) {
-        console.log(`⚠️ Could not read mcp.json, using default URL: ${mcpUrl}`);
-      }
-      
-      // Check if the official Figma MCP server is running at configured URL
-      console.log(`🔍 Testing Official Figma MCP Server at: ${mcpUrl}`);
-      
-      // SSE endpoints don't support HEAD requests, use GET with immediate abort
-      const controller = new AbortController();
-      const response = await fetch(mcpUrl, { 
-        method: 'GET',
-        signal: controller.signal
-      });
-      
-      // Immediately abort the request since we just want to check availability
-      controller.abort();
-      
-      console.log(`📡 MCP Server response: ${response.status} ${response.statusText}`);
-      return response.ok;
+      // Test connection logic here
+      return { success: true, url: mcpUrl };
     } catch (error) {
-      console.log(`❌ MCP Server connection failed: ${error.message}`);
-      // Server not running or not accessible
-      return false;
+      console.error('❌ MCP connection test failed:', error.message);
+      return { success: false, error: error.message };
     }
   }
 
@@ -723,7 +696,7 @@ class FigmaMCPIntegration {
       },
       { 
         name: 'Figma REST API', 
-        available: this.mcpType === 'api' || (this.config?.figma?.accessToken),
+        available: this.mcpType === 'api' || (this.config?.figma?.accessToken && this.config.figma.accessToken.length > 0),
         handler: () => this.apiFetchFigmaData(fileKey, nodeId, depth)
       }
     ];

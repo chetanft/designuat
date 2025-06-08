@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { ErrorCategorizer } from '../utils/errorCategorizer.js';
 
 /**
  * Enhanced Web Extractor
@@ -9,7 +10,7 @@ import path from 'path';
 export class EnhancedWebExtractor {
   constructor(config = {}) {
     this.config = {
-      headless: true,
+      headless: "new",
       timeout: 60000,
       viewport: { width: 1200, height: 800 },
       maxComponents: 2000,
@@ -22,6 +23,7 @@ export class EnhancedWebExtractor {
       },
       ...config
     };
+
     this.browser = null;
     this.page = null;
   }
@@ -31,30 +33,75 @@ export class EnhancedWebExtractor {
    */
   async initialize() {
     try {
+      // Close existing browser if any
       if (this.browser) {
-        await this.browser.close();
+        try {
+          await this.browser.close();
+        } catch (error) {
+          console.warn('⚠️ Error closing existing browser:', error.message);
+        }
+        this.browser = null;
+        this.page = null;
       }
 
       console.log('🚀 Launching Enhanced Web Extractor...');
       this.browser = await puppeteer.launch({
-        headless: this.config.headless,
+        headless: this.config.headless === true ? "new" : this.config.headless,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-web-security',
           '--disable-gpu',
-          '--no-first-run'
+          '--no-first-run',
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-renderer-backgrounding'
         ]
       });
 
+      // Wait for browser to be fully ready
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Create new page with proper error handling
       this.page = await this.browser.newPage();
+      
+      // Set viewport and timeouts
       await this.page.setViewport(this.config.viewport);
       await this.page.setDefaultTimeout(this.config.timeout);
+      
+      // Set user agent to avoid bot detection
+      await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+
+      // Add error handlers
+      this.page.on('error', (error) => {
+        console.error('❌ Page error:', error);
+      });
+
+      this.page.on('pageerror', (error) => {
+        console.error('❌ Page script error:', error);
+      });
+
+      // Wait for page to be fully ready and test it
+      await this.page.goto('about:blank');
+      await this.page.waitForTimeout(500);
 
       console.log('✅ Enhanced Web Extractor initialized');
+      return true;
     } catch (error) {
       console.error('❌ Failed to initialize Enhanced Web Extractor:', error);
+      
+      // Cleanup on failure
+      if (this.browser) {
+        try {
+          await this.browser.close();
+        } catch (closeError) {
+          console.warn('⚠️ Error during cleanup:', closeError.message);
+        }
+        this.browser = null;
+        this.page = null;
+      }
+      
       throw error;
     }
   }
@@ -69,8 +116,24 @@ export class EnhancedWebExtractor {
     try {
       console.log(`🌐 Enhanced extraction from: ${url}`);
       
-      if (!this.browser) {
+      // Ensure browser is initialized and ready
+      if (!this.browser || this.browser.process()?.killed) {
+        console.log('🔄 Browser not ready, initializing...');
         await this.initialize();
+      }
+
+      // Ensure page is ready and not closed
+      if (!this.page || this.page.isClosed()) {
+        console.log('🔄 Page not ready, creating new page...');
+        this.page = await this.browser.newPage();
+        await this.page.setViewport(this.config.viewport);
+        await this.page.setDefaultTimeout(this.config.timeout);
+        await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      }
+
+      // Double-check page readiness
+      if (!this.page) {
+        throw new Error('Page initialization failed - page is null');
       }
 
       // Handle authentication if provided
@@ -78,14 +141,59 @@ export class EnhancedWebExtractor {
         await this.handleAuthentication(authentication, url);
       }
 
-      // Navigate to target URL
-      await this.page.goto(url, { 
-        waitUntil: 'networkidle2',
-        timeout: this.config.timeout 
-      });
+      // Navigate to target URL with retries and fallback strategies
+      let navigationSuccess = false;
+      let lastError = null;
+      
+      const navigationStrategies = [
+        { waitUntil: ['domcontentloaded', 'networkidle0'], timeout: this.config.timeout },
+        { waitUntil: 'domcontentloaded', timeout: this.config.timeout },
+        { waitUntil: 'load', timeout: Math.min(this.config.timeout, 30000) },
+        { waitUntil: 'domcontentloaded', timeout: 15000 } // Final fallback with shorter timeout
+      ];
+      
+      for (let attempt = 1; attempt <= navigationStrategies.length; attempt++) {
+        try {
+          const strategy = navigationStrategies[attempt - 1];
+          console.log(`🔄 Navigation attempt ${attempt}/${navigationStrategies.length} to: ${url}`);
+          console.log(`   Strategy: waitUntil=${JSON.stringify(strategy.waitUntil)}, timeout=${strategy.timeout}ms`);
+          
+          await this.page.goto(url, strategy);
+          
+          navigationSuccess = true;
+          console.log(`✅ Successfully navigated to: ${url}`);
+          break;
+        } catch (error) {
+          lastError = error;
+          console.warn(`⚠️ Navigation attempt ${attempt} failed:`, error.message);
+          
+          if (attempt < navigationStrategies.length) {
+            // Wait before retry
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Recreate page if needed
+            if (this.page.isClosed()) {
+              this.page = await this.browser.newPage();
+              await this.page.setViewport(this.config.viewport);
+              await this.page.setDefaultTimeout(this.config.timeout);
+            }
+          }
+        }
+      }
 
-      // Wait for page to be fully rendered
-      await this.page.waitForTimeout(2000);
+      if (!navigationSuccess) {
+        throw new Error(`Failed to navigate to ${url} after ${navigationStrategies.length} attempts. Last error: ${lastError?.message}`);
+      }
+
+      // Wait for page to be fully rendered, but with timeout fallback
+      try {
+        await Promise.race([
+          this.page.waitForTimeout(3000),
+          this.page.waitForSelector('body', { timeout: 5000 })
+        ]);
+      } catch (waitError) {
+        console.warn('⚠️ Page wait timeout, proceeding with extraction:', waitError.message);
+      }
 
       // Extract comprehensive component data
       const components = await this.extractComponents();
@@ -121,6 +229,41 @@ export class EnhancedWebExtractor {
 
     } catch (error) {
       console.error('❌ Enhanced web extraction failed:', error);
+      
+      // Categorize the error for better user understanding
+      const categorizedError = ErrorCategorizer.categorizeError(error, { url, method: 'Enhanced Web Extractor' });
+      const userFriendlyError = ErrorCategorizer.formatForUser(categorizedError);
+      
+      console.log('\n📊 Error Analysis:');
+      console.log(`${userFriendlyError.title}`);
+      console.log(`Description: ${userFriendlyError.description}`);
+      console.log(`Severity: ${userFriendlyError.severity}`);
+      console.log(`Actionable: ${userFriendlyError.actionable}`);
+      console.log(`Category: ${userFriendlyError.category}`);
+      
+      if (userFriendlyError.suggestions.length > 0) {
+        console.log('\n💡 Suggestions:');
+        userFriendlyError.suggestions.forEach((suggestion, index) => {
+          console.log(`  ${index + 1}. ${suggestion}`);
+        });
+      }
+      
+      // Try to recover by reinitializing for actionable errors
+      if (categorizedError.actionable && 
+          (error.message.includes('main frame') || error.message.includes('Target closed') || error.message.includes('Session closed'))) {
+        console.log('🔄 Attempting to recover by reinitializing...');
+        try {
+          await this.initialize();
+          console.log('✅ Recovery successful, but extraction failed');
+        } catch (recoveryError) {
+          console.error('❌ Recovery failed:', recoveryError);
+        }
+      }
+      
+      // Attach categorized error info to the original error
+      error.categorized = categorizedError;
+      error.userFriendly = userFriendlyError;
+      
       throw error;
     }
   }
@@ -666,57 +809,160 @@ export class EnhancedWebExtractor {
 
     console.log(`🔐 Handling ${authentication.type} authentication...`);
 
-    switch (authentication.type) {
-      case 'cookies':
-        if (authentication.cookies) {
-          await this.page.setCookie(...authentication.cookies);
-        }
-        break;
+    // Ensure page is ready before authentication
+    if (!this.page) {
+      throw new Error('Page not initialized for authentication');
+    }
+
+    try {
+      switch (authentication.type) {
+        case 'cookies':
+          if (authentication.cookies) {
+            console.log(`🔐 Setting ${authentication.cookies.length} cookies`);
+            await this.page.setCookie(...authentication.cookies);
+          }
+          break;
+        
+        case 'headers':
+          if (authentication.headers) {
+            console.log(`🔐 Setting HTTP headers`);
+            await this.page.setExtraHTTPHeaders(authentication.headers);
+          }
+          break;
+        
+        case 'credentials':
+          // Navigate to login page and fill credentials
+          if (authentication.loginUrl) {
+            console.log(`🔐 Navigating to login URL: ${authentication.loginUrl}`);
+            
+            // Ensure page is ready for navigation
+            await this.page.waitForTimeout(100);
+            
+            await this.page.goto(authentication.loginUrl, { 
+              waitUntil: 'networkidle2',
+              timeout: this.config.timeout 
+            });
+            
+            // Wait for page to be ready
+            await this.page.waitForTimeout(1000);
+            
+            if (authentication.usernameSelector && authentication.username) {
+              console.log(`🔐 Filling username field: ${authentication.usernameSelector}`);
+              await this.page.waitForSelector(authentication.usernameSelector, { timeout: 5000 });
+              await this.page.type(authentication.usernameSelector, authentication.username);
+            }
+            
+            if (authentication.passwordSelector && authentication.password) {
+              console.log(`🔐 Filling password field: ${authentication.passwordSelector}`);
+              await this.page.waitForSelector(authentication.passwordSelector, { timeout: 5000 });
+              await this.page.type(authentication.passwordSelector, authentication.password);
+            }
+            
+            if (authentication.submitSelector) {
+              console.log(`🔐 Clicking submit button: ${authentication.submitSelector}`);
+              await this.page.waitForSelector(authentication.submitSelector, { timeout: 5000 });
+              await Promise.all([
+                this.page.waitForNavigation({ waitUntil: 'networkidle2', timeout: this.config.timeout }),
+                this.page.click(authentication.submitSelector)
+              ]);
+            }
+          } else {
+            console.log(`🔐 No login URL provided for credentials authentication`);
+          }
+          break;
+          
+        default:
+          console.log(`🔐 Unknown authentication type: ${authentication.type}`);
+          break;
+      }
       
-      case 'headers':
-        if (authentication.headers) {
-          await this.page.setExtraHTTPHeaders(authentication.headers);
-        }
-        break;
-      
-      case 'credentials':
-        // Navigate to login page and fill credentials
-        if (authentication.loginUrl) {
-          await this.page.goto(authentication.loginUrl);
-          
-          if (authentication.usernameSelector && authentication.username) {
-            await this.page.type(authentication.usernameSelector, authentication.username);
-          }
-          
-          if (authentication.passwordSelector && authentication.password) {
-            await this.page.type(authentication.passwordSelector, authentication.password);
-          }
-          
-          if (authentication.submitSelector) {
-            await Promise.all([
-              this.page.waitForNavigation({ waitUntil: 'networkidle2' }),
-              this.page.click(authentication.submitSelector)
-            ]);
-          }
-        }
-        break;
+      console.log(`✅ Authentication completed successfully`);
+    } catch (error) {
+      console.error(`❌ Authentication failed: ${error.message}`);
+      console.error(`❌ Authentication stack:`, error.stack);
+      throw error;
     }
   }
 
   /**
-   * Close browser and cleanup
+   * Close the browser and cleanup resources
    */
   async close() {
     try {
+      console.log('🔄 Closing Enhanced Web Extractor...');
+      
+      if (this.page && !this.page.isClosed()) {
+        await this.page.close();
+        console.log('✅ Page closed');
+      }
+      
       if (this.browser) {
         await this.browser.close();
-        this.browser = null;
-        this.page = null;
-        console.log('Enhanced Web Extractor closed');
+        console.log('✅ Browser closed');
       }
+      
+      this.page = null;
+      this.browser = null;
+      
+      console.log('✅ Enhanced Web Extractor closed successfully');
     } catch (error) {
-      console.error('Error closing Enhanced Web Extractor:', error);
+      console.error('❌ Error closing Enhanced Web Extractor:', error);
+      // Force cleanup even if there are errors
+      this.page = null;
+      this.browser = null;
     }
+  }
+
+  /**
+   * Force cleanup of browser resources
+   */
+  async forceCleanup() {
+    try {
+      console.log('🧹 Force cleaning up Enhanced Web Extractor resources...');
+      
+      if (this.browser) {
+        try {
+          // Try to get browser process and kill it if needed
+          const process = this.browser.process();
+          if (process && !process.killed) {
+            process.kill('SIGKILL');
+            console.log('🔫 Browser process killed');
+          }
+        } catch (processError) {
+          console.warn('⚠️ Error killing browser process:', processError.message);
+        }
+      }
+      
+      this.page = null;
+      this.browser = null;
+      
+      console.log('✅ Force cleanup completed');
+    } catch (error) {
+      console.error('❌ Error during force cleanup:', error);
+      this.page = null;
+      this.browser = null;
+    }
+  }
+
+  /**
+   * Check if the extractor is ready for use
+   */
+  isReady() {
+    return this.browser && 
+           !this.browser.process()?.killed && 
+           this.page && 
+           !this.page.isClosed();
+  }
+
+  /**
+   * Get status information about the extractor
+   */
+  getStatus() {
+    return {
+      browserReady: this.browser && !this.browser.process()?.killed,
+      pageReady: this.page && !this.page.isClosed(),
+      fullyReady: this.isReady()
+    };
   }
 }
 

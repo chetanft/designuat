@@ -10,11 +10,12 @@ import sharp from 'sharp';
 export class WebExtractor {
   constructor(config = {}) {
     this.config = {
-      headless: true,
+      headless: "new",
       timeout: 30000,
       viewport: { width: 1200, height: 800 },
       ...config
     };
+
     this.browser = null;
     this.page = null;
   }
@@ -78,15 +79,15 @@ export class WebExtractor {
         }
       }
 
-      // Verify page is actually ready by testing mainFrame access with retries
+      // Verify page is actually ready by testing basic functionality
       let retries = 0;
       const maxRetries = 5;
       
       while (retries < maxRetries) {
         try {
-          await this.page.mainFrame();
-          // Additional check - try to evaluate a simple script
+          // Test basic page functionality without accessing mainFrame
           await this.page.evaluate(() => document.readyState);
+          await this.page.evaluate(() => window.location.href);
           console.log('Page is ready and responsive');
           return;
         } catch (error) {
@@ -126,7 +127,7 @@ export class WebExtractor {
 
       console.log('Launching Puppeteer browser...');
       this.browser = await puppeteer.launch({
-        headless: this.config.headless,
+        headless: this.config.headless === true ? "new" : this.config.headless,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -136,8 +137,14 @@ export class WebExtractor {
           '--no-zygote',
           '--disable-gpu',
           '--disable-web-security',
-          '--disable-features=VizDisplayCompositor'
-        ]
+          '--disable-features=VizDisplayCompositor',
+          '--disable-extensions',
+          '--disable-background-timer-throttling',
+          '--disable-renderer-backgrounding',
+          '--disable-backgrounding-occluded-windows'
+        ],
+        ignoreDefaultArgs: ['--disable-extensions'],
+        timeout: 60000
       });
       
       // Wait for browser to be fully ready
@@ -158,12 +165,13 @@ export class WebExtractor {
       await this.page.setDefaultTimeout(timeout);
       await this.page.setDefaultNavigationTimeout(timeout);
       
-      // Verify page is ready by checking if we can access mainFrame
+      // Verify page is ready with a simple evaluation instead of mainFrame access
       let retries = 0;
       const maxRetries = 5;
       while (retries < maxRetries) {
         try {
-          await this.page.mainFrame();
+          await this.page.evaluate(() => document.readyState);
+          console.log('Page is ready for use');
           break;
         } catch (error) {
           retries++;

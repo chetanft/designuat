@@ -96,6 +96,8 @@ class FigmaExtractor {
       console.log(`🎯 Looking for specific node ${nodeId} in the entire file...`);
       console.log(`🔍 Document has ${figmaData.document?.children?.length || 0} top-level children`);
       
+      let foundComponents = false;
+      
       // Strategy 1: Find the canvas that contains the target node
       const canvasWithNode = this.findCanvasContainingNode(figmaData.document, nodeId);
       console.log(`🔍 Canvas search result:`, canvasWithNode ? `Found "${canvasWithNode.name}"` : 'Not found');
@@ -107,6 +109,7 @@ class FigmaExtractor {
         
         // Extract all components from this canvas (this will include the target node and all its siblings and children)
         await this.processCanvasComponents(canvasWithNode, components);
+        foundComponents = components.length > 0;
         
         console.log(`✅ Extracted ${components.length} components from canvas`);
       } else {
@@ -115,7 +118,7 @@ class FigmaExtractor {
       }
       
       // Strategy 2: Fallback to checking figmaData.nodes
-      if (!canvasWithNode && figmaData.nodes && figmaData.nodes[nodeId]) {
+      if (!foundComponents && figmaData.nodes && figmaData.nodes[nodeId]) {
         const specificNode = figmaData.nodes[nodeId];
         console.log(`📦 Raw specific node keys:`, Object.keys(specificNode));
         
@@ -124,7 +127,6 @@ class FigmaExtractor {
         
         console.log(`📦 Found specific node: ${targetNode.name} (${targetNode.type})`);
         console.log(`👶 Node has ${targetNode.children ? targetNode.children.length : 0} children`);
-        console.log(`🔍 Node structure:`, JSON.stringify(targetNode, null, 2).substring(0, 500) + '...');
         
         // Process the target node and ALL its children (entire frame)
         const component = await this.processNode(targetNode);
@@ -138,17 +140,18 @@ class FigmaExtractor {
           console.log(`🔄 Starting to flatten components...`);
           await this.flattenComponents(targetNode, components);
           console.log(`📊 Total components after flattening: ${components.length}`);
+          foundComponents = true;
         } else {
           console.warn(`⚠️ processNode returned null for ${targetNode.name}`);
         }
       }
       
       // Strategy 3: Search through document tree if not found yet  
-      if (!canvasWithNode && (!figmaData.nodes || !figmaData.nodes[nodeId])) {
+      if (!foundComponents && (!figmaData.nodes || !figmaData.nodes[nodeId])) {
         console.warn(`⚠️ Node ${nodeId} not found in figmaData.nodes`);
         console.log(`Available nodes:`, figmaData.nodes ? Object.keys(figmaData.nodes) : 'none');
         
-        // Strategy 2: Search through the document tree to find the target node
+        // Search through the document tree to find the target node
         const targetNode = this.findNodeById(figmaData.document, nodeId);
         if (targetNode) {
           console.log(`📦 Found node via search: ${targetNode.name} (${targetNode.type})`);
@@ -162,24 +165,52 @@ class FigmaExtractor {
             
             // Also add all child components as separate components for comparison
             await this.flattenComponents(targetNode, components);
+            foundComponents = true;
           }
         } else {
           console.log(`❌ Node ${nodeId} not found in document tree either`);
-          
-          // Strategy 3: If specific node not found, extract from the entire canvas that might contain it
-          console.log(`🔍 Searching for node ${nodeId} in all canvases...`);
-          const canvasWithNode = this.findCanvasContainingNode(figmaData.document, nodeId);
-          if (canvasWithNode) {
-            console.log(`📦 Found canvas containing target node: ${canvasWithNode.name}`);
-            console.log(`🎯 Extracting all components from canvas to find target and its children`);
-            
-            // Extract all components from this canvas
-            await this.processCanvasComponents(canvasWithNode, components);
-          } else {
-            console.log(`❌ Could not find any canvas containing node ${nodeId}`);
+        }
+      }
+      
+      // Strategy 4: If specific node still not found, extract from the first meaningful canvas
+      if (!foundComponents) {
+        console.log(`🔍 Specific node ${nodeId} not found anywhere, falling back to first meaningful canvas...`);
+        
+        if (figmaData.document && figmaData.document.children) {
+          // Find the first canvas that has meaningful content
+          for (const canvas of figmaData.document.children) {
+            if (canvas.type === 'CANVAS' && canvas.children && canvas.children.length > 0) {
+              console.log(`📦 Using fallback canvas: ${canvas.name} with ${canvas.children.length} children`);
+              await this.processCanvasComponents(canvas, components);
+              
+              if (components.length > 0) {
+                console.log(`✅ Extracted ${components.length} components from fallback canvas`);
+                foundComponents = true;
+                break;
+              }
+            }
           }
         }
       }
+      
+      // Strategy 5: Last resort - extract everything from the document
+      if (!foundComponents) {
+        console.log(`🔍 No components found with specific strategies, extracting entire document...`);
+        if (figmaData.document && figmaData.document.children) {
+          for (const node of figmaData.document.children) {
+            const component = await this.processNode(node);
+            if (component) {
+              components.push(component);
+            }
+          }
+          foundComponents = components.length > 0;
+        }
+      }
+      
+      if (!foundComponents) {
+        console.warn(`⚠️ No components could be extracted for node ${nodeId}. This might indicate the node doesn't exist or the file structure is unexpected.`);
+      }
+      
     } else {
       // Process all document children (original behavior for full file extraction)
       if (figmaData.document && figmaData.document.children) {
@@ -198,7 +229,13 @@ class FigmaExtractor {
       fileName: figmaData.name || figmaData.document?.name,
       documentId: figmaData.document?.id,
       components,
-      extractedAt: new Date().toISOString()
+      extractedAt: new Date().toISOString(),
+      // Add metadata about extraction
+      metadata: {
+        requestedNodeId: nodeId,
+        totalCanvases: figmaData.document?.children?.length || 0,
+        extractionStrategy: nodeId ? (components.length > 0 ? 'node-specific' : 'fallback') : 'full-document'
+      }
     };
   }
 

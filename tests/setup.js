@@ -42,7 +42,7 @@ global.testUtils = {
       properties: ['fontSize', 'fontFamily', 'color', 'backgroundColor']
     },
     puppeteer: {
-      headless: true,
+      headless: "new",
       viewport: { width: 1920, height: 1080 },
       timeout: 30000
     },

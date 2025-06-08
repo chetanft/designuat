@@ -3,6 +3,8 @@ import cors from 'cors';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import http from 'http';
+import { Server } from 'socket.io';
 
 // Import our real implementations
 import FigmaExtractor from './src/figma/extractor.js';
@@ -16,12 +18,23 @@ import FigmaUrlParser from './src/figma/urlParser.js';
 import EnhancedVisualComparison from './src/visual/enhancedVisualComparison.js';
 import ComponentCategorizer from './src/analyze/componentCategorizer.js';
 import CategorizedReportGenerator from './src/report/categorizedReportGenerator.js';
+import ComparisonAnalyzer from './src/ai/ComparisonAnalyzer.js';
+import { ReportCompressor } from './src/utils/reportCompressor.js';
+import { ErrorCategorizer } from './src/utils/errorCategorizer.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3001;
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+import { getAppPort, getCorsOrigins } from './src/config/ports.js';
+const port = getAppPort();
 
 // Load configuration
 let config = {};
@@ -44,6 +57,18 @@ try {
 app.use(cors());
 app.use(express.json());
 
+// Set proper MIME types for JavaScript modules
+app.use((req, res, next) => {
+  if (req.path.endsWith('.js')) {
+    res.setHeader('Content-Type', 'application/javascript');
+  } else if (req.path.endsWith('.mjs')) {
+    res.setHeader('Content-Type', 'application/javascript');
+  } else if (req.path.endsWith('.css')) {
+    res.setHeader('Content-Type', 'text/css');
+  }
+  next();
+});
+
 // Add request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
@@ -62,12 +87,13 @@ try {
   console.warn('⚠️ MCP Direct Figma Extractor not available:', error.message);
 }
 
-const webExtractor = new WebExtractor(config);
-const enhancedWebExtractor = new EnhancedWebExtractor(config);
+const webExtractor = new WebExtractor(config.puppeteer || {});
+const enhancedWebExtractor = new EnhancedWebExtractor(config.puppeteer || {});
 const comparisonEngine = new ComparisonEngine();
 const reportGenerator = new ReportGenerator(config);
 const componentCategorizer = new ComponentCategorizer();
 const categorizedReportGenerator = new CategorizedReportGenerator();
+const comparisonAnalyzer = new ComparisonAnalyzer();
 
 // Helper functions (keeping existing logic)
 function getOptimalFigmaExtractor() {
@@ -100,18 +126,96 @@ async function extractFigmaData(fileId, nodeId = null) {
 
 async function extractWebData(url, authentication = null) {
   const extractor = getOptimalWebExtractor();
+  
+  // Ensure the extractor is properly initialized with retries
+  let initializationAttempts = 0;
+  const maxAttempts = 3;
+  
+  while (initializationAttempts < maxAttempts) {
+    try {
+      // Check if browser and page are ready
+      if (!extractor.browser || extractor.browser.process()?.killed || !extractor.page || extractor.page.isClosed()) {
+        console.log(`🔄 Web extractor not ready (attempt ${initializationAttempts + 1}/${maxAttempts}), reinitializing...`);
+        await extractor.initialize();
+        
+        // Wait a bit to ensure initialization is complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      // Test if the extractor is actually ready
+      if (extractor.page && !extractor.page.isClosed()) {
+        console.log('✅ Web extractor is ready for extraction');
+        break;
+      }
+      
+    } catch (error) {
+      initializationAttempts++;
+      console.warn(`⚠️ Web extractor initialization attempt ${initializationAttempts} failed:`, error.message);
+      
+      if (initializationAttempts >= maxAttempts) {
+        throw new Error(`Failed to initialize web extractor after ${maxAttempts} attempts: ${error.message}`);
+      }
+      
+      // Wait before retry
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    
+    initializationAttempts++;
+  }
+  
+  if (initializationAttempts >= maxAttempts) {
+    throw new Error(`Web extractor failed to initialize after ${maxAttempts} attempts`);
+  }
+  
+  // Now attempt extraction
   return await extractor.extractWebData(url, authentication);
 }
 
 // Initialize components
 async function initializeComponents() {
   try {
-    await figmaExtractor.initialize();
-    await webExtractor.initialize();
-    await enhancedWebExtractor.initialize();
+    console.log('🔧 Initializing components...');
     
+    // Initialize Figma extractor
+    console.log('🎨 Initializing Figma extractor...');
+    await figmaExtractor.initialize();
+    console.log('✅ Figma extractor initialized');
+    
+    // Initialize basic web extractor with error tolerance
+    console.log('🌐 Initializing basic web extractor...');
+    try {
+      await webExtractor.initialize();
+      console.log('✅ Basic web extractor initialized');
+    } catch (error) {
+      console.warn('⚠️ Basic web extractor failed to initialize, will retry on demand:', error.message);
+    }
+    
+    // Initialize enhanced web extractor with retries
+    console.log('🚀 Initializing enhanced web extractor...');
+    let enhancedInitialized = false;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        await enhancedWebExtractor.initialize();
+        enhancedInitialized = true;
+        console.log('✅ Enhanced web extractor initialized');
+        break;
+      } catch (error) {
+        console.warn(`⚠️ Enhanced web extractor initialization attempt ${attempt} failed:`, error.message);
+        if (attempt < 3) {
+          console.log('🔄 Retrying enhanced web extractor initialization...');
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+    }
+    
+    if (!enhancedInitialized) {
+      console.warn('⚠️ Enhanced web extractor failed to initialize after 3 attempts, will retry on demand');
+    }
+    
+    // Test MCP Direct Extractor if available
     if (mcpDirectExtractor) {
       try {
+        console.log('🧪 Testing MCP Framelink connection...');
         const testResult = await mcpDirectExtractor.testMCPConnection();
         if (testResult.success) {
           console.log('✅ MCP Framelink connection verified');
@@ -125,40 +229,104 @@ async function initializeComponents() {
       }
     }
     
-    console.log('✅ All components initialized');
+    // Wait a bit more to ensure everything is stable
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    componentsInitialized = true;
+    console.log('✅ All components initialized successfully');
+    return true;
   } catch (error) {
     console.error('❌ Failed to initialize components:', error);
+    componentsInitialized = false;
+    throw error;
   }
 }
 
-// Initialize on startup
-initializeComponents();
+// Initialize components before starting server
+let componentsInitialized = false;
 
-// Frontend routing with legacy/modern support
+// Frontend routing - modern UI only
 app.get('/', async (req, res) => {
-  const useLegacy = req.query.legacy === 'true';
-  const useModern = req.query.modern === 'true';
-  
-  if (useModern && !useLegacy) {
-    // Check if modern build exists
-    const modernPath = path.join(__dirname, 'public/modern/index.html');
-    try {
-      await fs.access(modernPath);
-      res.sendFile(modernPath);
-    } catch (error) {
-      // Fallback to legacy if modern not built yet
-      res.sendFile(path.join(__dirname, 'public-legacy/index.html'));
-    }
-  } else {
-    // Serve legacy HTML by default
-    res.sendFile(path.join(__dirname, 'public-legacy/index.html'));
+  // Always serve modern UI
+  const modernPath = path.join(__dirname, 'public/modern/index.html');
+  try {
+    await fs.access(modernPath);
+    res.sendFile(modernPath);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Modern UI not built',
+      message: 'Please run "cd frontend && npm run build" to build the frontend'
+    });
   }
 });
 
-// Static file serving
-app.use('/legacy', express.static('public-legacy'));
-app.use('/modern', express.static('public/modern'));
-app.use(express.static('public-legacy')); // Default to legacy
+// SPA routing for modern UI - specific routes (MUST be before catch-all)
+app.get('/new-comparison', (req, res) => {
+  const indexPath = path.resolve(__dirname, 'public/modern/index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
+app.get('/settings', (req, res) => {
+  const indexPath = path.resolve(__dirname, 'public/modern/index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
+// Handle /reports route - serve modern UI for HTML requests, continue for API requests
+app.get('/reports', (req, res, next) => {
+  // If it's a request for the reports page (not the API), serve the modern UI
+  if (req.headers.accept?.includes('text/html')) {
+    const indexPath = path.resolve(__dirname, 'public/modern/index.html');
+    console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+    res.sendFile(indexPath);
+  } else {
+    next();
+  }
+});
+
+// Static file serving - modern UI only
+app.use('/modern/assets', express.static(path.join(__dirname, 'public/modern/assets')));
+app.use('/assets', express.static(path.join(__dirname, 'public/modern/assets')));
+app.get('/vite.svg', (req, res) => {
+  // Return a 204 No Content for missing favicon to prevent errors
+  res.status(204).end();
+});
+
+// SPA routing for modern UI - catch all modern routes (AFTER static files)
+app.get('/modern/*', (req, res, next) => {
+  // Skip assets and other static files
+  if (req.path.startsWith('/modern/assets/') || 
+      req.path.includes('.js') || 
+      req.path.includes('.css') || 
+      req.path.includes('.svg') || 
+      req.path.includes('.png') || 
+      req.path.includes('.jpg') || 
+      req.path.includes('.ico')) {
+    return next();
+  }
+  
+  const indexPath = path.resolve(__dirname, 'public/modern/index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
+// Handle modern UI routes (SPA routing) - catch-all for other routes (AFTER static files)
+app.get('*', (req, res, next) => {
+  // If it's an API route, continue to next handler
+  if (req.path.startsWith('/api/') || req.path.startsWith('/output/') || req.path.startsWith('/reports/') || req.path.startsWith('/images/') || req.path.startsWith('/screenshots/')) {
+    return next();
+  }
+  
+  // If it's a file request (has extension), continue to next handler
+  if (req.path.includes('.')) {
+    return next();
+  }
+  
+  // Serve modern UI for all other routes
+  const modernPath = path.join(__dirname, 'public/modern/index.html');
+  res.sendFile(modernPath);
+});
 
 // Serve output files
 app.use('/reports', express.static(path.join(__dirname, 'output', 'reports')));
@@ -177,7 +345,26 @@ app.get('/api/health', (req, res) => {
     status: 'healthy', 
     timestamp: new Date().toISOString(),
     version: 'unified-v1.0',
-    features: ['legacy-ui', 'modern-ui', 'backward-compatibility']
+    features: ['modern-ui', 'real-time-updates', 'ai-analysis'],
+    figma: figmaExtractor ? {
+      connectionType: figmaExtractor.mcpIntegration ? 'third-party-mcp' : 'figma-api',
+      message: figmaExtractor.mcpIntegration ? 'Connected to Third-party MCP Figma tools' : 'Connected to Figma REST API',
+      availableOptions: {
+        officialMCP: false,
+        thirdPartyMCP: !!figmaExtractor.mcpIntegration,
+        figmaAPI: true
+      }
+    } : { status: 'not initialized' },
+    components: {
+      figmaExtractor: figmaExtractor ? 'initialized' : 'not initialized',
+      webExtractor: webExtractor ? 'initialized' : 'not initialized',
+      comparisonEngine: comparisonEngine ? 'initialized' : 'not initialized',
+      reportGenerator: reportGenerator ? 'initialized' : 'not initialized'
+    },
+    config: {
+      loaded: !!config,
+      hasAccessToken: !!(config?.figma?.accessToken)
+    }
   });
 });
 
@@ -224,14 +411,274 @@ app.get('/api/reports', async (req, res) => {
   }
 });
 
-// Proxy to existing server for comparison functionality
-app.use('/api/compare', (req, res) => {
-  // For now, redirect to legacy server
-  res.status(503).json({
-    error: 'Comparison API temporarily unavailable',
-    message: 'Please use the legacy interface for comparisons',
-    legacyUrl: '/?legacy=true'
-  });
+// Middleware to ensure components are initialized
+const ensureComponentsInitialized = (req, res, next) => {
+  if (!componentsInitialized) {
+    return res.status(503).json({
+      error: 'Service temporarily unavailable',
+      message: 'Components are still initializing. Please try again in a few seconds.',
+      retry: true
+    });
+  }
+  next();
+};
+
+// Enhanced comparison endpoint with AI analysis
+app.post('/api/compare', ensureComponentsInitialized, async (req, res) => {
+  const comparisonId = `comparison_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  
+  try {
+    const { figmaUrl, webUrl, authentication, visualComparison } = req.body;
+    
+    if (!figmaUrl || !webUrl) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: figmaUrl and webUrl are required'
+      });
+    }
+
+    // Extract file ID and node ID from Figma URL
+    const figmaMatch = figmaUrl.match(/figma\.com\/(?:file|design)\/([a-zA-Z0-9]+)(?:\/.*?node-id=([^&]+))?/);
+    if (!figmaMatch) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid Figma URL format'
+      });
+    }
+
+    const fileId = figmaMatch[1];
+    const nodeId = figmaMatch[2] ? decodeURIComponent(figmaMatch[2]).replace(/-/g, ':') : null;
+
+    console.log(`🚀 Starting comparison ${comparisonId}`);
+    console.log(`🎨 Figma: ${fileId}${nodeId ? ` (node: ${nodeId})` : ''}`);
+    console.log(`🌐 Web: ${webUrl}`);
+
+    const io = req.app.get('io');
+    const emitProgress = (stage, progress, message, details = {}) => {
+      const progressData = {
+        comparisonId,
+        stage,
+        progress,
+        message,
+        timestamp: new Date().toISOString(),
+        ...details
+      };
+      
+      console.log(`📊 Progress: ${stage} - ${progress}% - ${message}`);
+      io.to(`comparison-${comparisonId}`).emit('comparison-progress', progressData);
+    };
+
+    // Send initial response
+    res.json({
+      success: true,
+      comparisonId,
+      message: 'Comparison started',
+      stages: ['figma-extraction', 'web-extraction', 'comparison-analysis']
+    });
+
+    // Start comparison process
+    (async () => {
+      let figmaData = null;
+      let webData = null;
+      let comparisonResult = null;
+
+      try {
+        // Stage 1: Figma Data Extraction
+        emitProgress('figma-extraction', 10, 'Starting Figma data extraction...');
+        
+        try {
+          figmaData = await extractFigmaData(fileId, nodeId);
+          
+          if (!figmaData || !figmaData.components || figmaData.components.length === 0) {
+            // If specific node not found, try without node ID
+            if (nodeId) {
+              console.log(`⚠️ Node ${nodeId} not found, trying entire file...`);
+              emitProgress('figma-extraction', 20, 'Specific node not found, extracting entire file...');
+              figmaData = await extractFigmaData(fileId, null);
+            }
+            
+            if (!figmaData || !figmaData.components || figmaData.components.length === 0) {
+              throw new Error('No components found in Figma file');
+            }
+          }
+          
+          emitProgress('figma-extraction', 40, `Extracted ${figmaData.components.length} Figma components`);
+        } catch (figmaError) {
+          console.error('❌ Figma extraction failed:', figmaError);
+          emitProgress('figma-extraction', 0, `Figma extraction failed: ${figmaError.message}`, { error: true });
+          throw figmaError;
+        }
+
+        // Stage 2: Web Data Extraction
+        emitProgress('web-extraction', 50, 'Starting web data extraction...');
+        
+        try {
+          webData = await extractWebData(webUrl, authentication);
+          
+          if (!webData || !webData.elements || webData.elements.length === 0) {
+            throw new Error('No elements found on web page');
+          }
+          
+          emitProgress('web-extraction', 70, `Extracted ${webData.elements.length} web elements`);
+        } catch (webError) {
+          console.error('❌ Web extraction failed:', webError);
+          
+          // Categorize the error for better user understanding
+          const categorizedError = ErrorCategorizer.categorizeError(webError, { 
+            url: webUrl, 
+            method: 'Web Extraction',
+            stage: 'web-extraction'
+          });
+          const userFriendlyError = ErrorCategorizer.formatForUser(categorizedError);
+          
+          console.log('\n📊 Web Extraction Error Analysis:');
+          console.log(`${userFriendlyError.title}`);
+          console.log(`Description: ${userFriendlyError.description}`);
+          console.log(`Severity: ${userFriendlyError.severity}`);
+          console.log(`Actionable: ${userFriendlyError.actionable}`);
+          
+          // Emit categorized error information
+          emitProgress('web-extraction', 0, userFriendlyError.description, { 
+            error: true,
+            category: categorizedError.category,
+            severity: categorizedError.severity,
+            actionable: categorizedError.actionable,
+            suggestions: userFriendlyError.suggestions
+          });
+          
+          throw webError;
+        }
+
+        // Stage 3: Comparison Analysis
+        emitProgress('comparison-analysis', 80, 'Starting comparison analysis...');
+        
+        try {
+          comparisonResult = await comparisonEngine.compareDesigns(figmaData, webData);
+          emitProgress('comparison-analysis', 90, 'Generating comparison report...');
+          
+          // Generate report
+          const reportData = await reportGenerator.generateReport(comparisonResult, {
+            figmaUrl,
+            webUrl,
+            comparisonId,
+            includeVisual: visualComparison
+          });
+          
+          // Generate compressed versions of the report
+          emitProgress('comparison-analysis', 95, 'Generating compressed reports...');
+          
+          try {
+            // Create different compression modes
+            const compressionOptions = [
+              { mode: 'summary', gzip: true },
+              { mode: 'detailed', gzip: true },
+              { mode: 'full', gzip: false }
+            ];
+            
+            const compressedReports = {};
+            for (const options of compressionOptions) {
+              const compressedPath = reportData.reportPath.replace('.html', `-${options.mode}.json`);
+              const compressionResult = await ReportCompressor.saveCompressedReport(
+                comparisonResult, 
+                compressedPath, 
+                options
+              );
+              compressedReports[options.mode] = compressionResult;
+            }
+            
+            console.log('📦 Report compression completed:');
+            Object.entries(compressedReports).forEach(([mode, result]) => {
+              console.log(`   ${mode.toUpperCase()}: ${result.compressionInfo.compressionRatio}% reduction`);
+            });
+            
+          } catch (compressionError) {
+            console.warn('⚠️ Report compression failed (non-critical):', compressionError.message);
+          }
+          
+          emitProgress('comparison-analysis', 100, 'Comparison completed successfully!', {
+            reportPath: reportData.reportPath,
+            summary: comparisonResult.summary
+          });
+          
+          console.log(`✅ Comparison ${comparisonId} completed successfully`);
+          
+        } catch (comparisonError) {
+          console.error('❌ Comparison analysis failed:', comparisonError);
+          emitProgress('comparison-analysis', 0, `Comparison analysis failed: ${comparisonError.message}`, { error: true });
+          throw comparisonError;
+        }
+
+      } catch (error) {
+        console.error(`❌ Comparison ${comparisonId} failed:`, error);
+        emitProgress('error', 0, `Comparison failed: ${error.message}`, { 
+          error: true,
+          details: error.stack 
+        });
+      }
+    })();
+
+  } catch (error) {
+    console.error('Comparison error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      comparisonId
+    });
+  }
+});
+
+// AI Analysis endpoint
+app.post('/api/ai/analyze', async (req, res) => {
+  try {
+    const { comparisonData, options = {} } = req.body;
+    
+    if (!comparisonData) {
+      return res.status(400).json({
+        error: 'Missing comparison data',
+        message: 'Comparison data is required for AI analysis'
+      });
+    }
+
+    const analysis = await comparisonAnalyzer.analyzeComparison(comparisonData);
+    
+    res.json({
+      success: true,
+      data: analysis
+    });
+
+  } catch (error) {
+    console.error('AI Analysis error:', error);
+    res.status(500).json({
+      error: 'AI analysis failed',
+      message: error.message
+    });
+  }
+});
+
+// Smart Suggestions endpoint
+app.post('/api/ai/suggestions', async (req, res) => {
+  try {
+    const { comparisonData, userHistory = [], preferences = {} } = req.body;
+    
+    // Generate contextual suggestions based on comparison data and user history
+    const suggestions = await comparisonAnalyzer.generateSmartSuggestions({
+      comparisonData,
+      userHistory,
+      preferences
+    });
+    
+    res.json({
+      success: true,
+      data: suggestions
+    });
+
+  } catch (error) {
+    console.error('Smart Suggestions error:', error);
+    res.status(500).json({
+      error: 'Failed to generate suggestions',
+      message: error.message
+    });
+  }
 });
 
 // All other existing API endpoints (keeping them unchanged)
@@ -533,6 +980,23 @@ app.post('/api/settings/save', async (req, res) => {
   }
 });
 
+// WebSocket connection handling
+io.on('connection', (socket) => {
+  console.log(`🔌 Client connected: ${socket.id}`);
+  
+  socket.on('join-comparison', (comparisonId) => {
+    socket.join(`comparison-${comparisonId}`);
+    console.log(`📊 Client ${socket.id} joined comparison ${comparisonId}`);
+  });
+  
+  socket.on('disconnect', () => {
+    console.log(`🔌 Client disconnected: ${socket.id}`);
+  });
+});
+
+// Add socket.io instance to app for use in routes
+app.set('io', io);
+
 // Function to find available port
 async function findAvailablePort(startPort) {
   const net = await import('net');
@@ -548,23 +1012,76 @@ async function findAvailablePort(startPort) {
   });
 }
 
-// Start server with port detection
+// Start server on dedicated port 3006
 const startServer = async () => {
   try {
-    const availablePort = await findAvailablePort(port);
-    app.listen(availablePort, () => {
-      console.log(`🌐 Unified Figma-Web Comparison Tool running at http://localhost:${availablePort}`);
-      console.log(`📊 Legacy UI: http://localhost:${availablePort}/?legacy=true`);
-      console.log(`🚀 Modern UI: http://localhost:${availablePort}/?modern=true`);
-      console.log(`🔧 Using unified server with backward compatibility`);
-      if (availablePort !== port) {
-        console.log(`⚠️ Note: Requested port ${port} was busy, using port ${availablePort} instead`);
-      }
+    // Initialize components first
+    await initializeComponents();
+    
+    // Use fixed port 3006 - no fallback
+    server.listen(3006, () => {
+      console.log(`🌐 Figma-Web Comparison Tool running at http://localhost:3006`);
+      console.log(`🚀 Modern UI: http://localhost:3006`);
+      console.log(`🔧 Dedicated port: 3006`);
     });
+    
+    // Add graceful shutdown handlers
+    const gracefulShutdown = async (signal) => {
+      console.log(`\n🛑 Received ${signal}, shutting down gracefully...`);
+      
+      try {
+        // Close server
+        server.close(() => {
+          console.log('✅ HTTP server closed');
+        });
+        
+        // Cleanup extractors
+        console.log('🧹 Cleaning up extractors...');
+        
+        if (webExtractor && typeof webExtractor.close === 'function') {
+          await webExtractor.close();
+          console.log('✅ Web extractor closed');
+        }
+        
+        if (enhancedWebExtractor && typeof enhancedWebExtractor.close === 'function') {
+          await enhancedWebExtractor.close();
+          console.log('✅ Enhanced web extractor closed');
+        }
+        
+        if (enhancedWebExtractor && typeof enhancedWebExtractor.forceCleanup === 'function') {
+          await enhancedWebExtractor.forceCleanup();
+          console.log('✅ Enhanced web extractor force cleanup completed');
+        }
+        
+        console.log('✅ Graceful shutdown completed');
+        process.exit(0);
+        
+      } catch (error) {
+        console.error('❌ Error during graceful shutdown:', error);
+        process.exit(1);
+      }
+    };
+    
+    // Handle different shutdown signals
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('SIGUSR2', () => gracefulShutdown('SIGUSR2')); // nodemon restart
+    
+    // Handle uncaught exceptions
+    process.on('uncaughtException', (error) => {
+      console.error('❌ Uncaught Exception:', error);
+      gracefulShutdown('uncaughtException');
+    });
+    
+    process.on('unhandledRejection', (reason, promise) => {
+      console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+      gracefulShutdown('unhandledRejection');
+    });
+    
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     process.exit(1);
   }
 };
 
-startServer(); 
+startServer();

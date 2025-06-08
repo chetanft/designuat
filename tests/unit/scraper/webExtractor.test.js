@@ -12,7 +12,7 @@ describe('WebExtractor', () => {
 
   beforeEach(() => {
     config = {
-      headless: true,
+      headless: "new",
       timeout: 30000,
       viewport: { width: 1200, height: 800 }
     };
@@ -39,7 +39,7 @@ describe('WebExtractor', () => {
     test('should initialize with default config when none provided', () => {
       const extractor = new WebExtractor();
       expect(extractor.config).toBeDefined();
-      expect(extractor.config.headless).toBe(true);
+      expect(extractor.config.headless).toBe("new");
       expect(extractor.config.timeout).toBe(30000);
       expect(extractor.config.viewport).toBeDefined();
     });
@@ -165,7 +165,7 @@ describe('WebExtractor', () => {
 
     test('should handle missing config properties gracefully', () => {
       const extractor = new WebExtractor({});
-      expect(extractor.config.headless).toBe(true);
+      expect(extractor.config.headless).toBe("new");
       expect(extractor.config.timeout).toBe(30000);
       expect(extractor.config.viewport).toBeDefined();
     });

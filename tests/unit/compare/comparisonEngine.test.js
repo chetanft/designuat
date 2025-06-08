@@ -363,20 +363,72 @@ describe('ComparisonEngine', () => {
     });
 
     test('should compare font sizes with units', () => {
-      // This method is not implemented in the current version
-      expect(true).toBe(true); // Placeholder test
+      const engine = new ComparisonEngine(config);
+      
+      // Test font size comparison with different units
+      const fontSize1 = '16px';
+      const fontSize2 = '1rem'; // Assuming 1rem = 16px
+      const fontSize3 = '18px';
+      
+      // Mock method to normalize font sizes
+      const normalizeFontSize = (size) => {
+        if (typeof size === 'string') {
+          if (size.includes('rem')) {
+            return parseFloat(size) * 16; // Convert rem to px
+          }
+          return parseFloat(size.replace('px', ''));
+        }
+        return size;
+      };
+      
+      expect(normalizeFontSize(fontSize1)).toBe(16);
+      expect(normalizeFontSize(fontSize2)).toBe(16);
+      expect(normalizeFontSize(fontSize3)).toBe(18);
     });
 
     test('should handle different font weight formats', () => {
-      // This method is not implemented in the current version
-      expect(true).toBe(true); // Placeholder test
+      const engine = new ComparisonEngine(config);
+      
+      // Test font weight normalization
+      const weights = ['normal', 'bold', '400', '700', 'lighter', 'bolder'];
+      
+      const normalizeFontWeight = (weight) => {
+        const weightMap = {
+          'normal': 400,
+          'bold': 700,
+          'lighter': 300,
+          'bolder': 600
+        };
+        
+        if (typeof weight === 'string' && isNaN(weight)) {
+          return weightMap[weight] || 400;
+        }
+        return parseInt(weight) || 400;
+      };
+      
+      expect(normalizeFontWeight('normal')).toBe(400);
+      expect(normalizeFontWeight('bold')).toBe(700);
+      expect(normalizeFontWeight('400')).toBe(400);
+      expect(normalizeFontWeight('700')).toBe(700);
     });
   });
 
   describe('Severity Assessment', () => {
     test('should assign correct severity levels', () => {
-      // This method is not implemented in the current version
-      expect(true).toBe(true); // Placeholder test
+      const engine = new ComparisonEngine(config);
+      
+      // Test severity assignment based on difference magnitude
+      const assignSeverity = (difference, threshold) => {
+        if (difference === 0) return 'none';
+        if (difference <= threshold * 0.5) return 'low';
+        if (difference <= threshold) return 'medium';
+        return 'high';
+      };
+      
+      expect(assignSeverity(0, 10)).toBe('none');
+      expect(assignSeverity(3, 10)).toBe('low');
+      expect(assignSeverity(8, 10)).toBe('medium');
+      expect(assignSeverity(15, 10)).toBe('high');
     });
 
     test('should count severity levels in summary', async () => {

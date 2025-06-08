@@ -16,8 +16,8 @@
       "enabled": false
     },
     "thirdParty": {
-      "enabled": true,
-      "_instructions": "Set enabled:true when third-party MCP Figma tools are available in your environment"
+      "environment": "auto",
+      "enabled": true
     }
   },
   "comparison": {
@@ -43,7 +43,7 @@
     ]
   },
   "puppeteer": {
-    "headless": true,
+    "headless": "new",
     "viewport": {
       "width": 1920,
       "height": 1080

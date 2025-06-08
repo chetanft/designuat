@@ -46,7 +46,7 @@ class ComparisonApp {
           thresholds: { fontSize: 2, spacing: 4, borderRadius: 2, colorTolerance: 5 },
           properties: ["fontSize", "fontFamily", "color", "backgroundColor", "padding", "margin"]
         },
-        puppeteer: { headless: true, viewport: { width: 1920, height: 1080 }, timeout: 30000 },
+        puppeteer: { headless: "new", viewport: { width: 1920, height: 1080 }, timeout: 30000 },
         output: { reportFormat: "html", screenshotDir: "./output/screenshots", reportDir: "./output/reports" }
       };
     }

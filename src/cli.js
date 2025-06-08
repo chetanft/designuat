@@ -169,7 +169,7 @@ program
           ]
         },
         puppeteer: {
-          headless: true,
+          headless: "new",
           viewport: {
             width: 1920,
             height: 1080

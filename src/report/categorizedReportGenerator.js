@@ -546,55 +546,541 @@ export class CategorizedReportGenerator {
     return merged;
   }
 
-  // Analysis Methods (Placeholder implementations)
+  // Analysis Methods - Implemented with real functionality
   analyzeColorConsistency(colors) {
-    return { score: 75, issues: [], suggestions: [] };
+    if (!colors || colors.length === 0) {
+      return { score: 0, issues: ['No colors found'], suggestions: ['Add color tokens to design system'] };
+    }
+
+    const issues = [];
+    const suggestions = [];
+    let score = 100;
+
+    // Check for too many colors
+    if (colors.length > 50) {
+      issues.push(`Excessive color count: ${colors.length} colors found`);
+      suggestions.push('Consider consolidating similar colors');
+      score -= 20;
+    }
+
+    // Check for color naming consistency
+    const namedColors = colors.filter(color => color.name && !color.name.startsWith('#'));
+    const consistencyRatio = namedColors.length / colors.length;
+    if (consistencyRatio < 0.7) {
+      issues.push('Inconsistent color naming');
+      suggestions.push('Establish consistent color naming convention');
+      score -= 15;
+    }
+
+    // Check for duplicate colors
+    const colorValues = new Set();
+    const duplicates = [];
+    colors.forEach(color => {
+      if (colorValues.has(color.value)) {
+        duplicates.push(color.value);
+      } else {
+        colorValues.add(color.value);
+      }
+    });
+
+    if (duplicates.length > 0) {
+      issues.push(`${duplicates.length} duplicate color values found`);
+      suggestions.push('Remove duplicate colors and consolidate tokens');
+      score -= 10;
+    }
+
+    return { 
+      score: Math.max(0, score), 
+      issues, 
+      suggestions,
+      metrics: {
+        total: colors.length,
+        named: namedColors.length,
+        duplicates: duplicates.length
+      }
+    };
   }
 
   generateColorRecommendations(colors) {
-    return ['Establish primary, secondary, and accent color scales', 'Reduce color token count if excessive'];
+    const recommendations = [];
+    
+    if (!colors || colors.length === 0) {
+      return ['Create a foundational color palette with primary, secondary, and neutral colors'];
+    }
+
+    if (colors.length < 10) {
+      recommendations.push('Expand color palette to include semantic colors (success, warning, error)');
+    } else if (colors.length > 50) {
+      recommendations.push('Reduce color token count by consolidating similar shades');
+    }
+
+    // Check for semantic colors
+    const semanticColors = colors.filter(color => 
+      color.name && /success|error|warning|info|danger/i.test(color.name)
+    );
+    if (semanticColors.length < 3) {
+      recommendations.push('Add semantic color tokens for success, warning, and error states');
+    }
+
+    // Check for accessibility
+    recommendations.push('Ensure color contrast ratios meet WCAG AA standards');
+    recommendations.push('Document color usage guidelines and accessibility requirements');
+
+    return recommendations;
   }
 
   extractFontFamilies(typography) {
+    if (!typography || typography.length === 0) return [];
+    
     const families = new Set();
     typography.forEach(token => {
+      if (token.sources) {
       token.sources.forEach(source => {
-        if (source.fontFamily) families.add(source.fontFamily);
+          if (source.fontFamily) {
+            // Clean font family name
+            const cleanName = source.fontFamily.replace(/['"]/g, '').split(',')[0].trim();
+            families.add(cleanName);
+          }
       });
+      }
     });
     return Array.from(families);
   }
 
   extractFontSizes(typography) {
+    if (!typography || typography.length === 0) return [];
+    
     const sizes = new Set();
     typography.forEach(token => {
+      if (token.sources) {
       token.sources.forEach(source => {
-        if (source.fontSize) sizes.add(source.fontSize);
-      });
+          if (source.fontSize) {
+            // Normalize font size to pixels
+            let size = source.fontSize;
+            if (typeof size === 'string') {
+              size = parseFloat(size.replace(/[^\d.]/g, ''));
+            }
+            if (!isNaN(size) && size > 0) {
+              sizes.add(size);
+            }
+          }
+        });
+      }
     });
-    return Array.from(sizes).sort((a, b) => parseFloat(a) - parseFloat(b));
+    return Array.from(sizes).sort((a, b) => a - b);
   }
 
-  // Additional helper methods would be implemented here...
-  analyzeTypographicScale() { return { ratio: 1.2, consistency: 'good' }; }
-  generateTypographyRecommendations() { return ['Establish consistent type scale']; }
-  analyzeSpacingScale() { return { base: 8, ratio: 1.5 }; }
-  findSpacingInconsistencies() { return []; }
-  generateSpacingRecommendations() { return ['Use 8px base grid system']; }
-  analyzeShadowElevations() { return []; }
-  analyzeBorderRadiusScale() { return { base: 4, variants: [4, 8, 12, 16] }; }
-  generateAtomicLevelRecommendations() { return []; }
-  assessCategoryMaturity() { return 'developing'; }
-  generateTechnicalRecommendations() { return []; }
-  analyzeResponsiveness() { return { score: 60, recommendations: [] }; }
-  identifyDesignSystemGaps() { return []; }
-  identifyImplementationGaps() { return []; }
-  identifyConsistencyIssues() { return []; }
-  identifyQuickWins() { return []; }
-  generateStrategicRecommendations() { return []; }
-  generateActionPlan() { return []; }
-  generateCrossReference() { return {}; }
-  generateHighLevelRecommendations() { return []; }
+  analyzeTypographicScale(typography) {
+    const sizes = this.extractFontSizes(typography);
+    if (sizes.length < 2) {
+      return { ratio: null, consistency: 'insufficient-data', scale: sizes };
+    }
+
+    // Calculate ratios between consecutive sizes
+    const ratios = [];
+    for (let i = 1; i < sizes.length; i++) {
+      ratios.push(sizes[i] / sizes[i - 1]);
+  }
+
+    // Find most common ratio
+    const avgRatio = ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length;
+    const variance = ratios.reduce((sum, ratio) => sum + Math.pow(ratio - avgRatio, 2), 0) / ratios.length;
+    
+    let consistency = 'poor';
+    if (variance < 0.1) consistency = 'excellent';
+    else if (variance < 0.3) consistency = 'good';
+    else if (variance < 0.5) consistency = 'fair';
+
+    return { 
+      ratio: Math.round(avgRatio * 100) / 100, 
+      consistency, 
+      scale: sizes,
+      variance: Math.round(variance * 1000) / 1000
+    };
+  }
+
+  generateTypographyRecommendations(typography) {
+    const recommendations = [];
+    const families = this.extractFontFamilies(typography);
+    const sizes = this.extractFontSizes(typography);
+    const scale = this.analyzeTypographicScale(typography);
+
+    if (families.length === 0) {
+      recommendations.push('Establish primary and secondary font families');
+    } else if (families.length > 3) {
+      recommendations.push('Limit font families to 2-3 maximum for consistency');
+    }
+
+    if (sizes.length < 5) {
+      recommendations.push('Expand type scale to include more size variations');
+    } else if (sizes.length > 12) {
+      recommendations.push('Consolidate font sizes to create a more manageable type scale');
+    }
+
+    if (scale.consistency === 'poor') {
+      recommendations.push('Establish consistent typographic scale ratio (recommended: 1.2-1.618)');
+    }
+
+    recommendations.push('Define clear hierarchy with headings, body, and caption styles');
+    recommendations.push('Ensure typography tokens include line-height and letter-spacing');
+
+    return recommendations;
+  }
+
+  analyzeSpacingScale(spacing) {
+    if (!spacing || spacing.length === 0) {
+      return { base: null, ratio: null, scale: [], consistency: 'no-data' };
+    }
+
+    // Extract numeric values
+    const values = spacing.map(token => {
+      if (typeof token.value === 'string') {
+        return parseFloat(token.value.replace(/[^\d.]/g, ''));
+      }
+      return parseFloat(token.value);
+    }).filter(val => !isNaN(val) && val > 0).sort((a, b) => a - b);
+
+    if (values.length < 2) {
+      return { base: values[0] || null, ratio: null, scale: values, consistency: 'insufficient-data' };
+    }
+
+    // Find potential base unit (GCD or smallest value)
+    const base = Math.min(...values);
+    
+    // Check if values follow a consistent pattern
+    const ratios = [];
+    for (let i = 1; i < values.length; i++) {
+      ratios.push(values[i] / values[i - 1]);
+    }
+
+    const avgRatio = ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length;
+    const variance = ratios.reduce((sum, ratio) => sum + Math.pow(ratio - avgRatio, 2), 0) / ratios.length;
+
+    let consistency = 'poor';
+    if (variance < 0.1) consistency = 'excellent';
+    else if (variance < 0.3) consistency = 'good';
+    else if (variance < 0.5) consistency = 'fair';
+
+    return {
+      base,
+      ratio: Math.round(avgRatio * 100) / 100,
+      scale: values,
+      consistency,
+      variance: Math.round(variance * 1000) / 1000
+    };
+  }
+
+  findSpacingInconsistencies(spacing) {
+    if (!spacing || spacing.length === 0) return [];
+
+    const inconsistencies = [];
+    const scale = this.analyzeSpacingScale(spacing);
+
+    if (scale.base && scale.base % 4 !== 0 && scale.base % 8 !== 0) {
+      inconsistencies.push({
+        type: 'non-standard-base',
+        message: `Base spacing ${scale.base}px doesn't follow 4px or 8px grid`,
+        severity: 'medium'
+      });
+    }
+
+    if (scale.consistency === 'poor') {
+      inconsistencies.push({
+        type: 'inconsistent-scale',
+        message: 'Spacing values don\'t follow a consistent scale',
+        severity: 'high'
+      });
+    }
+
+    // Check for very close values that could be consolidated
+    const values = scale.scale;
+    for (let i = 1; i < values.length; i++) {
+      const diff = values[i] - values[i - 1];
+      if (diff < 2 && diff > 0) {
+        inconsistencies.push({
+          type: 'too-close-values',
+          message: `Values ${values[i - 1]}px and ${values[i]}px are too close`,
+          severity: 'low'
+        });
+      }
+    }
+
+    return inconsistencies;
+  }
+
+  generateSpacingRecommendations(spacing) {
+    const recommendations = [];
+    const scale = this.analyzeSpacingScale(spacing);
+    const inconsistencies = this.findSpacingInconsistencies(spacing);
+
+    if (!spacing || spacing.length === 0) {
+      recommendations.push('Establish spacing scale based on 8px grid system');
+      recommendations.push('Create tokens for common spacing values (4, 8, 16, 24, 32, 48, 64px)');
+      return recommendations;
+    }
+
+    if (scale.base && scale.base !== 8 && scale.base !== 4) {
+      recommendations.push('Consider using 8px base grid system for better consistency');
+    }
+
+    if (scale.consistency === 'poor') {
+      recommendations.push('Establish consistent spacing scale with clear ratios');
+    }
+
+    if (inconsistencies.length > 0) {
+      recommendations.push('Consolidate similar spacing values to reduce token count');
+    }
+
+    if (spacing.length < 6) {
+      recommendations.push('Expand spacing scale to cover more use cases');
+    } else if (spacing.length > 15) {
+      recommendations.push('Reduce spacing tokens by consolidating similar values');
+    }
+
+    recommendations.push('Document spacing usage guidelines for different component types');
+
+    return recommendations;
+  }
+
+  analyzeShadowElevations(shadows) {
+    if (!shadows || shadows.length === 0) {
+      return { levels: 0, elevations: [], consistency: 'no-data' };
+    }
+
+    // Extract shadow properties and group by elevation level
+    const elevations = shadows.map(shadow => {
+      const blur = shadow.blur || 0;
+      const spread = shadow.spread || 0;
+      const offsetY = Math.abs(shadow.offsetY || 0);
+      
+      // Calculate elevation level based on blur and offset
+      const level = Math.max(blur, offsetY);
+      
+      return {
+        level,
+        blur,
+        spread,
+        offsetY,
+        color: shadow.color
+      };
+    }).sort((a, b) => a.level - b.level);
+
+    return {
+      levels: elevations.length,
+      elevations,
+      consistency: elevations.length > 0 ? 'defined' : 'no-data'
+    };
+  }
+
+  analyzeBorderRadiusScale(borderRadius) {
+    if (!borderRadius || borderRadius.length === 0) {
+      return { base: null, variants: [], scale: [] };
+    }
+
+    const values = borderRadius.map(token => {
+      if (typeof token.value === 'string') {
+        return parseFloat(token.value.replace(/[^\d.]/g, ''));
+      }
+      return parseFloat(token.value);
+    }).filter(val => !isNaN(val) && val >= 0).sort((a, b) => a - b);
+
+    const base = Math.min(...values.filter(v => v > 0)) || 0;
+    
+    return {
+      base,
+      variants: values,
+      scale: values
+    };
+  }
+
+  // Additional implemented methods
+  generateAtomicLevelRecommendations(levelData, levelName) {
+    const recommendations = [];
+    
+    if (!levelData || Object.keys(levelData).length === 0) {
+      recommendations.push(`Define ${levelName} components for the design system`);
+      return recommendations;
+    }
+
+    Object.keys(levelData).forEach(category => {
+      const components = levelData[category];
+      if (!components || components.length === 0) {
+        recommendations.push(`Add ${category} components to ${levelName} level`);
+      }
+    });
+
+    return recommendations;
+  }
+
+  assessCategoryMaturity(categoryData) {
+    if (!categoryData) return 'undefined';
+    
+    const componentCount = Object.values(categoryData).reduce((sum, components) => {
+      return sum + (Array.isArray(components) ? components.length : 0);
+    }, 0);
+
+    if (componentCount === 0) return 'undefined';
+    if (componentCount < 3) return 'emerging';
+    if (componentCount < 8) return 'developing';
+    if (componentCount < 15) return 'mature';
+    return 'comprehensive';
+  }
+
+  generateTechnicalRecommendations(technicalData) {
+    const recommendations = [];
+    
+    if (technicalData.layout && technicalData.layout.analysis) {
+      if (technicalData.layout.analysis.flexboxUsage < 0.5) {
+        recommendations.push('Increase use of Flexbox for better responsive layouts');
+      }
+      if (technicalData.layout.analysis.gridUsage < 0.3) {
+        recommendations.push('Consider CSS Grid for complex layout patterns');
+      }
+    }
+
+    recommendations.push('Implement consistent responsive breakpoints');
+    recommendations.push('Establish CSS custom properties for design tokens');
+    recommendations.push('Use semantic HTML elements for better accessibility');
+
+    return recommendations;
+  }
+
+  analyzeResponsiveness(componentData) {
+    // Analyze responsive patterns in components
+    let responsiveScore = 60; // Default score
+    const recommendations = [];
+
+    if (componentData && componentData.length > 0) {
+      const responsiveComponents = componentData.filter(comp => 
+        comp.styles && (comp.styles.includes('responsive') || comp.styles.includes('mobile'))
+      );
+      
+      responsiveScore = Math.min(100, (responsiveComponents.length / componentData.length) * 100);
+    }
+
+    if (responsiveScore < 70) {
+      recommendations.push('Implement responsive design patterns');
+      recommendations.push('Add mobile-first CSS approach');
+    }
+
+    return { score: Math.round(responsiveScore), recommendations };
+  }
+
+  identifyDesignSystemGaps(categorizedData) {
+    const gaps = [];
+    
+    // Check for missing design tokens
+    if (!categorizedData.designTokens.colors.length) {
+      gaps.push({ type: 'design-tokens', category: 'colors', severity: 'high' });
+    }
+    if (!categorizedData.designTokens.typography.length) {
+      gaps.push({ type: 'design-tokens', category: 'typography', severity: 'high' });
+    }
+    if (!categorizedData.designTokens.spacing.length) {
+      gaps.push({ type: 'design-tokens', category: 'spacing', severity: 'medium' });
+    }
+
+    return gaps;
+  }
+
+  identifyImplementationGaps(figmaData, webData) {
+    const gaps = [];
+    
+    // Compare Figma components with web implementation
+    if (figmaData && webData) {
+      const figmaComponents = figmaData.components || [];
+      const webComponents = webData.elements || [];
+      
+      if (figmaComponents.length > webComponents.length) {
+        gaps.push({
+          type: 'missing-implementation',
+          count: figmaComponents.length - webComponents.length,
+          severity: 'medium'
+        });
+      }
+    }
+
+    return gaps;
+  }
+
+  identifyConsistencyIssues(categorizedData) {
+    const issues = [];
+    
+    // Check color consistency
+    const colorAnalysis = this.analyzeColorConsistency(categorizedData.designTokens.colors);
+    if (colorAnalysis.score < 70) {
+      issues.push({ type: 'color-consistency', score: colorAnalysis.score, issues: colorAnalysis.issues });
+    }
+
+    return issues;
+  }
+
+  identifyQuickWins(categorizedData) {
+    const quickWins = [];
+    
+    // Easy improvements that can be made quickly
+    if (categorizedData.designTokens.colors.length > 50) {
+      quickWins.push('Consolidate similar color tokens');
+    }
+    
+    if (categorizedData.designTokens.spacing.length < 5) {
+      quickWins.push('Add basic spacing scale (8, 16, 24, 32px)');
+    }
+
+    return quickWins;
+  }
+
+  generateStrategicRecommendations(categorizedData) {
+    const recommendations = [];
+    
+    // High-level strategic recommendations
+    recommendations.push('Establish design system governance and maintenance process');
+    recommendations.push('Create component documentation and usage guidelines');
+    recommendations.push('Implement design token automation pipeline');
+    recommendations.push('Set up regular design-development sync meetings');
+
+    return recommendations;
+  }
+
+  generateActionPlan(categorizedData) {
+    return {
+      immediate: this.identifyQuickWins(categorizedData),
+      shortTerm: ['Standardize spacing scale', 'Consolidate color palette'],
+      longTerm: ['Implement comprehensive component library', 'Establish design ops workflow']
+    };
+  }
+
+  generateCrossReference(categorizedData) {
+    const crossRef = {};
+    
+    // Create cross-references between Figma and Web components
+    if (categorizedData.figma && categorizedData.web) {
+      crossRef.componentMapping = {};
+      crossRef.unmatchedFigma = [];
+      crossRef.unmatchedWeb = [];
+    }
+
+    return crossRef;
+  }
+
+  generateHighLevelRecommendations(categorizedData) {
+    const recommendations = [];
+    
+    const coverage = this.calculateCoverage(categorizedData);
+    
+    if (coverage.implementationCoverage < 70) {
+      recommendations.push('Prioritize implementing missing Figma components');
+    }
+    
+    if (coverage.designCoverage < 70) {
+      recommendations.push('Update Figma designs to match web implementation');
+    }
+
+    recommendations.push('Establish regular design-development review process');
+    recommendations.push('Create shared component library documentation');
+
+    return recommendations;
+  }
 }
 
 export default CategorizedReportGenerator; 

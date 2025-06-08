@@ -13,7 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3004;
+import { getAppPort } from './config/ports.js';
+const PORT = getAppPort();
 
 // Middleware
 app.use(cors());
