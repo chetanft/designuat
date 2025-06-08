@@ -314,4 +314,4 @@ MIT License - see LICENSE file for details
 
 ---
 
-Built with ❤️ for designers and developers working together 
+Built with ❤️ for designers and developers working together
