@@ -128,4 +128,5 @@ ehthumbs.db
 Thumbs.db
 
 # Git cleanup files
-.git/gc.log 
+.git/gc.log .env
+.env

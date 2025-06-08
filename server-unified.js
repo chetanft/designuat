@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { promises as fs } from 'fs';
@@ -10,6 +11,7 @@ import { Server } from 'socket.io';
 import FigmaExtractor from './src/figma/extractor.js';
 import FigmaMCPIntegration from './src/figma/mcpIntegration.js';
 import MCPDirectFigmaExtractor from './src/figma/mcpDirectExtractor.js';
+import RobustFigmaExtractor from './src/figma/robustFigmaExtractor.js';
 import { WebExtractor } from './src/scraper/webExtractor.js';
 import EnhancedWebExtractor from './src/scraper/enhancedWebExtractor.js';
 import ComparisonEngine from './src/compare/comparisonEngine.js';
@@ -21,6 +23,7 @@ import CategorizedReportGenerator from './src/report/categorizedReportGenerator.
 import ComparisonAnalyzer from './src/ai/ComparisonAnalyzer.js';
 import { ReportCompressor } from './src/utils/reportCompressor.js';
 import { ErrorCategorizer } from './src/utils/errorCategorizer.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,8 +53,28 @@ try {
       sizeDifference: 5,
       spacingDifference: 3,
       fontSizeDifference: 2
+    },
+    figma: {
+      accessToken: ""
+    },
+    mcp: {
+      official: {
+        enabled: true
+      },
+      thirdParty: {
+        enabled: false,
+        tools: ["mcp_Framelink_Figma_MCP"]
+      }
     }
   };
+}
+
+// Override Figma access token with environment variable if available
+if (process.env.FIGMA_API_KEY) {
+  config.figma.accessToken = process.env.FIGMA_API_KEY;
+  console.log('✅ Using Figma API key from environment variable');
+} else if (!config.figma.accessToken) {
+  console.warn('⚠️ No Figma API key found in environment or config');
 }
 
 app.use(cors());
@@ -78,8 +101,17 @@ app.use((req, res, next) => {
 // Initialize extractors and engines
 let figmaExtractor = new FigmaExtractor(config);
 let mcpDirectExtractor = null;
+let robustFigmaExtractor = null;
 
-// Try to initialize MCP Direct Extractor
+// Try to initialize Robust Figma Extractor (recommended)
+try {
+  robustFigmaExtractor = new RobustFigmaExtractor(config);
+  console.log('✅ Robust Figma Extractor initialized (recommended)');
+} catch (error) {
+  console.warn('⚠️ Robust Figma Extractor not available:', error.message);
+}
+
+// Try to initialize MCP Direct Extractor (fallback)
 try {
   mcpDirectExtractor = new MCPDirectFigmaExtractor(config);
   console.log('✅ MCP Direct Figma Extractor initialized');
@@ -99,8 +131,17 @@ const comparisonAnalyzer = new ComparisonAnalyzer();
 
 // Helper functions (keeping existing logic)
 function getOptimalFigmaExtractor() {
-  console.log('📐 Using Figma Extractor (with MCP integration)');
-  return figmaExtractor;
+  // Prefer Robust Figma Extractor over MCP-based ones
+  if (robustFigmaExtractor) {
+    console.log('🎯 Using Robust Figma Extractor (recommended)');
+    return robustFigmaExtractor;
+  } else if (mcpDirectExtractor) {
+    console.log('🔧 Using MCP Direct Figma Extractor (fallback)');
+    return mcpDirectExtractor;
+  } else {
+    console.log('📐 Using Figma Extractor with MCP integration (legacy)');
+    return figmaExtractor;
+  }
 }
 
 function getOptimalWebExtractor() {
@@ -111,7 +152,21 @@ function getOptimalWebExtractor() {
 async function extractFigmaData(fileId, nodeId = null) {
   const extractor = getOptimalFigmaExtractor();
   
-  if (extractor === mcpDirectExtractor) {
+  if (extractor === robustFigmaExtractor) {
+    // Use the robust extractor (recommended)
+    const result = await extractor.getFigmaData(fileId, nodeId);
+    return {
+      fileId: fileId,
+      nodeId: nodeId,
+      components: result.components,
+      metadata: result.metadata,
+      extractionMethod: 'Robust Figma Extractor',
+      extractedAt: result.metadata.extractedAt,
+      // Include original data for compatibility
+      ...result
+    };
+  } else if (extractor === mcpDirectExtractor) {
+    // Use MCP direct extractor (fallback)
     const result = await extractor.extractComponents(fileId, nodeId);
     return {
       fileId: fileId,
@@ -122,6 +177,7 @@ async function extractFigmaData(fileId, nodeId = null) {
       extractedAt: result.metadata.extractedAt
     };
   } else {
+    // Use legacy extractor
     return await extractor.extractDesignData(fileId, nodeId);
   }
 }
@@ -224,43 +280,28 @@ async function initializeComponents() {
     await figmaExtractor.initialize();
     console.log('✅ Figma extractor initialized');
     
-    // Enhanced Web Extractor initialization with fallback
+    // Initialize web extractors
     console.log('🌐 Initializing basic web extractor...');
     try {
       await global.webExtractor.initialize();
       console.log('✅ Basic web extractor initialized');
     } catch (error) {
-      console.log(`⚠️ Basic web extractor failed to initialize, server will continue without it: ${error.message}`);
-      global.webExtractor = null;
+      console.error(`❌ Basic web extractor failed to initialize: ${error.message}`);
+      throw error;
     }
 
-    // Enhanced Web Extractor with comprehensive fallback
     console.log('🚀 Initializing enhanced web extractor...');
-    let enhancedInitialized = false;
-    
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        await global.enhancedWebExtractor.initialize();
-        console.log('✅ Enhanced web extractor initialized successfully');
-        enhancedInitialized = true;
-        break;
-      } catch (error) {
-        console.log(`⚠️ Enhanced web extractor initialization attempt ${attempt} failed: ${error.message}`);
-        if (attempt < 3) {
-          console.log('🔄 Retrying enhanced web extractor initialization...');
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-      }
-    }
-
-    if (!enhancedInitialized) {
-      console.log('⚠️ Enhanced web extractor failed to initialize after 3 attempts, server will continue without it');
-      global.enhancedWebExtractor = null;
+    try {
+      await global.enhancedWebExtractor.initialize();
+      console.log('✅ Enhanced web extractor initialized successfully');
+    } catch (error) {
+      console.error(`❌ Enhanced web extractor failed to initialize: ${error.message}`);
+      throw error;
     }
 
     
 
-    console.log('🏗️ Server components initialized (some may be in fallback mode)');
+    console.log('🏗️ Server components initialized successfully');
     
     // Test MCP Direct Extractor if available
     if (mcpDirectExtractor) {
@@ -396,11 +437,11 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     components: {
       figmaExtractor: global.figmaExtractor ? 'initialized' : 'failed',
-      webExtractor: global.webExtractor ? 'initialized' : 'fallback_mode',
-      enhancedWebExtractor: global.enhancedWebExtractor ? 'initialized' : 'fallback_mode',
+      webExtractor: global.webExtractor ? 'initialized' : 'failed',
+      enhancedWebExtractor: global.enhancedWebExtractor ? 'initialized' : 'failed',
       comparisonEngine: 'initialized',
       reportGenerator: 'initialized',
-      fallbackSystem: global.fallbackEnabled ? 'active' : 'inactive'
+
     },
     capabilities: {
       figmaExtraction: !!global.figmaExtractor,
@@ -482,125 +523,175 @@ const ensureComponentsInitialized = (req, res, next) => {
   next();
 };
 
-// Main comparison endpoint
+// Main comparison endpoint with improved error handling
 app.post('/api/compare', async (req, res) => {
+  // Set longer timeout for comparisons (5 minutes)
+  req.setTimeout(300000);
+  
   try {
     const { figmaUrl, webUrl, authentication } = req.body;
     
-    console.log(`🔄 Starting comparison: ${figmaUrl} vs ${webUrl}`);
-    
-    // Extract Figma data
-    let figmaData;
-    try {
-      figmaData = await extractFigmaData(figmaUrl);
-      console.log(`✅ Figma extraction: ${figmaData.components?.length || 0} components`);
-    } catch (error) {
-      console.error('❌ Figma extraction failed:', error);
-      return res.status(500).json({
+    // Validate inputs
+    if (!figmaUrl || !webUrl) {
+      return res.status(400).json({
         success: false,
-        error: 'Figma extraction failed',
-        details: error.message,
-        suggestions: [
-          'Check if the Figma file URL is correct',
-          'Verify you have access to the Figma file',
-          'Ensure Figma API tokens are configured properly',
-          'Try again with a different Figma file'
-        ]
+        error: 'Missing required parameters',
+        details: 'Both figmaUrl and webUrl are required'
       });
     }
-
-    // Extract web data
-    let webData;
+    
+    console.log(`🔄 Starting comparison: ${figmaUrl} vs ${webUrl}`);
+    
+    // Create abort controller with timeout
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => {
+      abortController.abort();
+    }, 240000); // 4 minute timeout
+    
     try {
+      // Extract Figma data with timeout
+      console.log('🎨 Extracting Figma data...');
+      const figmaData = await Promise.race([
+        extractFigmaData(figmaUrl),
+        new Promise((_, reject) => {
+          abortController.signal.addEventListener('abort', () => {
+            reject(new Error('Figma extraction timed out'));
+          });
+        })
+      ]);
+      console.log(`✅ Figma extraction: ${figmaData.components?.length || 0} components`);
+
+      // Extract web data with timeout
+      console.log('🌐 Extracting web data...');
       const extractor = global.enhancedWebExtractor || global.webExtractor;
       if (!extractor) {
         throw new Error('No web extractor available - browser initialization failed');
       }
-      webData = await extractor.extractData(webUrl, authentication);
+      
+      const webData = await Promise.race([
+        extractor.extractData(webUrl, authentication),
+        new Promise((_, reject) => {
+          abortController.signal.addEventListener('abort', () => {
+            reject(new Error('Web extraction timed out'));
+          });
+        })
+      ]);
       console.log(`✅ Web extraction: ${webData.elements?.length || 0} elements`);
-    } catch (error) {
-      console.error('❌ Web extraction failed:', error);
-      return res.status(500).json({
-        success: false,
-        error: 'Web extraction failed',
-        details: error.message,
-        suggestions: [
-          'Check if the website URL is accessible',
-          'Verify the website is not blocking automated access',
-          'Ensure browser dependencies are installed properly',
-          'Try restarting the server to reinitialize browsers'
-        ]
-      });
-    }
 
-    // Perform comparison
-    console.log('🔍 Performing comparison...');
-    const comparisonEngine = global.comparisonEngine;
-    if (!comparisonEngine) {
-      throw new Error('Comparison engine not initialized');
-    }
-    const comparison = await comparisonEngine.compareDesigns(figmaData, webData);
-    
-    // Generate reports  
-    console.log('📊 Generating reports...');
-    const reportGenerator = global.reportGenerator;
-    if (!reportGenerator) {
-      throw new Error('Report generator not initialized');
-    }
-    const htmlReport = await reportGenerator.generateReport(comparison, null, { 
-      filename: `comparison-${Date.now()}.html`,
-      title: 'Figma vs Web Comparison Report'
-    });
-    const jsonReport = await reportGenerator.generateJSONReport(comparison, null, {
-      filename: `comparison-${Date.now()}.json`
-    });
-    
-    const reports = {
-      html: htmlReport,
-      json: jsonReport,
-      message: 'Reports generated successfully'
-    };
-    
-    // Response
-    const response = {
-      success: true,
-      summary: {
-        figma: {
-          fileId: figmaData.fileId,
-          fileName: figmaData.fileName,
-          componentsExtracted: figmaData.components?.length || 0,
-          extractionMethod: figmaData.metadata?.method || 'unknown'
-        },
-        web: {
-          url: webData.url,
-          elementsExtracted: webData.elements?.length || 0,
-          authenticationUsed: authentication?.type || 'none',
-          extractionMethod: webData.metadata?.method || 'unknown'
-        },
-        comparison: {
-          componentsAnalyzed: comparison.matches?.length || 0,
-          totalDeviations: comparison.deviations?.length || 0,
-          totalMatches: comparison.matches?.length || 0,
-          severity: comparison.severitySummary || { high: 0, medium: 0, low: 0 }
-        }
-      },
-      reports: reports,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        toolVersion: '1.0.0'
+      // Perform comparison with timeout
+      console.log('🔍 Performing comparison...');
+      const comparisonEngine = global.comparisonEngine;
+      if (!comparisonEngine) {
+        throw new Error('Comparison engine not initialized');
       }
-    };
+      
+      const comparison = await Promise.race([
+        comparisonEngine.compareDesigns(figmaData, webData),
+        new Promise((_, reject) => {
+          abortController.signal.addEventListener('abort', () => {
+            reject(new Error('Comparison timed out'));
+          });
+        })
+      ]);
+      
+      // Generate reports with timeout
+      console.log('📊 Generating reports...');
+      const reportGenerator = global.reportGenerator;
+      if (!reportGenerator) {
+        throw new Error('Report generator not initialized');
+      }
+      
+      const [htmlReport, jsonReport] = await Promise.race([
+        Promise.all([
+          reportGenerator.generateReport(comparison, null, { 
+            filename: `comparison-${Date.now()}.html`,
+            title: 'Figma vs Web Comparison Report'
+          }),
+          reportGenerator.generateJSONReport(comparison, null, {
+            filename: `comparison-${Date.now()}.json`
+          })
+        ]),
+        new Promise((_, reject) => {
+          abortController.signal.addEventListener('abort', () => {
+            reject(new Error('Report generation timed out'));
+          });
+        })
+      ]);
+      
+      // Clear timeout since we completed successfully
+      clearTimeout(timeoutId);
+      
+      const reports = {
+        html: htmlReport,
+        json: jsonReport,
+        message: 'Reports generated successfully'
+      };
+      
+      // Response
+      const response = {
+        success: true,
+        summary: {
+          figma: {
+            fileId: figmaData.fileId,
+            fileName: figmaData.fileName,
+            componentsExtracted: figmaData.components?.length || 0,
+            extractionMethod: figmaData.metadata?.method || 'unknown'
+          },
+          web: {
+            url: webData.url,
+            elementsExtracted: webData.elements?.length || 0,
+            authenticationUsed: authentication?.type || 'none',
+            extractionMethod: webData.metadata?.method || 'unknown'
+          },
+          comparison: {
+            componentsAnalyzed: comparison.matches?.length || 0,
+            totalDeviations: comparison.deviations?.length || 0,
+            totalMatches: comparison.matches?.length || 0,
+            severity: comparison.severitySummary || { high: 0, medium: 0, low: 0 }
+          }
+        },
+        reports: reports,
+        metadata: {
+          timestamp: new Date().toISOString(),
+          toolVersion: '1.0.0',
+          comparisonId: `comparison_${Date.now()}`
+        }
+      };
 
-    console.log('✅ Comparison completed successfully');
-    res.json(response);
+      console.log('✅ Comparison completed successfully');
+      res.json(response);
+      
+    } catch (timeoutError) {
+      clearTimeout(timeoutId);
+      throw timeoutError;
+    }
     
   } catch (error) {
     console.error('❌ Comparison failed:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Comparison failed',
-      details: error.message
-    });
+    
+    // Handle specific error types
+    if (error.name === 'AbortError' || error.message.includes('timed out')) {
+      res.status(408).json({
+        success: false,
+        error: 'Request timeout',
+        details: 'The comparison operation took too long to complete. Please try again with a simpler comparison or check your network connection.',
+        errorType: 'timeout'
+      });
+    } else if (error.message.includes('browser initialization failed')) {
+      res.status(503).json({
+        success: false,
+        error: 'Service temporarily unavailable',
+        details: 'Web extraction service is not available. Please try again in a moment.',
+        errorType: 'service_unavailable'
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: 'Comparison failed',
+        details: error.message,
+        errorType: 'internal_error'
+      });
+    }
   }
 });
 
@@ -745,6 +836,88 @@ app.post('/api/test/web', async (req, res) => {
 });
 
 // Settings endpoints (keeping existing functionality)
+app.get('/api/settings/current', async (req, res) => {
+  try {
+    const fs = await import('fs/promises');
+    
+    // Load current configuration
+    let currentSettings = {
+      method: 'none',
+      figmaApi: {
+        hasToken: false
+      },
+      mcpServer: {
+        url: 'http://localhost:3845',
+        endpoint: '/sse'
+      },
+      mcpTools: {
+        environment: 'auto',
+        available: FigmaMCPIntegration.checkThirdPartyMCPAvailability()
+      }
+    };
+
+    // Check if Figma API token is configured
+    if (config?.figma?.accessToken) {
+      currentSettings.method = 'api';
+      currentSettings.figmaApi.hasToken = true;
+    }
+
+    // Check MCP configuration from config.json
+    if (config?.mcp?.official?.enabled) {
+      currentSettings.method = 'mcp-server';
+      currentSettings.mcpServer.url = config.mcp.official.serverUrl || 'http://localhost:3845';
+      currentSettings.mcpServer.endpoint = config.mcp.official.endpoint || '/sse';
+    } else if (config?.mcp?.thirdParty?.enabled) {
+      currentSettings.method = 'mcp-tools';
+      currentSettings.mcpTools.environment = config.mcp.thirdParty.environment || 'auto';
+    }
+
+    // Check if MCP configuration file exists
+    try {
+      const mcpConfigContent = await fs.readFile('./mcp.json', 'utf8');
+      const mcpConfig = JSON.parse(mcpConfigContent);
+      
+      if (mcpConfig?.mcp?.servers?.['Figma Dev Mode MCP']?.url) {
+        const mcpUrl = mcpConfig.mcp.servers['Figma Dev Mode MCP'].url;
+        const urlParts = mcpUrl.split('/');
+        const endpoint = '/' + urlParts.slice(3).join('/');
+        const serverUrl = urlParts.slice(0, 3).join('/');
+        
+        currentSettings.mcpServer.url = serverUrl;
+        currentSettings.mcpServer.endpoint = endpoint;
+        
+        if (currentSettings.method === 'none') {
+          currentSettings.method = 'mcp-server';
+        }
+      }
+    } catch (mcpError) {
+      // MCP config file doesn't exist or is invalid, use defaults
+    }
+
+    // Detect current connection type from figma extractor
+    if (figmaExtractor && figmaExtractor.mcpIntegration) {
+      const mcpType = figmaExtractor.mcpIntegration.getMCPType();
+      if (mcpType) {
+        currentSettings.method = mcpType === 'third-party' ? 'mcp-tools' : 
+                                 mcpType === 'official' ? 'mcp-server' : 
+                                 mcpType === 'api' ? 'api' : currentSettings.method;
+      }
+    }
+
+    res.json({
+      success: true,
+      settings: currentSettings
+    });
+
+  } catch (error) {
+    console.error('Error loading current settings:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load current settings'
+    });
+  }
+});
+
 app.post('/api/settings/test-connection', async (req, res) => {
   try {
     const { method, accessToken, serverUrl, endpoint, environment } = req.body;

@@ -16,16 +16,14 @@ import {
   InformationCircleIcon
 } from '@heroicons/react/24/outline'
 import { ComparisonRequest, ComparisonResult } from '../../types'
-import { PLACEHOLDER_TEXT, PLACEHOLDER_URLS } from '../../constants/placeholders'
-
-// Define placeholder constants for the form
+// Define form input placeholders
 const FORM_PLACEHOLDERS = {
-  figmaUrl: PLACEHOLDER_TEXT.figmaUrl,
-  webUrl: PLACEHOLDER_TEXT.webUrl,
+  figmaUrl: 'https://www.figma.com/design/...',
+  webUrl: 'https://example.com',
   cssSelector: '.main-content, #header, [data-testid="component"]',
-  loginUrl: PLACEHOLDER_TEXT.loginUrl,
-  username: PLACEHOLDER_TEXT.username,
-  password: PLACEHOLDER_TEXT.password,
+  loginUrl: 'https://example.com/login',
+  username: 'your-username',
+  password: 'your-password',
   successIndicator: '.dashboard, .profile-menu, .user-menu'
 }
 
@@ -70,16 +68,28 @@ export default function ComparisonForm({ onSuccess, onComparisonStart }: Compari
 
       const result = await apiService.post('/api/compare', payload) as ComparisonResult
       
-      // Use the comparison ID returned from the server
-      if (result.comparisonId && onComparisonStart) {
-        onComparisonStart(result.comparisonId)
+      console.log('📊 Received comparison result:', result)
+      
+      // Use the comparison ID from the metadata or generate one
+      const comparisonId = result.metadata?.comparisonId || result.comparisonId || `comparison_${Date.now()}`
+      
+      if (onComparisonStart) {
+        onComparisonStart(comparisonId)
       }
       
-      return result
+      // Add the comparisonId to the result for consistency
+      return {
+        ...result,
+        comparisonId
+      }
     },
     onSuccess: (result) => {
+      console.log('✅ Comparison mutation successful, calling onSuccess:', result)
       queryClient.invalidateQueries({ queryKey: ['reports'] })
       onSuccess?.(result)
+    },
+    onError: (error) => {
+      console.error('❌ Comparison mutation failed:', error)
     },
     retry: 2,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000)

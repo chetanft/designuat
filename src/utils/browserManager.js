@@ -40,32 +40,34 @@ export class BrowserManager {
   }
 
   static async createBrowser(options = {}) {
+    // Clean up before trying to launch
+    await this.cleanupOrphanedProcesses();
+    
+    // macOS-specific browser configuration to fix socket hang up issues
     const defaultOptions = {
       headless: 'new',
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', // Use system Chrome
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
         '--disable-gpu',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor',
+        '--use-mock-keychain',
+        '--no-first-run',
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',
         '--disable-renderer-backgrounding',
-        '--disable-features=TranslateUI',
-        '--disable-ipc-flooding-protection',
-        '--force-device-scale-factor=1',
         '--disable-extensions',
         '--disable-default-apps',
-        '--disable-background-networking',
         '--disable-sync',
-        '--metrics-recording-only',
-        '--disable-web-security',
-        '--remote-debugging-port=0' // Use random port to avoid conflicts
+        '--disable-translate',
+        '--disable-background-networking',
+        '--remote-debugging-port=0'
       ],
-      timeout: 30000,
-      ignoreDefaultArgs: false,
+      timeout: 90000, // Increased timeout
+      ignoreDefaultArgs: ['--disable-extensions'], // Allow some defaults
       handleSIGINT: false,
       handleSIGTERM: false,
       handleSIGHUP: false,

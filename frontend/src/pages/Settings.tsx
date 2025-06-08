@@ -13,7 +13,7 @@ import {
   KeyIcon,
   GlobeAltIcon
 } from '@heroicons/react/24/outline'
-import { PLACEHOLDER_TEXT, PLACEHOLDER_URLS, getPlaceholder } from '../constants/placeholders'
+
 
 interface SettingsForm {
   // General Settings
@@ -56,9 +56,9 @@ interface SettingsForm {
 
 // Settings form placeholders
 const SETTINGS_PLACEHOLDERS = {
-  figmaToken: getPlaceholder('token'),
+  figmaToken: 'figd_...',
   webhookUrl: 'https://hooks.slack.com/services/...',
-  mcpServerUrl: PLACEHOLDER_URLS.api.mcpServer,
+  mcpServerUrl: 'http://127.0.0.1:3845',
   searchReports: 'Search reports by name, date, or status...'
 }
 

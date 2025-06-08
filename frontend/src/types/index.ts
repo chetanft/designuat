@@ -55,6 +55,11 @@ export interface ComparisonResult {
     json: string
     categorized?: string
   }
+  metadata?: {
+    comparisonId?: string
+    timestamp?: string
+    toolVersion?: string
+  }
   error?: string
 }
 
