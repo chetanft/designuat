@@ -5,6 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   root: './frontend',
+  base: '/modern/',
   build: {
     outDir: '../public/modern',
     emptyOutDir: true,

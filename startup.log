@@ -1,0 +1,126 @@
+
+> figma-web-comparison-tool@1.0.0 start
+> node start-server.js
+
+🚀 Starting Modern UI server (RECOMMENDED)...
+📁 File: server-unified.js
+🌐 Port: 3006
+🔗 URL: http://localhost:3006
+
+🔧 MCP Framelink Bridge initialized
+🌐 MCP Framelink global proxies setup
+✅ Configuration loaded
+🔧 MCP Direct Figma Extractor initialized
+✅ MCP Direct Figma Extractor initialized
+🐛 WebExtractor config received: {
+  "headless": "new",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "timeout": 30000
+}
+🐛 WebExtractor final config: {
+  "headless": "new",
+  "timeout": 30000,
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  }
+}
+🐛 EnhancedWebExtractor config received: {
+  "headless": "new",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "timeout": 30000
+}
+🐛 EnhancedWebExtractor final config: {
+  "headless": "new",
+  "timeout": 30000,
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "maxComponents": 2000,
+  "includeInvisible": false,
+  "componentFilters": {
+    "minWidth": 10,
+    "minHeight": 10,
+    "excludeTags": [
+      "script",
+      "style",
+      "meta",
+      "title",
+      "head",
+      "noscript"
+    ],
+    "excludeClasses": [
+      "sr-only",
+      "visually-hidden",
+      "hidden"
+    ]
+  }
+}
+🔧 Initializing components...
+🎨 Initializing Figma extractor...
+🔧 Initializing Figma MCP Integration...
+🔧 Third-party MCP tools enabled - checking availability
+🔧 MCP Framelink Bridge initialized
+✅ MCP tools initialized successfully (third-party)
+✅ Figma Extractor initialized successfully
+✅ Figma extractor initialized
+🌐 Initializing basic web extractor...
+Launching Puppeteer browser...
+❌ Failed to initialize WebExtractor: ErrorEvent {
+  [Symbol(kTarget)]: WebSocket {
+    _events: [Object: null prototype] { open: [Function], error: [Function] },
+    _eventsCount: 2,
+    _maxListeners: undefined,
+    _binaryType: 'nodebuffer',
+    _closeCode: 1006,
+    _closeFrameReceived: false,
+    _closeFrameSent: false,
+    _closeMessage: <Buffer >,
+    _closeTimer: null,
+    _extensions: {},
+    _paused: false,
+    _protocol: '',
+    _readyState: 3,
+    _receiver: null,
+    _sender: null,
+    _socket: null,
+    _bufferedAmount: 0,
+    _isServer: false,
+    _redirects: 0,
+    _autoPong: true,
+    _url: 'ws://127.0.0.1:58861/devtools/browser/9f87be76-e51c-4cae-8877-112c5752cdad',
+    _originalIpc: false,
+    _originalSecure: false,
+    _originalHostOrSocketPath: '127.0.0.1:58861',
+    _req: null,
+    [Symbol(shapeMode)]: false,
+    [Symbol(kCapture)]: false
+  },
+  [Symbol(kType)]: 'error',
+  [Symbol(kError)]: Error: socket hang up
+      at Socket.socketOnEnd (node:_http_client:542:25)
+      at Socket.emit (node:events:519:35)
+      at endReadableNT (node:internal/streams/readable:1696:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'ECONNRESET'
+  },
+  [Symbol(kMessage)]: 'socket hang up'
+}
+❌ Failed to initialize components: Error: WebExtractor initialization failed: socket hang up
+    at WebExtractor.initialize (file:///Users/user/Comparision%20tool/src/scraper/webExtractor.js:197:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async initializeComponents (file:///Users/user/Comparision%20tool/server-unified.js:186:5)
+    at async startServer (file:///Users/user/Comparision%20tool/server-unified.js:1016:5)
+❌ Failed to start server: Error: WebExtractor initialization failed: socket hang up
+    at WebExtractor.initialize (file:///Users/user/Comparision%20tool/src/scraper/webExtractor.js:197:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async initializeComponents (file:///Users/user/Comparision%20tool/server-unified.js:186:5)
+    at async startServer (file:///Users/user/Comparision%20tool/server-unified.js:1016:5)
+❌ Server exited with code 1

@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { ErrorCategorizer } from '../utils/errorCategorizer.js';
+import { BrowserManager } from '../utils/browserManager.js';
 
 /**
  * Enhanced Web Extractor
@@ -36,7 +37,7 @@ export class EnhancedWebExtractor {
       // Close existing browser if any
       if (this.browser) {
         try {
-          await this.browser.close();
+          await BrowserManager.closeBrowserSafely(this.browser);
         } catch (error) {
           console.warn('⚠️ Error closing existing browser:', error.message);
         }
@@ -44,31 +45,30 @@ export class EnhancedWebExtractor {
         this.page = null;
       }
 
+      console.log('🔍 Checking browser environment...');
+      const browserInfo = await BrowserManager.getBrowserInfo();
+      console.log(`📊 Current browser processes: ${browserInfo.runningProcesses}`);
+      
+      if (!browserInfo.isClean) {
+        console.log('🧹 Cleaning up orphaned processes...');
+        await BrowserManager.cleanupOrphanedProcesses();
+      }
+
       console.log('🚀 Launching Enhanced Web Extractor...');
-      this.browser = await puppeteer.launch({
+      this.browser = await BrowserManager.createBrowser({
         headless: this.config.headless === true ? "new" : this.config.headless,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-web-security',
-          '--disable-gpu',
-          '--no-first-run',
-          '--disable-background-timer-throttling',
-          '--disable-backgrounding-occluded-windows',
-          '--disable-renderer-backgrounding'
-        ]
+        timeout: 60000,
+        viewport: this.config.viewport
       });
 
       // Wait for browser to be fully ready
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Create new page with proper error handling
-      this.page = await this.browser.newPage();
-      
-      // Set viewport and timeouts
-      await this.page.setViewport(this.config.viewport);
-      await this.page.setDefaultTimeout(this.config.timeout);
+      // Create new page with enhanced management
+      this.page = await BrowserManager.createPage(this.browser, {
+        timeout: this.config.timeout,
+        viewport: this.config.viewport
+      });
       
       // Set user agent to avoid bot detection
       await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
@@ -94,7 +94,7 @@ export class EnhancedWebExtractor {
       // Cleanup on failure
       if (this.browser) {
         try {
-          await this.browser.close();
+          await BrowserManager.closeBrowserSafely(this.browser);
         } catch (closeError) {
           console.warn('⚠️ Error during cleanup:', closeError.message);
         }
@@ -891,14 +891,9 @@ export class EnhancedWebExtractor {
     try {
       console.log('🔄 Closing Enhanced Web Extractor...');
       
-      if (this.page && !this.page.isClosed()) {
-        await this.page.close();
-        console.log('✅ Page closed');
-      }
-      
       if (this.browser) {
-        await this.browser.close();
-        console.log('✅ Browser closed');
+        await BrowserManager.closeBrowserSafely(this.browser);
+        console.log('✅ Browser closed safely');
       }
       
       this.page = null;
@@ -908,6 +903,7 @@ export class EnhancedWebExtractor {
     } catch (error) {
       console.error('❌ Error closing Enhanced Web Extractor:', error);
       // Force cleanup even if there are errors
+      await BrowserManager.cleanupOrphanedProcesses();
       this.page = null;
       this.browser = null;
     }

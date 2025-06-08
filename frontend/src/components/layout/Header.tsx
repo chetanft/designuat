@@ -40,14 +40,6 @@ export default function Header({ currentPage, onSidebarToggle }: HeaderProps) {
         </div>
 
         <div className="flex items-center space-x-4">
-          {/* Legacy UI Toggle */}
-          <a
-            href="/?legacy=true"
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            Switch to Legacy UI
-          </a>
-          
           {/* Notifications */}
           <button className="p-2 rounded-md hover:bg-gray-100 transition-colors relative">
             <BellIcon className="w-5 h-5 text-gray-500" />

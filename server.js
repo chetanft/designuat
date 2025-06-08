@@ -3,6 +3,9 @@ import cors from 'cors';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import rateLimit from 'express-rate-limit';
 
 // Import our real implementations
 import FigmaExtractor from './src/figma/extractor.js';
@@ -12,7 +15,7 @@ import { WebExtractor } from './src/scraper/webExtractor.js';
 import EnhancedWebExtractor from './src/scraper/enhancedWebExtractor.js';
 import ComparisonEngine from './src/compare/comparisonEngine.js';
 import ReportGenerator from './src/report/reportGenerator.js';
-import FigmaUrlParser from './src/figma/urlParser.js';
+import { FigmaUrlParser } from './src/figma/urlParser.js';
 import EnhancedVisualComparison from './src/visual/enhancedVisualComparison.js';
 import ComponentCategorizer from './src/analyze/componentCategorizer.js';
 import CategorizedReportGenerator from './src/report/categorizedReportGenerator.js';
@@ -21,7 +24,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3001;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.NODE_ENV === 'production' 
+      ? ['https://yourdomain.com', 'https://www.yourdomain.com'] // Replace with actual domains
+      : ['http://localhost:3006', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    methods: ['GET', 'POST']
+  }
+});
+import { getAppPort } from './src/config/ports.js';
+const port = getAppPort();
 
 // Load configuration
 let config = {};
@@ -41,7 +54,59 @@ try {
   };
 }
 
-app.use(cors());
+// CORS configuration - more secure for production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://yourdomain.com', 'https://www.yourdomain.com'] // Replace with actual domains
+    : ['http://localhost:3006', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}
+
+app.use(cors(corsOptions))
+
+// Security headers
+app.use((req, res, next) => {
+  // Remove X-Powered-By header
+  res.removeHeader('X-Powered-By')
+  
+  // Add security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('X-XSS-Protection', '1; mode=block')
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+  
+  // CSP for production
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Content-Security-Policy', 
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: https:; " +
+      "connect-src 'self' https://api.figma.com; " +
+      "font-src 'self' data:;"
+    )
+  }
+  
+  next()
+})
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // Limit each IP
+  message: {
+    error: 'Too many requests from this IP, please try again later.',
+    retryAfter: '15 minutes'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+
+app.use('/api/', limiter)
+
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -157,6 +222,26 @@ async function initializeComponents() {
 // Initialize on startup
 initializeComponents();
 
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+  console.log(`🔌 Client connected: ${socket.id}`);
+  
+  socket.on('disconnect', () => {
+    console.log(`🔌 Client disconnected: ${socket.id}`);
+  });
+  
+  // Handle comparison progress updates
+  socket.on('join-comparison', (comparisonId) => {
+    socket.join(`comparison-${comparisonId}`);
+    console.log(`🔌 Client ${socket.id} joined comparison ${comparisonId}`);
+  });
+});
+
+// Helper function to emit progress updates
+function emitProgress(comparisonId, progress) {
+  io.to(`comparison-${comparisonId}`).emit('progress', progress);
+}
+
 // Favicon route to prevent 404s
 app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
@@ -179,19 +264,76 @@ app.post('/api/compare', async (req, res) => {
     console.log(`🌐 Web: ${webUrl}`);
     console.log(`🔐 Auth: ${authentication ? 'Provided' : 'None'}`);
 
+    // Generate comparison ID for progress tracking
+    const comparisonId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Emit initial progress
+    emitProgress(comparisonId, {
+      stage: 'starting',
+      message: 'Initializing comparison process...',
+      progress: 0
+    });
+
+    // Parse Figma URL to extract file ID and node ID
+    console.log('🔍 Parsing Figma URL...');
+    let figmaFileId, figmaNodeId;
+    
+    try {
+      const parsed = FigmaUrlParser.parseUrl(figmaFile);
+      figmaFileId = parsed.fileId;
+      figmaNodeId = nodeId || parsed.nodeId; // Use provided nodeId or parsed nodeId
+      
+      console.log(`📋 Parsed Figma URL: fileId=${figmaFileId}, nodeId=${figmaNodeId || 'none'}`);
+    } catch (parseError) {
+      // If URL parsing fails, assume figmaFile is already a file ID
+      console.log('⚠️ URL parsing failed, assuming figmaFile is a file ID:', parseError.message);
+      figmaFileId = figmaFile;
+      figmaNodeId = nodeId;
+    }
+
     // Extract design data from Figma
     console.log('📐 Extracting Figma design data...');
-    const figmaData = await figmaExtractor.extractDesignData(figmaFile, nodeId);
+    emitProgress(comparisonId, {
+      stage: 'figma-extraction',
+      message: 'Extracting Figma design data...',
+      progress: 20
+    });
+    
+    const figmaData = await figmaExtractor.extractDesignData(figmaFileId, figmaNodeId);
     console.log(`✅ Figma extraction complete: ${figmaData.components.length} components`);
+    
+    emitProgress(comparisonId, {
+      stage: 'figma-complete',
+      message: `Figma extraction complete: ${figmaData.components.length} components`,
+      progress: 40
+    });
 
     // Extract web data
     console.log('🌐 Extracting web data...');
+    emitProgress(comparisonId, {
+      stage: 'web-extraction',
+      message: 'Extracting web data...',
+      progress: 50
+    });
+    
     const webExtractor = await getOptimalWebExtractor();
     const webData = await webExtractor.extractWebData(webUrl, authentication);
     console.log(`✅ Web extraction complete: ${webData.elements?.length || 0} components`);
+    
+    emitProgress(comparisonId, {
+      stage: 'web-complete',
+      message: `Web extraction complete: ${webData.elements?.length || 0} components`,
+      progress: 70
+    });
 
     // Perform comparison
     console.log('🔍 Performing component comparison...');
+    emitProgress(comparisonId, {
+      stage: 'comparison',
+      message: 'Performing component comparison...',
+      progress: 80
+    });
+    
     const comparisonResults = await comparisonEngine.compareDesigns(figmaData, webData);
     console.log(`✅ Comparison complete: ${comparisonResults.summary?.matches || 0} matches found`);
 
@@ -234,6 +376,13 @@ app.post('/api/compare', async (req, res) => {
     console.log(`   📊 Categorized: ${categorizedReportPath}`);
     console.log(`   🌐 HTML Report: ${htmlReportPath}`);
 
+    // Emit final progress update
+    emitProgress(comparisonId, {
+      stage: 'complete',
+      message: 'Comparison completed successfully!',
+      progress: 100
+    });
+
     // Convert file paths to localhost URLs
     const baseUrl = req.protocol + '://' + req.get('host');
     const htmlFilename = path.basename(htmlReportPath);
@@ -242,6 +391,7 @@ app.post('/api/compare', async (req, res) => {
 
     const response = {
       success: true,
+      comparisonId,
       timestamp,
       figma: {
         fileId: figmaData.fileId,
@@ -288,6 +438,17 @@ app.post('/api/compare', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Comparison failed:', error);
+    
+    // Emit error progress update if comparisonId exists
+    if (typeof comparisonId !== 'undefined') {
+      emitProgress(comparisonId, {
+        stage: 'error',
+        message: `Comparison failed: ${error.message}`,
+        progress: -1,
+        error: true
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Comparison failed', 
       details: error.message,
@@ -958,6 +1119,37 @@ app.post('/api/settings/save', async (req, res) => {
   }
 });
 
+// SPA routing for modern UI - catch all routes that don't match API or static files
+app.get('/modern/*', (req, res) => {
+  const indexPath = path.resolve(__dirname, 'public', 'modern', 'index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
+// Handle root-level routes that should go to modern UI
+app.get('/new-comparison', (req, res) => {
+  const indexPath = path.resolve(__dirname, 'public', 'modern', 'index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
+app.get('/reports', (req, res, next) => {
+  // If it's a request for the reports page (not the API), serve the modern UI
+  if (req.query.modern === 'true' || req.headers.accept?.includes('text/html')) {
+    const indexPath = path.resolve(__dirname, 'public', 'modern', 'index.html');
+    console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+    res.sendFile(indexPath);
+  } else {
+    next();
+  }
+});
+
+app.get('/settings', (req, res) => {
+  const indexPath = path.resolve(__dirname, 'public', 'modern', 'index.html');
+  console.log(`📱 Serving modern UI for ${req.path} from ${indexPath}`);
+  res.sendFile(indexPath);
+});
+
 // Function to find available port
 async function findAvailablePort(startPort) {
   const net = await import('net');
@@ -977,10 +1169,11 @@ async function findAvailablePort(startPort) {
 const startServer = async () => {
   try {
     const availablePort = await findAvailablePort(port);
-    app.listen(availablePort, () => {
+    httpServer.listen(availablePort, () => {
       console.log(`🌐 Figma-Web Comparison Tool running at http://localhost:${availablePort}`);
       console.log(`📊 Open http://localhost:${availablePort} in your browser`);
   console.log(`🔧 Using real implementations with MCP integration`);
+      console.log(`🔌 Socket.IO enabled for real-time updates`);
       if (availablePort !== port) {
         console.log(`⚠️ Note: Requested port ${port} was busy, using port ${availablePort} instead`);
       }

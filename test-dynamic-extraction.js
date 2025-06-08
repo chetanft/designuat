@@ -10,8 +10,9 @@
  */
 
 import fetch from 'node-fetch';
+import { PLACEHOLDER_CREDENTIALS, PLACEHOLDER_URLS } from './src/constants/placeholders.js';
 
-const API_BASE = 'http://localhost:3004';
+const API_BASE = process.env.TEST_SERVER_URL || 'http://localhost:3004';
 
 /**
  * Test 1: FreightTiger Dynamic Extraction
@@ -334,8 +335,8 @@ POST /api/extract-dynamic
     "type": "form",
     "loginUrl": "https://your-app.com/login",
     "credentials": {
-      "username": "user@example.com",
-      "password": "password123"
+          "username": PLACEHOLDER_CREDENTIALS.email,
+    "password": process.env.TEST_PASSWORD || "secure-test-password"
     },
     "selectors": {
       "username": "#email",

@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import { promises as fs } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
+import { BrowserManager } from '../utils/browserManager.js';
 
 /**
  * Live Webpage Style Extractor
@@ -35,8 +36,8 @@ export class WebExtractor {
         // Wait a bit more to ensure page is completely ready
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Attempt navigation
-        await this.page.goto(url, { 
+        // Attempt navigation using BrowserManager
+        await BrowserManager.navigateWithRetry(this.page, url, {
           waitUntil: 'networkidle2',
           timeout: this.config.timeout || 30000
         });
@@ -117,7 +118,7 @@ export class WebExtractor {
       // Close existing browser if any
       if (this.browser) {
         try {
-          await this.browser.close();
+          await BrowserManager.closeBrowserSafely(this.browser);
         } catch (error) {
           console.warn('Error closing existing browser:', error.message);
         }
@@ -125,39 +126,30 @@ export class WebExtractor {
         this.page = null;
       }
 
-      console.log('Launching Puppeteer browser...');
-      this.browser = await puppeteer.launch({
+      console.log('🔍 Checking browser environment...');
+      const browserInfo = await BrowserManager.getBrowserInfo();
+      console.log(`📊 Current browser processes: ${browserInfo.runningProcesses}`);
+      
+      if (!browserInfo.isClean) {
+        console.log('🧹 Cleaning up orphaned processes...');
+        await BrowserManager.cleanupOrphanedProcesses();
+      }
+
+      console.log('🚀 Launching browser with enhanced stability...');
+      this.browser = await BrowserManager.createBrowser({
         headless: this.config.headless === true ? "new" : this.config.headless,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--no-first-run',
-          '--no-zygote',
-          '--disable-gpu',
-          '--disable-web-security',
-          '--disable-features=VizDisplayCompositor',
-          '--disable-extensions',
-          '--disable-background-timer-throttling',
-          '--disable-renderer-backgrounding',
-          '--disable-backgrounding-occluded-windows'
-        ],
-        ignoreDefaultArgs: ['--disable-extensions'],
-        timeout: 60000
+        timeout: 60000,
+        viewport: this.config.viewport
       });
       
       // Wait for browser to be fully ready
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      console.log('Creating new page...');
-      this.page = await this.browser.newPage();
-      
-      // Wait for page to be fully created
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      console.log('Setting viewport...');
-      await this.page.setViewport(this.config.viewport);
+      console.log('🔄 Creating new page...');
+      this.page = await BrowserManager.createPage(this.browser, {
+        timeout: this.config.timeout,
+        viewport: this.config.viewport
+      });
       
       // Set reasonable timeouts
       console.log('Setting timeouts...');
@@ -192,7 +184,7 @@ export class WebExtractor {
       // Clean up on failure
       if (this.browser) {
         try {
-          await this.browser.close();
+          await BrowserManager.closeBrowserSafely(this.browser);
         } catch (closeError) {
           console.warn('Error closing browser after initialization failure:', closeError.message);
         }
@@ -659,13 +651,15 @@ export class WebExtractor {
   async close() {
     try {
       if (this.browser) {
-        await this.browser.close();
+        await BrowserManager.closeBrowserSafely(this.browser);
         this.browser = null;
         this.page = null;
-        console.log('WebExtractor closed successfully');
+        console.log('✅ WebExtractor closed successfully');
       }
     } catch (error) {
-      console.error('Failed to close WebExtractor:', error);
+      console.error('❌ Failed to close WebExtractor:', error);
+      // Force cleanup if normal close fails
+      await BrowserManager.cleanupOrphanedProcesses();
     }
   }
 

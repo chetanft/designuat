@@ -25,6 +25,9 @@ export interface AuthenticationConfig {
 
 export interface ComparisonResult {
   success: boolean
+  comparisonId?: string
+  message?: string
+  stages?: string[]
   summary?: {
     figma: {
       fileId: string
@@ -53,7 +56,6 @@ export interface ComparisonResult {
     categorized?: string
   }
   error?: string
-  message?: string
 }
 
 export interface Report {
@@ -74,5 +76,28 @@ export interface HealthStatus {
   mcp?: {
     available: boolean
     serverUrl?: string
+  }
+}
+
+export interface ComparisonReport {
+  id: string
+  name?: string
+  figmaUrl?: string
+  webUrl?: string
+  status: 'success' | 'error' | 'pending'
+  createdAt: string
+  updatedAt?: string
+  htmlPath?: string
+  jsonPath?: string
+  summary?: {
+    figma?: {
+      componentsExtracted: number
+    }
+    web?: {
+      elementsExtracted: number
+    }
+    comparison?: {
+      totalMatches: number
+    }
   }
 } 
