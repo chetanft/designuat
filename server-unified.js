@@ -164,11 +164,45 @@ async function extractWebData(url, authentication = null) {
   }
   
   if (initializationAttempts >= maxAttempts) {
-    throw new Error(`Web extractor failed to initialize after ${maxAttempts} attempts`);
+    console.warn(`📊 Progress: web-extraction - 0% - Web extraction failed, using fallback data structure`);
+    return {
+      url: url,
+      components: [],
+      metadata: {
+        timestamp: new Date().toISOString(),
+        extractionMethod: 'fallback',
+        error: 'Web extractor failed to initialize after multiple attempts',
+        note: 'Web extraction failed due to browser connectivity issues. Figma comparison can still proceed.'
+      },
+      styles: [],
+      performance: {
+        totalTime: 0,
+        componentCount: 0
+      }
+    };
   }
   
   // Now attempt extraction
-  return await extractor.extractWebData(url, authentication);
+  try {
+    return await extractor.extractWebData(url, authentication);
+  } catch (error) {
+    console.warn(`Web extraction failed during execution:`, error.message);
+    return {
+      url: url,
+      components: [],
+      metadata: {
+        timestamp: new Date().toISOString(),
+        extractionMethod: 'fallback',
+        error: error.message,
+        note: 'Web extraction failed during execution. Figma comparison can still proceed.'
+      },
+      styles: [],
+      performance: {
+        totalTime: 0,
+        componentCount: 0
+      }
+    };
+  }
 }
 
 // Initialize components
@@ -181,13 +215,16 @@ async function initializeComponents() {
     await figmaExtractor.initialize();
     console.log('✅ Figma extractor initialized');
     
-    // Initialize basic web extractor with error tolerance
+    // Initialize basic web extractor with error tolerance (optional)
     console.log('🌐 Initializing basic web extractor...');
+    let webExtractorReady = false;
     try {
       await webExtractor.initialize();
       console.log('✅ Basic web extractor initialized');
+      webExtractorReady = true;
     } catch (error) {
-      console.warn('⚠️ Basic web extractor failed to initialize, will retry on demand:', error.message);
+      console.warn('⚠️ Basic web extractor failed to initialize, server will continue without it:', error.message);
+      webExtractorReady = false;
     }
     
     // Initialize enhanced web extractor with retries
@@ -209,8 +246,11 @@ async function initializeComponents() {
     }
     
     if (!enhancedInitialized) {
-      console.warn('⚠️ Enhanced web extractor failed to initialize after 3 attempts, will retry on demand');
+      console.warn('⚠️ Enhanced web extractor failed to initialize after 3 attempts, server will continue without it');
     }
+    
+    // Server can continue even if web extractors fail to initialize
+    console.log('🏗️ Server components initialized (some may be in fallback mode)');
     
     // Test MCP Direct Extractor if available
     if (mcpDirectExtractor) {
