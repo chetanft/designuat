@@ -95,6 +95,8 @@ const componentCategorizer = new ComponentCategorizer();
 const categorizedReportGenerator = new CategorizedReportGenerator();
 const comparisonAnalyzer = new ComparisonAnalyzer();
 
+
+
 // Helper functions (keeping existing logic)
 function getOptimalFigmaExtractor() {
   console.log('📐 Using Figma Extractor (with MCP integration)');
@@ -210,46 +212,54 @@ async function initializeComponents() {
   try {
     console.log('🔧 Initializing components...');
     
+    // Set global references
+    global.figmaExtractor = figmaExtractor;
+    global.webExtractor = webExtractor;
+    global.enhancedWebExtractor = enhancedWebExtractor;
+    global.comparisonEngine = comparisonEngine;
+    global.reportGenerator = reportGenerator;
+    
     // Initialize Figma extractor
     console.log('🎨 Initializing Figma extractor...');
     await figmaExtractor.initialize();
     console.log('✅ Figma extractor initialized');
     
-    // Initialize basic web extractor with error tolerance (optional)
+    // Enhanced Web Extractor initialization with fallback
     console.log('🌐 Initializing basic web extractor...');
-    let webExtractorReady = false;
     try {
-      await webExtractor.initialize();
+      await global.webExtractor.initialize();
       console.log('✅ Basic web extractor initialized');
-      webExtractorReady = true;
     } catch (error) {
-      console.warn('⚠️ Basic web extractor failed to initialize, server will continue without it:', error.message);
-      webExtractorReady = false;
+      console.log(`⚠️ Basic web extractor failed to initialize, server will continue without it: ${error.message}`);
+      global.webExtractor = null;
     }
-    
-    // Initialize enhanced web extractor with retries
+
+    // Enhanced Web Extractor with comprehensive fallback
     console.log('🚀 Initializing enhanced web extractor...');
     let enhancedInitialized = false;
+    
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        await enhancedWebExtractor.initialize();
+        await global.enhancedWebExtractor.initialize();
+        console.log('✅ Enhanced web extractor initialized successfully');
         enhancedInitialized = true;
-        console.log('✅ Enhanced web extractor initialized');
         break;
       } catch (error) {
-        console.warn(`⚠️ Enhanced web extractor initialization attempt ${attempt} failed:`, error.message);
+        console.log(`⚠️ Enhanced web extractor initialization attempt ${attempt} failed: ${error.message}`);
         if (attempt < 3) {
           console.log('🔄 Retrying enhanced web extractor initialization...');
           await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
     }
-    
+
     if (!enhancedInitialized) {
-      console.warn('⚠️ Enhanced web extractor failed to initialize after 3 attempts, server will continue without it');
+      console.log('⚠️ Enhanced web extractor failed to initialize after 3 attempts, server will continue without it');
+      global.enhancedWebExtractor = null;
     }
+
     
-    // Server can continue even if web extractors fail to initialize
+
     console.log('🏗️ Server components initialized (some may be in fallback mode)');
     
     // Test MCP Direct Extractor if available
@@ -381,31 +391,40 @@ app.get('/favicon.ico', (req, res) => {
 
 // API Routes - Health check
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  const health = {
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    version: 'unified-v1.0',
-    features: ['modern-ui', 'real-time-updates', 'ai-analysis'],
-    figma: figmaExtractor ? {
-      connectionType: figmaExtractor.mcpIntegration ? 'third-party-mcp' : 'figma-api',
-      message: figmaExtractor.mcpIntegration ? 'Connected to Third-party MCP Figma tools' : 'Connected to Figma REST API',
-      availableOptions: {
-        officialMCP: false,
-        thirdPartyMCP: !!figmaExtractor.mcpIntegration,
-        figmaAPI: true
-      }
-    } : { status: 'not initialized' },
     components: {
-      figmaExtractor: figmaExtractor ? 'initialized' : 'not initialized',
-      webExtractor: webExtractor ? 'initialized' : 'not initialized',
-      comparisonEngine: comparisonEngine ? 'initialized' : 'not initialized',
-      reportGenerator: reportGenerator ? 'initialized' : 'not initialized'
+      figmaExtractor: global.figmaExtractor ? 'initialized' : 'failed',
+      webExtractor: global.webExtractor ? 'initialized' : 'fallback_mode',
+      enhancedWebExtractor: global.enhancedWebExtractor ? 'initialized' : 'fallback_mode',
+      comparisonEngine: 'initialized',
+      reportGenerator: 'initialized',
+      fallbackSystem: global.fallbackEnabled ? 'active' : 'inactive'
     },
-    config: {
-      loaded: !!config,
-      hasAccessToken: !!(config?.figma?.accessToken)
+    capabilities: {
+      figmaExtraction: !!global.figmaExtractor,
+      webExtraction: !!(global.webExtractor || global.enhancedWebExtractor),
+      freightTigerFallback: global.fallbackEnabled,
+      mcpIntegration: !!global.mcpFramelink
+    },
+    mcp: {
+      type: global.mcpFramelink ? 'framelink' : 'none',
+      officialFigmaAvailable: !!global.figmaExtractor,
+      thirdPartyAvailable: !!global.mcpFramelink
+    },
+    freightTiger: {
+      optimized: true,
+      errorPatternsSupported: [
+        'target_site_module_error',
+        'target_site_javascript_error',
+        'browser_infrastructure',
+        'navigation_timeout'
+      ]
     }
-  });
+  };
+
+  res.json(health);
 });
 
 // API Routes - Reports
@@ -463,209 +482,129 @@ const ensureComponentsInitialized = (req, res, next) => {
   next();
 };
 
-// Enhanced comparison endpoint with AI analysis
-app.post('/api/compare', ensureComponentsInitialized, async (req, res) => {
-  const comparisonId = `comparison_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  
+// Main comparison endpoint
+app.post('/api/compare', async (req, res) => {
   try {
-    const { figmaUrl, webUrl, authentication, visualComparison } = req.body;
+    const { figmaUrl, webUrl, authentication } = req.body;
     
-    if (!figmaUrl || !webUrl) {
-      return res.status(400).json({
+    console.log(`🔄 Starting comparison: ${figmaUrl} vs ${webUrl}`);
+    
+    // Extract Figma data
+    let figmaData;
+    try {
+      figmaData = await extractFigmaData(figmaUrl);
+      console.log(`✅ Figma extraction: ${figmaData.components?.length || 0} components`);
+    } catch (error) {
+      console.error('❌ Figma extraction failed:', error);
+      return res.status(500).json({
         success: false,
-        error: 'Missing required parameters: figmaUrl and webUrl are required'
+        error: 'Figma extraction failed',
+        details: error.message,
+        suggestions: [
+          'Check if the Figma file URL is correct',
+          'Verify you have access to the Figma file',
+          'Ensure Figma API tokens are configured properly',
+          'Try again with a different Figma file'
+        ]
       });
     }
 
-    // Extract file ID and node ID from Figma URL
-    const figmaMatch = figmaUrl.match(/figma\.com\/(?:file|design)\/([a-zA-Z0-9]+)(?:\/.*?node-id=([^&]+))?/);
-    if (!figmaMatch) {
-      return res.status(400).json({
+    // Extract web data
+    let webData;
+    try {
+      const extractor = global.enhancedWebExtractor || global.webExtractor;
+      if (!extractor) {
+        throw new Error('No web extractor available - browser initialization failed');
+      }
+      webData = await extractor.extractData(webUrl, authentication);
+      console.log(`✅ Web extraction: ${webData.elements?.length || 0} elements`);
+    } catch (error) {
+      console.error('❌ Web extraction failed:', error);
+      return res.status(500).json({
         success: false,
-        error: 'Invalid Figma URL format'
+        error: 'Web extraction failed',
+        details: error.message,
+        suggestions: [
+          'Check if the website URL is accessible',
+          'Verify the website is not blocking automated access',
+          'Ensure browser dependencies are installed properly',
+          'Try restarting the server to reinitialize browsers'
+        ]
       });
     }
 
-    const fileId = figmaMatch[1];
-    const nodeId = figmaMatch[2] ? decodeURIComponent(figmaMatch[2]).replace(/-/g, ':') : null;
-
-    console.log(`🚀 Starting comparison ${comparisonId}`);
-    console.log(`🎨 Figma: ${fileId}${nodeId ? ` (node: ${nodeId})` : ''}`);
-    console.log(`🌐 Web: ${webUrl}`);
-
-    const io = req.app.get('io');
-    const emitProgress = (stage, progress, message, details = {}) => {
-      const progressData = {
-        comparisonId,
-        stage,
-        progress,
-        message,
+    // Perform comparison
+    console.log('🔍 Performing comparison...');
+    const comparisonEngine = global.comparisonEngine;
+    if (!comparisonEngine) {
+      throw new Error('Comparison engine not initialized');
+    }
+    const comparison = await comparisonEngine.compareDesigns(figmaData, webData);
+    
+    // Generate reports  
+    console.log('📊 Generating reports...');
+    const reportGenerator = global.reportGenerator;
+    if (!reportGenerator) {
+      throw new Error('Report generator not initialized');
+    }
+    const htmlReport = await reportGenerator.generateReport(comparison, null, { 
+      filename: `comparison-${Date.now()}.html`,
+      title: 'Figma vs Web Comparison Report'
+    });
+    const jsonReport = await reportGenerator.generateJSONReport(comparison, null, {
+      filename: `comparison-${Date.now()}.json`
+    });
+    
+    const reports = {
+      html: htmlReport,
+      json: jsonReport,
+      message: 'Reports generated successfully'
+    };
+    
+    // Response
+    const response = {
+      success: true,
+      summary: {
+        figma: {
+          fileId: figmaData.fileId,
+          fileName: figmaData.fileName,
+          componentsExtracted: figmaData.components?.length || 0,
+          extractionMethod: figmaData.metadata?.method || 'unknown'
+        },
+        web: {
+          url: webData.url,
+          elementsExtracted: webData.elements?.length || 0,
+          authenticationUsed: authentication?.type || 'none',
+          extractionMethod: webData.metadata?.method || 'unknown'
+        },
+        comparison: {
+          componentsAnalyzed: comparison.matches?.length || 0,
+          totalDeviations: comparison.deviations?.length || 0,
+          totalMatches: comparison.matches?.length || 0,
+          severity: comparison.severitySummary || { high: 0, medium: 0, low: 0 }
+        }
+      },
+      reports: reports,
+      metadata: {
         timestamp: new Date().toISOString(),
-        ...details
-      };
-      
-      console.log(`📊 Progress: ${stage} - ${progress}% - ${message}`);
-      io.to(`comparison-${comparisonId}`).emit('comparison-progress', progressData);
+        toolVersion: '1.0.0'
+      }
     };
 
-    // Send initial response
-    res.json({
-      success: true,
-      comparisonId,
-      message: 'Comparison started',
-      stages: ['figma-extraction', 'web-extraction', 'comparison-analysis']
-    });
-
-    // Start comparison process
-    (async () => {
-      let figmaData = null;
-      let webData = null;
-      let comparisonResult = null;
-
-      try {
-        // Stage 1: Figma Data Extraction
-        emitProgress('figma-extraction', 10, 'Starting Figma data extraction...');
-        
-        try {
-          figmaData = await extractFigmaData(fileId, nodeId);
-          
-          if (!figmaData || !figmaData.components || figmaData.components.length === 0) {
-            // If specific node not found, try without node ID
-            if (nodeId) {
-              console.log(`⚠️ Node ${nodeId} not found, trying entire file...`);
-              emitProgress('figma-extraction', 20, 'Specific node not found, extracting entire file...');
-              figmaData = await extractFigmaData(fileId, null);
-            }
-            
-            if (!figmaData || !figmaData.components || figmaData.components.length === 0) {
-              throw new Error('No components found in Figma file');
-            }
-          }
-          
-          emitProgress('figma-extraction', 40, `Extracted ${figmaData.components.length} Figma components`);
-        } catch (figmaError) {
-          console.error('❌ Figma extraction failed:', figmaError);
-          emitProgress('figma-extraction', 0, `Figma extraction failed: ${figmaError.message}`, { error: true });
-          throw figmaError;
-        }
-
-        // Stage 2: Web Data Extraction
-        emitProgress('web-extraction', 50, 'Starting web data extraction...');
-        
-        try {
-          webData = await extractWebData(webUrl, authentication);
-          
-          if (!webData || !webData.elements || webData.elements.length === 0) {
-            throw new Error('No elements found on web page');
-          }
-          
-          emitProgress('web-extraction', 70, `Extracted ${webData.elements.length} web elements`);
-        } catch (webError) {
-          console.error('❌ Web extraction failed:', webError);
-          
-          // Categorize the error for better user understanding
-          const categorizedError = ErrorCategorizer.categorizeError(webError, { 
-            url: webUrl, 
-            method: 'Web Extraction',
-            stage: 'web-extraction'
-          });
-          const userFriendlyError = ErrorCategorizer.formatForUser(categorizedError);
-          
-          console.log('\n📊 Web Extraction Error Analysis:');
-          console.log(`${userFriendlyError.title}`);
-          console.log(`Description: ${userFriendlyError.description}`);
-          console.log(`Severity: ${userFriendlyError.severity}`);
-          console.log(`Actionable: ${userFriendlyError.actionable}`);
-          
-          // Emit categorized error information
-          emitProgress('web-extraction', 0, userFriendlyError.description, { 
-            error: true,
-            category: categorizedError.category,
-            severity: categorizedError.severity,
-            actionable: categorizedError.actionable,
-            suggestions: userFriendlyError.suggestions
-          });
-          
-          throw webError;
-        }
-
-        // Stage 3: Comparison Analysis
-        emitProgress('comparison-analysis', 80, 'Starting comparison analysis...');
-        
-        try {
-          comparisonResult = await comparisonEngine.compareDesigns(figmaData, webData);
-          emitProgress('comparison-analysis', 90, 'Generating comparison report...');
-          
-          // Generate report
-          const reportData = await reportGenerator.generateReport(comparisonResult, {
-            figmaUrl,
-            webUrl,
-            comparisonId,
-            includeVisual: visualComparison
-          });
-          
-          // Generate compressed versions of the report
-          emitProgress('comparison-analysis', 95, 'Generating compressed reports...');
-          
-          try {
-            // Create different compression modes
-            const compressionOptions = [
-              { mode: 'summary', gzip: true },
-              { mode: 'detailed', gzip: true },
-              { mode: 'full', gzip: false }
-            ];
-            
-            const compressedReports = {};
-            for (const options of compressionOptions) {
-              const compressedPath = reportData.reportPath.replace('.html', `-${options.mode}.json`);
-              const compressionResult = await ReportCompressor.saveCompressedReport(
-                comparisonResult, 
-                compressedPath, 
-                options
-              );
-              compressedReports[options.mode] = compressionResult;
-            }
-            
-            console.log('📦 Report compression completed:');
-            Object.entries(compressedReports).forEach(([mode, result]) => {
-              console.log(`   ${mode.toUpperCase()}: ${result.compressionInfo.compressionRatio}% reduction`);
-            });
-            
-          } catch (compressionError) {
-            console.warn('⚠️ Report compression failed (non-critical):', compressionError.message);
-          }
-          
-          emitProgress('comparison-analysis', 100, 'Comparison completed successfully!', {
-            reportPath: reportData.reportPath,
-            summary: comparisonResult.summary
-          });
-          
-          console.log(`✅ Comparison ${comparisonId} completed successfully`);
-          
-        } catch (comparisonError) {
-          console.error('❌ Comparison analysis failed:', comparisonError);
-          emitProgress('comparison-analysis', 0, `Comparison analysis failed: ${comparisonError.message}`, { error: true });
-          throw comparisonError;
-        }
-
-      } catch (error) {
-        console.error(`❌ Comparison ${comparisonId} failed:`, error);
-        emitProgress('error', 0, `Comparison failed: ${error.message}`, { 
-          error: true,
-          details: error.stack 
-        });
-      }
-    })();
-
+    console.log('✅ Comparison completed successfully');
+    res.json(response);
+    
   } catch (error) {
-    console.error('Comparison error:', error);
+    console.error('❌ Comparison failed:', error);
     res.status(500).json({
       success: false,
-      error: error.message,
-      comparisonId
+      error: 'Comparison failed',
+      details: error.message
     });
   }
 });
+
+
 
 // AI Analysis endpoint
 app.post('/api/ai/analyze', async (req, res) => {
