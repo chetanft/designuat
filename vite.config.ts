@@ -5,9 +5,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   root: './frontend',
-  base: '/modern/',
+  base: '/',
   build: {
-    outDir: '../public/modern',
+    outDir: './dist',
     emptyOutDir: true,
     rollupOptions: {
       input: './frontend/index.html'
@@ -17,19 +17,30 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true
+        target: process.env.NODE_ENV === 'production' 
+          ? '/.netlify/functions'
+          : 'http://localhost:3001',
+        changeOrigin: true,
+        rewrite: process.env.NODE_ENV === 'production' 
+          ? (path) => path.replace(/^\/api/, '/api')
+          : undefined
       },
       '/reports': {
-        target: 'http://localhost:3001',
+        target: process.env.NODE_ENV === 'production' 
+          ? '/.netlify/functions'
+          : 'http://localhost:3001',
         changeOrigin: true
       },
       '/screenshots': {
-        target: 'http://localhost:3001',
+        target: process.env.NODE_ENV === 'production' 
+          ? '/.netlify/functions'
+          : 'http://localhost:3001',
         changeOrigin: true
       },
       '/images': {
-        target: 'http://localhost:3001',
+        target: process.env.NODE_ENV === 'production' 
+          ? '/.netlify/functions'
+          : 'http://localhost:3001',
         changeOrigin: true
       }
     }
