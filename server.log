@@ -1,5 +1,0 @@
-🚀 Design UAT Tool running at http://localhost:3006
-📱 Frontend: http://localhost:3006
-🔍 Health: http://localhost:3006/api/health
-🔌 Socket.IO: Enabled for real-time updates
-✅ Simple architecture - no more port issues!
