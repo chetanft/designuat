@@ -196,8 +196,21 @@ class RobustFigmaExtractor {
       this.extractComponents(fileData.document, components, 0, depth);
     }
     
-    // Extract styles
+    // Extract styles and design tokens
     this.extractStyles(fileData, styles);
+    
+    // Separate design tokens from regular styles
+    const designTokens = styles.filter(style => style.type === 'DESIGN_TOKEN');
+    const regularStyles = styles.filter(style => style.type !== 'DESIGN_TOKEN');
+    
+    // Organize design tokens by category
+    const organizedTokens = {
+      colors: designTokens.filter(token => token.category === 'colors'),
+      typography: designTokens.filter(token => token.category === 'typography'),
+      spacing: designTokens.filter(token => token.category === 'spacing'),
+      borderRadius: designTokens.filter(token => token.category === 'borderRadius'),
+      shadows: designTokens.filter(token => token.category === 'shadows')
+    };
     
     // Build metadata
     const metadata = {
@@ -209,7 +222,8 @@ class RobustFigmaExtractor {
       nodeId: nodeId,
       depth: depth,
       componentsCount: components.length,
-      stylesCount: styles.length
+      stylesCount: regularStyles.length,
+      designTokensCount: designTokens.length
     };
     
     return {
@@ -218,7 +232,8 @@ class RobustFigmaExtractor {
       
       // Override with our processed data
       components: components, // Ensure this is always an array
-      styles: styles, // Ensure this is always an array
+      styles: regularStyles, // Regular Figma styles
+      designTokens: organizedTokens, // Organized design tokens
       metadata: metadata
     };
   }
@@ -285,6 +300,12 @@ class RobustFigmaExtractor {
       
       // Layout properties
       absoluteBoundingBox: node.absoluteBoundingBox,
+      dimensions: node.absoluteBoundingBox ? {
+        width: node.absoluteBoundingBox.width,
+        height: node.absoluteBoundingBox.height,
+        x: node.absoluteBoundingBox.x,
+        y: node.absoluteBoundingBox.y
+      } : null,
       size: node.size,
       relativeTransform: node.relativeTransform,
       constraints: node.constraints,
@@ -331,7 +352,7 @@ class RobustFigmaExtractor {
   }
 
   /**
-   * Extract styles from Figma file
+   * Extract styles and design tokens from Figma file
    * @param {Object} fileData - Figma file data
    * @param {Array} styles - Styles array to populate
    */
@@ -346,6 +367,138 @@ class RobustFigmaExtractor {
         });
       });
     }
+    
+    // Extract design tokens from components
+    this.extractDesignTokensFromComponents(fileData, styles);
+  }
+
+  /**
+   * Extract design tokens from Figma components
+   * @param {Object} fileData - Figma file data
+   * @param {Array} styles - Styles array to populate
+   */
+  extractDesignTokensFromComponents(fileData, styles) {
+    const designTokens = {
+      colors: new Set(),
+      typography: new Set(),
+      spacing: new Set(),
+      borderRadius: new Set(),
+      shadows: new Set()
+    };
+
+    // Recursively extract tokens from all nodes
+    const extractFromNode = (node) => {
+      if (!node) return;
+
+      // Extract colors
+      if (node.fills) {
+        node.fills.forEach(fill => {
+          if (fill.type === 'SOLID' && fill.color) {
+            const color = this.rgbToHex(fill.color);
+            designTokens.colors.add(color);
+          }
+        });
+      }
+
+      if (node.strokes) {
+        node.strokes.forEach(stroke => {
+          if (stroke.type === 'SOLID' && stroke.color) {
+            const color = this.rgbToHex(stroke.color);
+            designTokens.colors.add(color);
+          }
+        });
+      }
+
+      // Extract typography
+      if (node.style) {
+        const fontKey = `${node.style.fontFamily}-${node.style.fontSize}px-${node.style.fontWeight}`;
+        designTokens.typography.add(fontKey);
+      }
+
+      // Extract spacing (padding, margins from auto-layout)
+      if (node.paddingLeft !== undefined) {
+        designTokens.spacing.add(`padding-left-${node.paddingLeft}`);
+      }
+      if (node.paddingRight !== undefined) {
+        designTokens.spacing.add(`padding-right-${node.paddingRight}`);
+      }
+      if (node.paddingTop !== undefined) {
+        designTokens.spacing.add(`padding-top-${node.paddingTop}`);
+      }
+      if (node.paddingBottom !== undefined) {
+        designTokens.spacing.add(`padding-bottom-${node.paddingBottom}`);
+      }
+      if (node.itemSpacing !== undefined) {
+        designTokens.spacing.add(`gap-${node.itemSpacing}`);
+      }
+
+      // Extract border radius
+      if (node.cornerRadius !== undefined) {
+        designTokens.borderRadius.add(`${node.cornerRadius}px`);
+      }
+      if (node.rectangleCornerRadii) {
+        node.rectangleCornerRadii.forEach((radius, index) => {
+          designTokens.borderRadius.add(`corner-${index}-${radius}px`);
+        });
+      }
+
+      // Extract shadows
+      if (node.effects) {
+        node.effects.forEach(effect => {
+          if (effect.type === 'DROP_SHADOW' || effect.type === 'INNER_SHADOW') {
+            const shadow = `${effect.type.toLowerCase()}-${effect.offset?.x || 0}-${effect.offset?.y || 0}-${effect.radius || 0}`;
+            designTokens.shadows.add(shadow);
+          }
+        });
+      }
+
+      // Recursively process children
+      if (node.children) {
+        node.children.forEach(child => extractFromNode(child));
+      }
+    };
+
+    // Start extraction from document root
+    extractFromNode(fileData.document);
+
+    // Add extracted tokens to styles array
+    Object.entries(designTokens).forEach(([tokenType, tokenSet]) => {
+      Array.from(tokenSet).forEach(token => {
+        styles.push({
+          id: `${tokenType}-${token}`,
+          type: 'DESIGN_TOKEN',
+          category: tokenType,
+          value: token,
+          source: 'figma'
+        });
+      });
+    });
+
+    console.log(`🎨 Extracted design tokens from Figma:`, {
+      colors: designTokens.colors.size,
+      typography: designTokens.typography.size,
+      spacing: designTokens.spacing.size,
+      borderRadius: designTokens.borderRadius.size,
+      shadows: designTokens.shadows.size
+    });
+  }
+
+  /**
+   * Convert RGB color object to hex string
+   * @param {Object} color - Figma color object {r, g, b, a?}
+   * @returns {string} Hex color string
+   */
+  rgbToHex(color) {
+    const r = Math.round(color.r * 255);
+    const g = Math.round(color.g * 255);
+    const b = Math.round(color.b * 255);
+    
+    if (color.a !== undefined && color.a < 1) {
+      const a = Math.round(color.a * 255);
+      return `rgba(${r}, ${g}, ${b}, ${color.a})`;
+    }
+    
+    return `rgb(${r}, ${g}, ${b})`;
   }
 
   /**

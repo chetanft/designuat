@@ -1017,7 +1017,7 @@ curl -X POST http://localhost:[PORT]/api/compare/batch \<br>
                         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
                             <h4 style="margin: 0 0 10px 0; font-size: 1.3em;">🎯 View Categorized Comparison Report</h4>
                             <p style="margin: 0 0 15px 0; opacity: 0.9;">Accordion-organized comparison with Design Tokens, Atomic Design Components & Property-level Analysis</p>
-                            <a href="${result.files.html}" target="_blank" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em; display: inline-block; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); transition: all 0.3s;">
+                            <a href="${result.files.html}" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em; display: inline-block; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); transition: all 0.3s;">
                                 📊 Open Interactive Report
                             </a>
                         </div>
@@ -1071,11 +1071,11 @@ curl -X POST http://localhost:[PORT]/api/compare/batch \<br>
                                 <p><strong>Total Analyzed:</strong> ${result.comparison.total}</p>
                                 
                                 <div style="margin-top: 15px;">
-                                    <a href="${result.files.comparison}" target="_blank" class="report-link">
+                                    <a href="${result.files.comparison}" download class="report-link">
                                         📄 Raw JSON Data
                                     </a>
                                     <br>
-                                    <a href="${result.files.categorized}" target="_blank" class="report-link">
+                                    <a href="${result.files.categorized}" download class="report-link">
                                         📊 Categorized JSON Data
                                     </a>
                                 </div>
@@ -1122,12 +1122,12 @@ curl -X POST http://localhost:[PORT]/api/compare/batch \<br>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <a href="/screenshots/${comparison.path.split('/').pop()}" target="_blank" style="text-decoration: none;" 
+                                            <a href="/screenshots/${comparison.path.split('/').pop()}" style="text-decoration: none;" 
                                                onerror="this.style.display='none'" 
                                                onclick="return checkImageExists(this.href)">
                                                 <div style="background: #f5f5f5; padding: 10px; border-radius: 4px; text-align: center; border: 2px dashed #ccc; transition: all 0.3s;">
                                                     🖼️ View Side-by-Side Comparison
-                                                    <br><small>Click to open in new tab</small>
+                                                    <br><small>Click to view</small>
                                                 </div>
                                             </a>
                                         </div>
@@ -1173,7 +1173,7 @@ curl -X POST http://localhost:[PORT]/api/compare/batch \<br>
                     reportsList.innerHTML = data.reports.map(report => `
                         <div class="report-item">
                             <span>${report.name}</span>
-                            <a href="${report.path}" target="_blank" class="report-link">
+                            <a href="${report.path}" ${report.type === 'json' ? 'download' : ''} class="report-link">
                                 ${report.type === 'html' ? '📊 View Report' : '📄 Download JSON'}
                             </a>
                         </div>

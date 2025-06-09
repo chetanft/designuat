@@ -84,7 +84,7 @@ export class EnhancedWebExtractor {
 
       // Wait for page to be fully ready and test it
       await this.page.goto('about:blank');
-      await this.page.waitForTimeout(500);
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       console.log('✅ Enhanced Web Extractor initialized');
       return true;
@@ -497,7 +497,9 @@ export class EnhancedWebExtractor {
 
       function getComponentType(element) {
         const tagName = element.tagName.toLowerCase();
-        const className = element.className.toLowerCase();
+        const className = (element.className && typeof element.className === 'string') 
+          ? element.className.toLowerCase() 
+          : '';
         const role = element.getAttribute('role');
 
         // Semantic HTML elements
@@ -638,6 +640,13 @@ export class EnhancedWebExtractor {
             height: Math.round(rect.height),
             right: Math.round(rect.right),
             bottom: Math.round(rect.bottom)
+          },
+          // Dimensions property expected by comparison engine
+          dimensions: {
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
+            x: Math.round(rect.left),
+            y: Math.round(rect.top)
           },
           // Flat styles for compatibility
           styles: flatStyles,
@@ -836,7 +845,7 @@ export class EnhancedWebExtractor {
             console.log(`🔐 Navigating to login URL: ${authentication.loginUrl}`);
             
             // Ensure page is ready for navigation
-            await this.page.waitForTimeout(100);
+            await new Promise(resolve => setTimeout(resolve, 100));
             
             await this.page.goto(authentication.loginUrl, { 
               waitUntil: 'networkidle2',
@@ -844,7 +853,7 @@ export class EnhancedWebExtractor {
             });
             
             // Wait for page to be ready
-            await this.page.waitForTimeout(1000);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
             if (authentication.usernameSelector && authentication.username) {
               console.log(`🔐 Filling username field: ${authentication.usernameSelector}`);
@@ -959,6 +968,450 @@ export class EnhancedWebExtractor {
       pageReady: this.page && !this.page.isClosed(),
       fullyReady: this.isReady()
     };
+  }
+
+  /**
+   * Extract comprehensive web data using multiple extraction methods
+   * @param {string} url - Target URL
+   * @param {Object} authentication - Authentication config
+   * @returns {Object} Comprehensive web data with multiple analysis methods
+   */
+  async extractComprehensiveWebData(url, authentication = null) {
+    try {
+      console.log(`🌐 Comprehensive extraction from: ${url}`);
+      
+      // Ensure browser is initialized and ready
+      if (!this.browser || this.browser.process()?.killed) {
+        console.log('🔄 Browser not ready, initializing...');
+        await this.initialize();
+      }
+
+      // Ensure page is ready and not closed
+      if (!this.page || this.page.isClosed()) {
+        console.log('🔄 Page not ready, creating new page...');
+        this.page = await this.browser.newPage();
+        await this.page.setViewport(this.config.viewport);
+        await this.page.setDefaultTimeout(this.config.timeout);
+        await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      }
+
+      // Handle authentication if provided
+      if (authentication) {
+        await this.handleAuthentication(authentication, url);
+      }
+
+      // Navigate to target URL with retries
+      let navigationSuccess = false;
+      let lastError = null;
+      
+      const navigationStrategies = [
+        { waitUntil: ['domcontentloaded', 'networkidle0'], timeout: this.config.timeout },
+        { waitUntil: 'domcontentloaded', timeout: this.config.timeout },
+        { waitUntil: 'load', timeout: Math.min(this.config.timeout, 30000) },
+        { waitUntil: 'domcontentloaded', timeout: 15000 }
+      ];
+      
+      for (let attempt = 1; attempt <= navigationStrategies.length; attempt++) {
+        try {
+          const strategy = navigationStrategies[attempt - 1];
+          console.log(`🔄 Navigation attempt ${attempt}/${navigationStrategies.length} to: ${url}`);
+          
+          await this.page.goto(url, strategy);
+          
+          navigationSuccess = true;
+          console.log(`✅ Successfully navigated to: ${url}`);
+          break;
+        } catch (error) {
+          lastError = error;
+          console.warn(`⚠️ Navigation attempt ${attempt} failed:`, error.message);
+          
+          if (attempt < navigationStrategies.length) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            if (this.page.isClosed()) {
+              this.page = await this.browser.newPage();
+              await this.page.setViewport(this.config.viewport);
+              await this.page.setDefaultTimeout(this.config.timeout);
+            }
+          }
+        }
+      }
+
+      if (!navigationSuccess) {
+        throw new Error(`Failed to navigate to ${url} after ${navigationStrategies.length} attempts. Last error: ${lastError?.message}`);
+      }
+
+             // Wait for page to be fully rendered
+       try {
+         await Promise.race([
+           new Promise(resolve => setTimeout(resolve, 3000)),
+           this.page.waitForSelector('body', { timeout: 5000 })
+         ]);
+       } catch (waitError) {
+         console.warn('⚠️ Page wait timeout, proceeding with extraction:', waitError.message);
+       }
+
+      console.log('🔍 Starting comprehensive extraction...');
+
+      // Method 1: Extract CSS Stylesheets
+      console.log('📋 Method 1: Analyzing CSS stylesheets...');
+      const stylesheets = await this.extractCSSStylesheets();
+
+      // Method 2: Extract UI Components
+      console.log('🎯 Method 2: Extracting UI components...');
+      const uiComponents = await this.extractUIComponents();
+
+      // Method 3: Extract DOM Hierarchy
+      console.log('🌳 Method 3: Analyzing DOM hierarchy...');
+      const domHierarchy = await this.extractDOMHierarchy();
+
+      // Method 4: Extract CSS Variables
+      console.log('🎨 Method 4: Extracting CSS custom properties...');
+      const cssVariables = await this.extractCSSVariables();
+
+      // Method 5: Extract Color Palette
+      console.log('🎨 Method 5: Building color palette...');
+      const colorPalette = await this.extractColorPalette();
+
+      // Method 6: Extract Typography System
+      console.log('📝 Method 6: Analyzing typography system...');
+      const typographySystem = await this.extractTypographySystem();
+
+      // Build comprehensive results
+      const comprehensiveData = {
+        url,
+        extractedAt: new Date().toISOString(),
+        authentication: authentication ? 'enabled' : 'none',
+        extractionMethod: 'Comprehensive Web Analysis',
+        
+        summary: {
+          totalElements: domHierarchy.length,
+          totalComponents: uiComponents.length,
+          totalColors: colorPalette.length,
+          totalFonts: typographySystem.fonts.length,
+          totalStylesheets: stylesheets.length
+        },
+
+        methods: {
+          stylesheets,
+          uiComponents,
+          domHierarchy,
+          cssVariables,
+          colorPalette,
+          typographySystem
+        },
+
+        metadata: {
+          pageTitle: await this.page.title(),
+          viewport: this.config.viewport,
+          userAgent: await this.page.evaluate(() => navigator.userAgent)
+        }
+      };
+
+      console.log(`✅ Comprehensive extraction complete!`);
+      console.log(`   📊 ${uiComponents.length} UI components`);
+      console.log(`   🎨 ${colorPalette.length} colors`);
+      console.log(`   📝 ${typographySystem.fonts.length} fonts`);
+      console.log(`   📋 ${stylesheets.length} stylesheets`);
+
+      return comprehensiveData;
+
+    } catch (error) {
+      console.error('❌ Comprehensive web extraction failed:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Extract CSS stylesheets and their rules
+   */
+  async extractCSSStylesheets() {
+    return await this.page.evaluate(() => {
+      const stylesheets = [];
+      
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        const sheet = document.styleSheets[i];
+        const sheetData = {
+          href: sheet.href,
+          media: sheet.media ? Array.from(sheet.media).join(', ') : 'all',
+          rules: []
+        };
+
+        try {
+          const rules = sheet.cssRules || sheet.rules;
+          for (let j = 0; j < Math.min(rules.length, 100); j++) { // Limit to prevent timeout
+            const rule = rules[j];
+            if (rule.type === CSSRule.STYLE_RULE) {
+              const styles = {};
+              for (let k = 0; k < rule.style.length; k++) {
+                const prop = rule.style[k];
+                styles[prop] = rule.style.getPropertyValue(prop);
+              }
+              
+              sheetData.rules.push({
+                selector: rule.selectorText,
+                styles
+              });
+            }
+          }
+        } catch (e) {
+          // CORS or other restrictions
+          sheetData.error = 'Unable to access stylesheet rules (CORS)';
+        }
+
+        stylesheets.push(sheetData);
+      }
+
+      return stylesheets;
+    });
+  }
+
+  /**
+   * Extract UI components with semantic meaning
+   */
+  async extractUIComponents() {
+    return await this.page.evaluate((config) => {
+      const components = [];
+      const uiSelectors = [
+        'button', 'input', 'select', 'textarea', 'a', 'form',
+        '[role="button"]', '[role="link"]', '[role="textbox"]',
+        '.btn', '.button', '.link', '.input', '.form-control',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div',
+        '.card', '.modal', '.dropdown', '.navbar', '.sidebar'
+      ];
+
+      uiSelectors.forEach(selector => {
+        try {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach((element, index) => {
+            if (index >= 50) return; // Limit per selector
+
+            const rect = element.getBoundingClientRect();
+            const computed = window.getComputedStyle(element);
+
+            // Skip invisible elements
+            if (rect.width === 0 || rect.height === 0 || computed.display === 'none') {
+              return;
+            }
+
+            const component = {
+              type: getComponentType(element),
+              tagName: element.tagName.toLowerCase(),
+              id: element.id || null,
+              className: element.className || null,
+              text: element.textContent ? element.textContent.trim().substring(0, 100) : null,
+              selector: selector,
+              styles: {
+                color: computed.color,
+                backgroundColor: computed.backgroundColor,
+                fontSize: computed.fontSize,
+                fontFamily: computed.fontFamily,
+                fontWeight: computed.fontWeight,
+                padding: computed.padding,
+                margin: computed.margin,
+                border: computed.border,
+                borderRadius: computed.borderRadius,
+                boxShadow: computed.boxShadow,
+                display: computed.display,
+                position: computed.position
+              },
+              dimensions: {
+                width: Math.round(rect.width),
+                height: Math.round(rect.height),
+                x: Math.round(rect.left),
+                y: Math.round(rect.top)
+              }
+            };
+
+            components.push(component);
+          });
+        } catch (e) {
+          // Skip problematic selectors
+        }
+      });
+
+      function getComponentType(element) {
+        const tag = element.tagName.toLowerCase();
+        const role = element.getAttribute('role');
+        const type = element.getAttribute('type');
+        const className = element.className || '';
+
+        // Role-based detection
+        if (role) {
+          return role.toUpperCase();
+        }
+
+        // Tag-based detection
+        if (['button', 'input', 'select', 'textarea'].includes(tag)) {
+          return tag.toUpperCase();
+        }
+
+        if (tag === 'a') return 'LINK';
+        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag)) return 'HEADING';
+        if (tag === 'p') return 'TEXT';
+        if (tag === 'img') return 'IMAGE';
+        if (tag === 'form') return 'FORM';
+
+        // Class-based detection
+        const classStr = typeof className === 'string' ? className : String(className || '');
+        if (classStr.includes('btn') || classStr.includes('button')) return 'BUTTON';
+        if (classStr.includes('card')) return 'CARD';
+        if (classStr.includes('modal')) return 'MODAL';
+        if (classStr.includes('nav')) return 'NAVIGATION';
+
+        return 'ELEMENT';
+      }
+
+      return components;
+    }, this.config);
+  }
+
+  /**
+   * Extract DOM hierarchy with depth information
+   */
+  async extractDOMHierarchy() {
+    return await this.page.evaluate(() => {
+      const hierarchy = [];
+
+      function walkDOM(element, depth = 0, parent = null) {
+        if (depth > 10) return; // Prevent infinite recursion
+
+        const rect = element.getBoundingClientRect();
+        const computed = window.getComputedStyle(element);
+
+        hierarchy.push({
+          tagName: element.tagName.toLowerCase(),
+          id: element.id || null,
+          className: element.className || null,
+          depth,
+          parent: parent ? parent.tagName.toLowerCase() : null,
+          children: element.children.length,
+          text: element.textContent ? element.textContent.trim().substring(0, 50) : null,
+          visible: rect.width > 0 && rect.height > 0 && computed.display !== 'none',
+          dimensions: {
+            width: Math.round(rect.width),
+            height: Math.round(rect.height)
+          }
+        });
+
+        // Recursively process children
+        for (const child of element.children) {
+          walkDOM(child, depth + 1, element);
+        }
+      }
+
+      // Start from body
+      if (document.body) {
+        walkDOM(document.body);
+      }
+
+      return hierarchy;
+    });
+  }
+
+  /**
+   * Extract CSS custom properties (variables)
+   */
+  async extractCSSVariables() {
+    return await this.page.evaluate(() => {
+      const variables = {};
+      const rootStyles = getComputedStyle(document.documentElement);
+
+      // Extract CSS custom properties from root
+      for (let i = 0; i < rootStyles.length; i++) {
+        const prop = rootStyles[i];
+        if (prop.startsWith('--')) {
+          variables[prop] = rootStyles.getPropertyValue(prop).trim();
+        }
+      }
+
+      return variables;
+    });
+  }
+
+  /**
+   * Extract color palette from the page
+   */
+  async extractColorPalette() {
+    return await this.page.evaluate(() => {
+      const colors = new Set();
+      const colorRegex = /#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)/g;
+
+      // Extract colors from computed styles
+      const allElements = document.querySelectorAll('*');
+      for (let i = 0; i < Math.min(allElements.length, 500); i++) {
+        const element = allElements[i];
+        const computed = window.getComputedStyle(element);
+        
+        [computed.color, computed.backgroundColor, computed.borderColor].forEach(color => {
+          if (color && color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') {
+            colors.add(color);
+          }
+        });
+      }
+
+      // Convert to hex when possible and return as array
+      return Array.from(colors).map(color => {
+        let hex = color;
+        if (color.startsWith('rgb')) {
+          const matches = color.match(/\d+/g);
+          if (matches && matches.length >= 3) {
+            const [r, g, b] = matches.map(Number);
+            hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+          }
+        }
+        return {
+          original: color,
+          hex: hex
+        };
+      });
+    });
+  }
+
+  /**
+   * Extract typography system information
+   */
+  async extractTypographySystem() {
+    return await this.page.evaluate(() => {
+      const fonts = new Set();
+      const fontSizes = new Set();
+      const textStyles = [];
+
+      // Text-containing elements
+      const textSelectors = ['p', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'button', 'label', 'li'];
+      
+      textSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        for (let i = 0; i < Math.min(elements.length, 20); i++) {
+          const element = elements[i];
+          const computed = window.getComputedStyle(element);
+          const text = element.textContent ? element.textContent.trim() : '';
+          
+          if (text.length > 0) {
+            fonts.add(computed.fontFamily);
+            fontSizes.add(computed.fontSize);
+            
+            if (textStyles.length < 30) {
+              textStyles.push({
+                tagName: element.tagName.toLowerCase(),
+                text: text.substring(0, 50),
+                fontFamily: computed.fontFamily,
+                fontSize: computed.fontSize,
+                fontWeight: computed.fontWeight,
+                color: computed.color,
+                lineHeight: computed.lineHeight
+              });
+            }
+          }
+        }
+      });
+
+      return {
+        fonts: Array.from(fonts),
+        fontSizes: Array.from(fontSizes),
+        textStyles
+      };
+    });
   }
 }
 

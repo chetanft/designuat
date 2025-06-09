@@ -318,20 +318,25 @@ class ComparisonEngine {
     score += typeSimilarity * 0.2;
     factors += 0.2;
 
-    // Dimension similarity
-    if (figmaComponent.properties.dimensions && webElement.boundingRect) {
+    // Dimension similarity - check both possible locations for dimensions
+    const figmaDimensions = figmaComponent.dimensions || figmaComponent.properties?.dimensions;
+    const webDimensions = webElement.dimensions || webElement.boundingRect;
+    
+    if (figmaDimensions && webDimensions) {
       const dimensionSimilarity = this.calculateDimensionSimilarity(
-        figmaComponent.properties.dimensions,
-        webElement.boundingRect
+        figmaDimensions,
+        webDimensions
       );
       score += dimensionSimilarity * 0.3;
       factors += 0.3;
     }
 
-    // Color similarity
-    if (figmaComponent.properties.backgroundColor && webElement.styles.backgroundColor) {
+    // Color similarity - check both possible locations for backgroundColor
+    const figmaColor = figmaComponent.backgroundColor || figmaComponent.properties?.backgroundColor;
+    
+    if (figmaColor && webElement.styles?.backgroundColor) {
       const colorSimilarity = this.calculateColorSimilarity(
-        figmaComponent.properties.backgroundColor,
+        figmaColor,
         webElement.styles.backgroundColor
       );
       score += colorSimilarity * 0.2;

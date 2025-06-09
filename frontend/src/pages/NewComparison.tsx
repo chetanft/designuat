@@ -84,8 +84,6 @@ export default function NewComparison() {
               {result.reports?.html && (
                 <a
                   href={result.reports.html}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
@@ -102,8 +100,7 @@ export default function NewComparison() {
               {result.reports?.json && (
                 <a
                   href={result.reports.json}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  download
                   className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center space-x-3">

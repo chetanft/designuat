@@ -74,6 +74,10 @@ class ReportGenerator {
     // Determine if we should show categorized view
     const showCategorized = categorizedData && categorizedData.schema;
     
+    // Get raw data if provided
+    const figmaData = options.figmaData;
+    const webData = options.webData;
+    
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,6 +96,10 @@ class ReportGenerator {
         .nav-tab.active { background: white; border-bottom: 1px solid white; margin-bottom: -1px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        
+        /* Main tab content styles */
+        .main-tab-content { display: none; }
+        .main-tab-content.active { display: block; }
         
         /* Accordion styles */
         .accordion { margin: 20px 0; }
@@ -174,23 +182,81 @@ class ReportGenerator {
 <body>
     <div class="container">
         <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="history.back()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; backdrop-filter: blur(10px);">
+                    ← Back to Reports
+                </button>
+                <div style="text-align: right; font-size: 12px; opacity: 0.8;">
+                    Generated: ${new Date().toLocaleString()}
+                </div>
+            </div>
             <h1>Design Comparison Report</h1>
             <p>Detailed Element-by-Element Analysis</p>
-            <p>Generated: ${new Date().toLocaleString()}</p>
         </div>
         
-        ${showCategorized ? this.generateCategorizedNavigation() : ''}
-        ${showCategorized ? this.generateCategorizedContent(categorizedData, comparisonData) : ''}
-        ${this.generateSummarySection(comparisonData)}
-        ${!showCategorized ? this.generateDetailedComparisonTable(comparisonData.comparisons || []) : ''}
-        ${this.generateColorAnalysis(comparisonData.comparisons || [])}
-        ${this.generateTypographyAnalysis(comparisonData.comparisons || [])}
+        <!-- Main Data Tabs -->
+        <div class="section">
+          <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showMainTab('figma-data')">
+              🎨 Figma Data
+            </div>
+            <div class="nav-tab" onclick="showMainTab('web-data')">
+              🌐 Web Data  
+            </div>
+            <div class="nav-tab" onclick="showMainTab('comparison-data')">
+              🔍 Comparison Analysis
+            </div>
+          </div>
+        </div>
+        
+        <!-- Figma Data Tab -->
+        <div id="figma-data-content" class="main-tab-content active">
+          ${this.generateFigmaDataTab(figmaData)}
+        </div>
+        
+        <!-- Web Data Tab -->
+        <div id="web-data-content" class="main-tab-content">
+          ${this.generateWebDataTab(webData)}
+        </div>
+        
+        <!-- Comparison Data Tab -->
+        <div id="comparison-data-content" class="main-tab-content">
+          ${showCategorized ? this.generateCategorizedNavigation() : ''}
+          ${showCategorized ? this.generateCategorizedContent(categorizedData, comparisonData) : ''}
+          ${this.generateSummarySection(comparisonData)}
+          ${!showCategorized ? this.generateDetailedComparisonTable(comparisonData.comparisons || []) : ''}
+          ${this.generateColorAnalysis(comparisonData.comparisons || [])}
+          ${this.generateTypographyAnalysis(comparisonData.comparisons || [])}
+        </div>
     </div>
     
     <script>
-        // Tab functionality
+        // Main tab functionality
+        function showMainTab(tabName) {
+            // Hide all main tab contents
+            const mainTabs = document.querySelectorAll('.main-tab-content');
+            mainTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Hide all main nav tabs
+            const mainNavTabs = document.querySelectorAll('.section .nav-tabs .nav-tab');
+            mainNavTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected main tab content
+            const selectedContent = document.getElementById(tabName + '-content');
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // Show selected main nav tab
+            const selectedTab = event.target;
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+        }
+        
+        // Sub-tab functionality for categorized content
         function showTab(tabName) {
-            // Hide all tab contents
+            // Hide all sub-tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -649,6 +715,8 @@ class ReportGenerator {
         },
         styleComparison: comparisonData,
         visualComparison: visualData,
+        figmaData: options.figmaData || null,
+        webData: options.webData || null,
         summary: this.generateReportSummary(comparisonData, visualData)
       };
 
@@ -1231,6 +1299,324 @@ class ReportGenerator {
         </tbody>
       </table>
       ${totalCount > 20 ? `<p><em>Showing all ${totalCount} components...</em></p>` : ''}
+    </div>`;
+  }
+
+  /**
+   * Generate Figma Data tab content
+   */
+  generateFigmaDataTab(figmaData) {
+    if (!figmaData) {
+      return `
+      <div class="section">
+        <h2>🎨 Figma Data</h2>
+        <p>No Figma data available for this comparison.</p>
+      </div>`;
+    }
+
+    const components = figmaData.components || [];
+    const designTokens = figmaData.designTokens || {};
+    
+    return `
+    <div class="section">
+      <h2>🎨 Figma Design Data</h2>
+      <p>Components and design tokens extracted from the Figma design file.</p>
+      
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>Components</h3>
+          <span class="number">${components.length}</span>
+          <span class="label">Design Elements</span>
+        </div>
+        <div class="summary-card">
+          <h3>Colors</h3>
+          <span class="number">${(designTokens.colors || []).length}</span>
+          <span class="label">Color Tokens</span>
+        </div>
+        <div class="summary-card">
+          <h3>Typography</h3>
+          <span class="number">${(designTokens.typography || []).length}</span>
+          <span class="label">Text Styles</span>
+        </div>
+        <div class="summary-card">
+          <h3>Spacing</h3>
+          <span class="number">${(designTokens.spacing || []).length}</span>
+          <span class="label">Spacing Tokens</span>
+        </div>
+      </div>
+      
+      ${this.generateDesignTokensSection(designTokens, 'figma')}
+      
+      ${components.length > 0 ? `
+      <h3>Figma Components</h3>
+      <div class="component-grid">
+        ${components.map(component => `
+          <div class="component-card">
+            <h4>${component.name || 'Unnamed Component'}</h4>
+            <div class="meta">Type: ${component.type || 'Unknown'}</div>
+            <div class="properties">
+              ${component.properties ? Object.entries(component.properties)
+                .filter(([key, value]) => value !== null && value !== undefined)
+                .slice(0, 5)
+                .map(([key, value]) => `<div><strong>${key}:</strong> ${this.formatValue(key, value)}</div>`)
+                .join('') : 'No properties'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <p><em>Showing all ${components.length} components</em></p>
+      ` : '<p>No components found in Figma data.</p>'}
+    </div>`;
+  }
+
+  /**
+   * Generate Web Data tab content
+   */
+  generateWebDataTab(webData) {
+    if (!webData) {
+      return `
+      <div class="section">
+        <h2>🌐 Web Data</h2>
+        <p>No web data available for this comparison.</p>
+      </div>`;
+    }
+
+    const elements = webData.elements || [];
+    const semanticElements = webData.semanticElements || [];
+    
+    // Extract design tokens from web elements
+    const webDesignTokens = this.extractWebDesignTokens(elements);
+    
+    return `
+    <div class="section">
+      <h2>🌐 Web Implementation Data</h2>
+      <p>Elements and styles extracted from the live web page.</p>
+      
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>Total Elements</h3>
+          <span class="number">${elements.length}</span>
+          <span class="label">DOM Elements</span>
+        </div>
+        <div class="summary-card">
+          <h3>Colors Found</h3>
+          <span class="number">${webDesignTokens.colors.length}</span>
+          <span class="label">Color Values</span>
+        </div>
+        <div class="summary-card">
+          <h3>Typography</h3>
+          <span class="number">${webDesignTokens.typography.length}</span>
+          <span class="label">Font Combinations</span>
+        </div>
+        <div class="summary-card">
+          <h3>Spacing</h3>
+          <span class="number">${webDesignTokens.spacing.length}</span>
+          <span class="label">Spacing Values</span>
+        </div>
+      </div>
+      
+      ${this.generateDesignTokensSection(webDesignTokens, 'web')}
+      
+      ${elements.length > 0 ? `
+      <h3>Web Elements</h3>
+      <div class="component-grid">
+        ${elements.slice(0, 50).map(element => `
+          <div class="component-card">
+            <h4>${element.tagName || 'Unknown'}${element.className ? `.${element.className.split(' ')[0]}` : ''}</h4>
+            <div class="meta">
+              ${element.selector ? `Selector: ${element.selector.slice(0, 50)}${element.selector.length > 50 ? '...' : ''}` : 'No selector'}
+            </div>
+            <div class="properties">
+              ${element.styles ? Object.entries(element.styles)
+                .filter(([key, value]) => value && key !== 'selector')
+                .slice(0, 5)
+                .map(([key, value]) => `<div><strong>${key}:</strong> ${typeof value === 'string' ? value.slice(0, 30) + (value.length > 30 ? '...' : '') : value}</div>`)
+                .join('') : 'No styles'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      ${elements.length > 50 ? `<p><em>Showing 50 of ${elements.length} elements...</em></p>` : `<p><em>Showing all ${elements.length} elements</em></p>`}
+      ` : '<p>No elements found in web data.</p>'}
+      
+      ${semanticElements.length > 0 ? `
+      <h3>Semantic Elements</h3>
+      <div class="component-grid">
+        ${semanticElements.slice(0, 10).map(element => `
+          <div class="component-card">
+            <h4>${element.role || element.tagName || 'Unknown'}</h4>
+            <div class="meta">
+              ${element.text ? `Text: ${element.text.slice(0, 100)}${element.text.length > 100 ? '...' : ''}` : 'No text content'}
+            </div>
+            <div class="properties">
+              ${element.attributes ? Object.entries(element.attributes)
+                .slice(0, 3)
+                .map(([key, value]) => `<div><strong>${key}:</strong> ${value}</div>`)
+                .join('') : 'No attributes'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      ${semanticElements.length > 10 ? `<p><em>Showing 10 of ${semanticElements.length} semantic elements...</em></p>` : ''}
+      ` : ''}
+    </div>`;
+  }
+
+  /**
+   * Extract design tokens from web elements
+   */
+  extractWebDesignTokens(elements) {
+    const tokens = {
+      colors: new Set(),
+      typography: new Set(),
+      spacing: new Set(),
+      borderRadius: new Set()
+    };
+
+    elements.forEach(element => {
+      if (!element.styles) return;
+
+      // Extract colors
+      if (element.styles.color && element.styles.color !== 'rgb(0, 0, 0)') {
+        tokens.colors.add(element.styles.color);
+      }
+      if (element.styles.backgroundColor && element.styles.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+        tokens.colors.add(element.styles.backgroundColor);
+      }
+
+      // Extract typography
+      if (element.styles.fontFamily && element.styles.fontSize) {
+        const fontKey = `${element.styles.fontFamily} ${element.styles.fontSize} ${element.styles.fontWeight || 'normal'}`;
+        tokens.typography.add(fontKey);
+      }
+
+      // Extract spacing
+      ['marginTop', 'marginRight', 'marginBottom', 'marginLeft', 
+       'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'].forEach(prop => {
+        if (element.styles[prop] && parseFloat(element.styles[prop]) > 0) {
+          tokens.spacing.add(element.styles[prop]);
+        }
+      });
+
+      // Extract border radius
+      if (element.styles.borderRadius && element.styles.borderRadius !== '0px') {
+        tokens.borderRadius.add(element.styles.borderRadius);
+      }
+    });
+
+    return {
+      colors: Array.from(tokens.colors).slice(0, 50),
+      typography: Array.from(tokens.typography).slice(0, 30),
+      spacing: Array.from(tokens.spacing).slice(0, 40),
+      borderRadius: Array.from(tokens.borderRadius).slice(0, 20)
+    };
+  }
+
+  /**
+   * Generate design tokens section for display
+   */
+  generateDesignTokensSection(designTokens, source) {
+    if (!designTokens) return '';
+
+    const colors = designTokens.colors || [];
+    const typography = designTokens.typography || [];
+    const spacing = designTokens.spacing || [];
+    const borderRadius = designTokens.borderRadius || [];
+
+    return `
+    <div class="design-tokens-section">
+      <h3>🎨 Design Tokens (${source === 'figma' ? 'Figma' : 'Web'})</h3>
+      
+      ${colors.length > 0 ? `
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <h4>Colors <span class="count-indicator">${colors.length}</span></h4>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div class="component-grid">
+            ${colors.map(color => {
+              const colorValue = typeof color === 'string' ? color : color.value;
+              return `
+              <div class="component-card">
+                <div style="display: flex; align-items: center;">
+                  <span class="color-swatch" style="background-color: ${colorValue}; width: 30px; height: 30px; border-radius: 4px; border: 1px solid #ccc; margin-right: 10px;"></span>
+                  <div>
+                    <div class="color-value">${colorValue}</div>
+                    ${color.type ? `<div class="meta">Type: ${color.type}</div>` : ''}
+                  </div>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+          <p><em>Showing all ${colors.length} colors</em></p>
+        </div>
+      </div>
+      ` : ''}
+      
+      ${typography.length > 0 ? `
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <h4>Typography <span class="count-indicator">${typography.length}</span></h4>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div class="component-grid">
+            ${typography.slice(0, 15).map(typo => {
+              const typoValue = typeof typo === 'string' ? typo : typo.value;
+              return `
+              <div class="component-card">
+                <div class="typography-sample">${typoValue}</div>
+                ${typo.type ? `<div class="meta">Type: ${typo.type}</div>` : ''}
+              </div>`;
+            }).join('')}
+          </div>
+          ${typography.length > 15 ? `<p><em>Showing 15 of ${typography.length} typography styles...</em></p>` : ''}
+        </div>
+      </div>
+      ` : ''}
+      
+      ${spacing.length > 0 ? `
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <h4>Spacing <span class="count-indicator">${spacing.length}</span></h4>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+            ${spacing.slice(0, 30).map(space => {
+              const spaceValue = typeof space === 'string' ? space : space.value;
+              return `
+              <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                <div style="font-weight: bold; color: #333;">${spaceValue}</div>
+              </div>`;
+            }).join('')}
+          </div>
+          ${spacing.length > 30 ? `<p><em>Showing 30 of ${spacing.length} spacing values...</em></p>` : ''}
+        </div>
+      </div>
+      ` : ''}
+      
+      ${borderRadius.length > 0 ? `
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <h4>Border Radius <span class="count-indicator">${borderRadius.length}</span></h4>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+            ${borderRadius.slice(0, 20).map(radius => {
+              const radiusValue = typeof radius === 'string' ? radius : radius.value;
+              return `
+              <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: ${radiusValue}; border: 1px solid #ddd;">
+                <div style="font-weight: bold; color: #333;">${radiusValue}</div>
+              </div>`;
+            }).join('')}
+          </div>
+          ${borderRadius.length > 20 ? `<p><em>Showing 20 of ${borderRadius.length} border radius values...</em></p>` : ''}
+        </div>
+      </div>
+      ` : ''}
     </div>`;
   }
 }

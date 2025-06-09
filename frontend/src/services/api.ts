@@ -136,6 +136,16 @@ class ApiService {
     return this.post('/api/settings/test-connection', data)
   }
 
+  // Figma data method
+  async getFigmaData(comparisonId: string): Promise<any> {
+    return this.get(`/api/comparison/${comparisonId}/figma-data`)
+  }
+
+  // Web data method
+  async getWebData(comparisonId: string): Promise<any> {
+    return this.get(`/api/comparison/${comparisonId}/web-data`)
+  }
+
   // Get current API configuration
   getConfig() {
     return {

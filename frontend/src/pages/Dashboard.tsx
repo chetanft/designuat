@@ -399,8 +399,6 @@ export default function Dashboard() {
                     {report.htmlPath && (
                       <a
                         href={report.htmlPath}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="btn-secondary btn-sm flex items-center space-x-1"
                       >
                         <EyeIcon className="w-4 h-4" />

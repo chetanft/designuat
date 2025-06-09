@@ -7,6 +7,9 @@ import Dashboard from './pages/Dashboard'
 import NewComparison from './pages/NewComparison'
 import Reports from './pages/Reports'
 import Settings from './pages/Settings'
+import FigmaData from './pages/FigmaData'
+import WebData from './pages/WebData'
+import HtmlReport from './pages/HtmlReport'
 import ErrorBoundary from './components/ui/ErrorBoundary'
 import { Page } from './types'
 
@@ -92,6 +95,9 @@ function AppContent() {
                   <Route path="/new-comparison" element={<NewComparison />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/figma-data/:comparisonId?" element={<FigmaData />} />
+                  <Route path="/web-data/:comparisonId?" element={<WebData />} />
+                  <Route path="/html-report/:reportId" element={<HtmlReport />} />
                   
                   {/* Modern UI routes with /modern prefix */}
                   <Route path="/modern" element={<Dashboard />} />
@@ -99,6 +105,9 @@ function AppContent() {
                   <Route path="/modern/new-comparison" element={<NewComparison />} />
                   <Route path="/modern/reports" element={<Reports />} />
                   <Route path="/modern/settings" element={<Settings />} />
+                  <Route path="/modern/figma-data/:comparisonId?" element={<FigmaData />} />
+                  <Route path="/modern/web-data/:comparisonId?" element={<WebData />} />
+                  <Route path="/modern/html-report/:reportId" element={<HtmlReport />} />
                   
                   {/* Fallback to dashboard */}
                   <Route path="*" element={<Dashboard />} />

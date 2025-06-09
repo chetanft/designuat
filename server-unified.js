@@ -569,7 +569,7 @@ app.post('/api/compare', async (req, res) => {
       }
       
       const webData = await Promise.race([
-        extractor.extractData(webUrl, authentication),
+        extractor.extractWebData(webUrl, authentication),
         new Promise((_, reject) => {
           abortController.signal.addEventListener('abort', () => {
             reject(new Error('Web extraction timed out'));

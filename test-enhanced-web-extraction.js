@@ -5,13 +5,13 @@ async function testEnhancedWebExtraction() {
   console.log('🧪 Testing Enhanced Web Extraction Methods...\n');
   
   const extractor = new EnhancedWebExtractor({
-    headless: false, // Set to true for production
+    headless: true, // Set to true for production
     timeout: 30000
   });
 
   try {
-    // Test with the FreightTiger website
-    const url = 'https://www.freighttiger.com/v10/journey/listing';
+    // Test with GitHub - a well-structured website
+    const url = 'https://github.com';
     console.log(`🌐 Testing with: ${url}\n`);
 
     const webData = await extractor.extractComprehensiveWebData(url);

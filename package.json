@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node start-server.js",
+    "start": "node simple-server.js",
     "start:unified": "node start-server.js unified",
     "start:main": "node start-server.js main",
     "start:legacy": "node start-server.js legacy",
